@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
+  m_Name: WorkerEntity
+  m_EditorClassIdentifier: Assembly-CSharp::BugColony.EntitySpecification
+  <Name>k__BackingField: Worker
+  <Type>k__BackingField: 0
+  Behaviour: {fileID: 11400000, guid: 04f56dcafd6074387bf7f76df4d78e21, type: 2}
+  Configuration:
+  - {fileID: 11400000, guid: a59feb54ec9a1488883671ea52221721, type: 2}
+  - {fileID: 11400000, guid: 14ef57d3589c54de1b2745f61ce5333e, type: 2}
+  - {fileID: 11400000, guid: bfa2126bd1cc44cf1a7fb472ae2858ef, type: 2}
+  - {fileID: 11400000, guid: 8bdd6cb2dae17491e93812746c8c6115, type: 2}
