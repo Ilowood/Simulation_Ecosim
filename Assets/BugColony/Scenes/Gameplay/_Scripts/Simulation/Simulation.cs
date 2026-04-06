@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BugColony
 {
@@ -8,12 +9,15 @@ namespace BugColony
         private readonly Spawner _spawner;
         private readonly Dictionary<EntityType, List<Entity>> _entitiesByType = new();
         private readonly Queue<ISimulationCommand> _commands = new();
+        private readonly SimulationConfig _config;
 
         private SimulationContext _context;
 
-        public Simulation(Spawner spawner)
+        public Simulation(Spawner spawner, SimulationConfig config)
         {
             _spawner = spawner;
+            _config = config;
+
             _context = new SimulationContext(this);
 
             foreach (EntityType type in Enum.GetValues(typeof(EntityType)))
@@ -39,11 +43,11 @@ namespace BugColony
             {
                 var list = pair.Value;
 
-                for (int i = list.Count - 1; i >= 0; i--)
+                for (var i = list.Count - 1; i >= 0; i--)
                 {
                     var entity = list[i];
 
-                    if (entity)
+                    if (entity && !entity.IsDead)
                     {
                         entity.Tick(_context, deltaTime);
                     }
@@ -51,6 +55,7 @@ namespace BugColony
             }
 
             ApplyCommands();
+            MaintainEntities(EntityType.Food, _config.ResourceCount);
         }
 
         public void AddCommand(ISimulationCommand command)
@@ -58,25 +63,20 @@ namespace BugColony
             _commands.Enqueue(command);
         }
 
-        public void RemoveEntityImmediate(Entity entity)
+        public void RemoveEntityWithoutCoolback(Entity entity)
         {
-            if (_entitiesByType.TryGetValue(entity.Type, out var list))
-            {
-                list.Remove(entity);
-            }
-
-            OnEntityRemoved?.Invoke(entity);
+            RemoveEntity(entity);
             _spawner.Delete(entity);
         }
 
-        private void SpawnInitial()
+        public void RemoveEntityWithCoolback(Entity entity)
         {
-            SpawnAndRegister(EntityType.Worker, 10);
-            SpawnAndRegister(EntityType.Predator, 2);
-            SpawnAndRegister(EntityType.Food, 2);
+            RemoveEntity(entity);
+            _spawner.Delete(entity);
+            OnEntityRemoved?.Invoke(entity);
         }
 
-        private void SpawnAndRegister(EntityType type, int count, bool registerAsResource = false)
+        public void SpawnAndRegister(EntityType type, int count)
         {
             var entities = _spawner.Spawn(type, count);
 
@@ -84,6 +84,35 @@ namespace BugColony
             {
                 RegisterEntity(entity);
             }
+        }
+
+        private void RemoveEntity(Entity entity)
+        {
+            if (_entitiesByType.TryGetValue(entity.Type, out var list))
+            {
+                list.Remove(entity);
+            }
+        }
+
+        private void MaintainEntities(EntityType type, int targetCount)
+        {
+            if (!_entitiesByType.TryGetValue(type, out var list))
+                return;
+
+            int current = list.Count;
+
+            if (current < targetCount)
+            {
+                int toSpawn = targetCount - current;
+                SpawnAndRegister(type, toSpawn);
+            }
+        }
+
+        private void SpawnInitial()
+        {
+            SpawnAndRegister(EntityType.Worker, _config.WorkerStartCount);
+            SpawnAndRegister(EntityType.Predator, _config.PredatorStartCount);
+            SpawnAndRegister(EntityType.Food, _config.ResourceCount);
         }
 
         private void RegisterEntity(Entity entity)

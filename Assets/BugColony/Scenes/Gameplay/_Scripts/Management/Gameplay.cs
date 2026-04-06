@@ -7,7 +7,7 @@ namespace BugColony
     {
         [Inject] private FSMGameplay _fSMGameplay;
 
-        private void Start()
+        private async void Start()
         {
             _fSMGameplay.EnterIn(StateGameplay.InitState);
         }

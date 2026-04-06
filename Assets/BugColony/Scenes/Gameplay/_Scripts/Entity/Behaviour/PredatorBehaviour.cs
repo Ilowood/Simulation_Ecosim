@@ -18,7 +18,7 @@ namespace BugColony
             if (_timer > _lifeTimeInSeconds)
             {
                 entity.Behavior.EndTask();
-                context.RemoveEntityCommand(entity);
+                context.RemoveEntityWithoutCoolbackCommand(entity);
                 return;
             }
 

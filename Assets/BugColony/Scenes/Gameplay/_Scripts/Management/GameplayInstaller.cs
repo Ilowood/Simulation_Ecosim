@@ -6,6 +6,7 @@ namespace BugColony
     public class GameplayInstaller : MonoInstaller
     {
         [SerializeField] private SpawnerEntityConfig _spawnerEntityConfig;
+        [SerializeField] private SimulationConfig _simulationConfig;
 
         public override void InstallBindings()
         {
@@ -18,6 +19,7 @@ namespace BugColony
         private void InstallConfigs()
         {
             Container.Bind<SpawnerEntityConfig>().FromInstance(_spawnerEntityConfig).AsSingle();
+            Container.Bind<SimulationConfig>().FromInstance(_simulationConfig).AsSingle();
         }
 
         private void InstallView()

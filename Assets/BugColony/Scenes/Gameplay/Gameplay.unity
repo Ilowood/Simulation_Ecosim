@@ -1097,6 +1097,8 @@ Transform:
   - {fileID: 391631937}
   - {fileID: 1618985014}
   - {fileID: 1614035541}
+  - {fileID: 1037387309}
+  - {fileID: 1645661266}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &85390966
@@ -2314,7 +2316,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2339,7 +2341,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalPosition: {x: 0, y: 36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3583,20 +3585,8 @@ MonoBehaviour:
       <Parent>k__BackingField: {fileID: 1972843217}
     - <Specification>k__BackingField: {fileID: 11400000, guid: 3c4a4fc96ee914e20bf85e3a67df0b1e, type: 2}
       <Parent>k__BackingField: {fileID: 1869046659}
-    SpawnPoints:
-    - {fileID: 1741497590}
-    - {fileID: 1962327515}
-    - {fileID: 1153875227}
-    - {fileID: 910877337}
-    - {fileID: 105518141}
-    - {fileID: 899979888}
-    - {fileID: 1376262312}
-    - {fileID: 344793737}
-    - {fileID: 43808687}
-    - {fileID: 1437377665}
-    - {fileID: 752702406}
-    - {fileID: 626420264}
-    InitialPoolSize: 10
+    InitialPoolSize: 3
+  _simulationConfig: {fileID: 11400000, guid: cc4876356070d4fa58e7538e2651f1df, type: 2}
 --- !u!114 &417721981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6372,6 +6362,55 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1037387308
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1037387309}
+  - component: {fileID: 1037387310}
+  m_Layer: 0
+  m_Name: GameObject (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1037387309
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037387308}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 31.9, y: 0, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85390965}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1037387310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037387308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
+  m_SerializedVersion: 0
+  m_Size: {x: 61.641693, y: 9.644932, z: 18.090096}
+  m_Center: {x: -0.17386246, y: 2.2958157, z: 3.3065357}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &1038800569
 GameObject:
   m_ObjectHideFlags: 0
@@ -6438,7 +6477,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 1, z: 6}
+  m_LocalScale: {x: 8, y: 1, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 85390965}
@@ -9108,8 +9147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 60.10666, y: 5.937553, z: 15.002261}
-  m_Center: {x: -0.027572632, y: 2.468777, z: 4.850454}
+  m_Size: {x: 61.641693, y: 9.644932, z: 18.090096}
+  m_Center: {x: -0.17386246, y: 2.2958157, z: 3.3065357}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1 &1618985013
@@ -9157,8 +9196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 60.10666, y: 5.937553, z: 15.002261}
-  m_Center: {x: -0.027572632, y: 2.468777, z: 4.850454}
+  m_Size: {x: 62.60791, y: 9.834196, z: 18.96803}
+  m_Center: {x: -0.062164307, y: 2.122878, z: 6.8333445}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1 &1619054566
@@ -9290,6 +9329,55 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1645661265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645661266}
+  - component: {fileID: 1645661267}
+  m_Layer: 0
+  m_Name: GameObject (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1645661266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645661265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -31.8, y: 0, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 85390965}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1645661267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645661265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
+  m_SerializedVersion: 0
+  m_Size: {x: 61.641693, y: 9.644932, z: 18.090096}
+  m_Center: {x: -0.17386246, y: 2.2958157, z: 3.3065357}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &1680195518
 GameObject:
   m_ObjectHideFlags: 0
@@ -10574,7 +10662,7 @@ Transform:
   m_GameObject: {fileID: 1865366781}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -26.48, y: 0.91, z: -14.7}
+  m_LocalPosition: {x: -26.5, y: 0.91, z: -14.7}
   m_LocalScale: {x: 4.4358, y: 6.0491, z: 2.5596}
   m_ConstrainProportionsScale: 0
   m_Children: []

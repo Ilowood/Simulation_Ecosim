@@ -20,9 +20,19 @@ namespace BugColony
             Entities = simulation;
         }
 
-        public void RemoveEntityCommand(Entity entity)
+        public void RemoveEntityWithoutCoolbackCommand(Entity entity)
         {
-            _simulation.AddCommand(new RemoveEntityCommand(entity));
+            _simulation.AddCommand(new RemoveEntityWithoutCoolbackCommand(entity));
+        }
+
+        public void RemoveEntityWithCoolbackCommand(Entity entity)
+        {
+            _simulation.AddCommand(new RemoveEntityWithCoolbackCommand(entity));
+        }
+
+        public void SpawnEntityCompand(int count, EntityType type)
+        {
+            _simulation.AddCommand(new SpawnEntityCommand(count, type));
         }
     }
 }

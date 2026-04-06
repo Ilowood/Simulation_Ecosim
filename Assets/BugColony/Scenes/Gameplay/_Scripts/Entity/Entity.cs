@@ -5,6 +5,7 @@ namespace BugColony
 {
     public class Entity : MonoBehaviour
     {
+        public bool IsDead { get; set; }
         public EntityType Type { get; private set; }
         public EntityModel Model { get; private set; }
         public EntityBehavior Behavior { get; private set; }

@@ -9,8 +9,6 @@ namespace BugColony
         private readonly Dictionary<EntityType, PoolObj<Entity>> _pools = new();
         private readonly Dictionary<EntityType, EntitySpecification> _configs = new();
 
-        private int _lastIndex = 0;
-
         public Spawner(SpawnerEntityConfig config)
         {
             foreach (var entityConfig in config.EntitySpawnConfigs)
@@ -29,7 +27,6 @@ namespace BugColony
             for (var i = 0; i < entities.Count; i++)
             {
                 entities[i].transform.position = NavMeshHelper.GetRandomPoint();
-                // entities[i].transform.rotation = spawnPoint.transform.rotation;
             }
 
             return entities;
@@ -52,6 +49,7 @@ namespace BugColony
 
         private void Get(Entity entity, int index)
         {
+            entity.IsDead = false;
             entity.gameObject.SetActive(true);
         }
     }

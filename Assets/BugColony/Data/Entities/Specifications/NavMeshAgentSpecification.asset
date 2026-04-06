@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81fc849ac0bb747618d704017f181a29, type: 3}
   m_Name: NavMeshAgentSpecification
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.NavMeshAgentSpecification
+  _stopDistance: 1

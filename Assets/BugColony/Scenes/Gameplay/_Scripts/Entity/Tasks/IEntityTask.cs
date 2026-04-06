@@ -6,6 +6,7 @@ namespace BugColony
         TaskVariants Variants { get; }
 
         void Start();
+        void Tick(float deltaTime);
         void End();
     }
 }

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace BugColony
 {
     public interface IBehaviour
@@ -10,24 +8,25 @@ namespace BugColony
     public class EntityBehavior
     {
         private readonly IBehaviour _behaviour;
-        private readonly Entity _entity;
 
         public IEntityTask Task { get; private set; }
 
-        public EntityBehavior(Entity entity, BehaviourSpecification behaviour)
+        public EntityBehavior(BehaviourSpecification behaviour)
         {
-            _entity = entity;
             _behaviour = behaviour.Create();
         }
 
-        public void Tick(Entity entity, SimulationContext context, float dt)
+        public void Tick(Entity entity, SimulationContext context, float deltaTime)
         {
-            _behaviour?.Tick(_entity, context, dt);
+            _behaviour?.Tick(entity, context, deltaTime);
+            Task?.Tick(deltaTime);
         }
 
-        public void SetTask(IEntityTask task)
+        public void SetAndStartTask(IEntityTask task)
         {
-            Task?.End();
+            if (Task != null && !Task.IsComplete)
+                Task?.End();
+
             Task = task;
             Task.Start();
         }

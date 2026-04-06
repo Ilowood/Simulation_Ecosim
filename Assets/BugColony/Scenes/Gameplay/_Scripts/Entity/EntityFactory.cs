@@ -15,7 +15,7 @@ namespace BugColony
 
             specifications.Configuration.ForEach(spec => spec.Apply(entity));
             entity.SetDefaultInfo(specifications.Type);
-            entity.SetBehavior(new EntityBehavior(entity, specifications.Behaviour));
+            entity.SetBehavior(new EntityBehavior(specifications.Behaviour));
 
             return entity;
         }
