@@ -44,8 +44,19 @@ namespace Untils
 
             for (var i = 0; i < countObjs; i++)
             {
-                objs.Add(poolDisabledObj.Count > 0 ? poolDisabledObj.Dequeue() : generationEvent());
-                getEvent(objs[i], i);
+                T obj;
+                if (poolDisabledObj.Count > 0)
+                {
+                    obj = poolDisabledObj.Dequeue();
+                }
+                else
+                {
+                    obj = generationEvent();
+                    poolObj.Add(obj); 
+                }
+
+                objs.Add(obj);
+                getEvent(obj, i);
             }
 
             return objs;
