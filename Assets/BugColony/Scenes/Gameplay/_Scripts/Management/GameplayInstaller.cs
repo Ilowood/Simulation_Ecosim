@@ -24,6 +24,7 @@ namespace BugColony
 
         private void InstallView()
         {
+            Container.Bind<LoadView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<HUDView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<PauseView>().FromComponentInHierarchy().AsSingle();
         }

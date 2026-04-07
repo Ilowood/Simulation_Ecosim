@@ -1,23 +1,59 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Untils;
+using Cysharp.Threading.Tasks;
 
 namespace BugColony
 {
     public class Spawner
     {
-        private readonly Dictionary<EntityType, PoolObj<Entity>> _pools = new();
-        private readonly Dictionary<EntityType, EntitySpecification> _configs = new();
+        private const int Max_PRE_FRAME = 50;
+
+        private readonly SpawnerEntityConfig _config;
+
+        private Dictionary<EntityType, PoolObj<Entity>> _pools = new();
+        private Dictionary<EntityType, EntitySpecification> _configs = new();
 
         public Spawner(SpawnerEntityConfig config)
         {
-            foreach (var entityConfig in config.EntitySpawnConfigs)
+            _config = config;
+        }
+
+        public async UniTask InitAsync()
+        {
+            var currentFrameCount = 0;
+
+            foreach (var entityConfig in _config.EntitySpawnConfigs)
             {
-                EntityType type = entityConfig.Specification.Type;
+                var type = entityConfig.Specification.Type;
                 _configs[type] = entityConfig.Specification;
 
-                _pools[type] = new PoolObj<Entity>(() => InstantiateEntity(entityConfig), Release, Get, config.InitialPoolSize);
+                var pool = new PoolObj<Entity>(() => InstantiateEntity(entityConfig), Release, Get);
+                _pools[type] = pool;
+
+                var remainingToReserve = _config.InitialPoolSize;
+
+                while (remainingToReserve > 0)
+                {
+                    var spaceInFrame = Max_PRE_FRAME - currentFrameCount;
+                    var amountToSpawn = System.Math.Min(remainingToReserve, spaceInFrame);
+
+                    if (amountToSpawn > 0)
+                    {
+                        pool.Reserv(amountToSpawn);
+                        remainingToReserve -= amountToSpawn;
+                        currentFrameCount += amountToSpawn;
+                    }
+
+                    if (currentFrameCount >= Max_PRE_FRAME)
+                    {
+                        await UniTask.Yield(PlayerLoopTiming.Update);
+                        currentFrameCount = 0;
+                    }
+                }
             }
+
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
         public List<Entity> Spawn(EntityType type, int count)

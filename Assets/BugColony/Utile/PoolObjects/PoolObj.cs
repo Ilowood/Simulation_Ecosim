@@ -13,16 +13,14 @@ namespace Untils
         private Action<T, int> getEvent;
 
         public PoolObj(Func<T> generation, Action<T> release, 
-            Action<T, int> get, int countObj) 
+            Action<T, int> get) 
         {
             generationEvent += generation;
             releaseEvent += release;
             getEvent += get;
-
-            GenerationObjects(countObj);
         }
 
-        private void GenerationObjects(int countObjs)
+        public void Reserv(int countObjs)
         {
             for (var i = 0;  i < countObjs; i++) 
             {
