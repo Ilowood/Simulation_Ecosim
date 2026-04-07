@@ -15,5 +15,5 @@ MonoBehaviour:
   _eatToSplit: 3
   _lifeTimeInSeconds: 10
   _attackDistance: 3
-  _attackDuration: 0.2
+  _attackDuration: 0.1
   _stunDurationTimer: 1.5
