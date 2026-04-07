@@ -19,7 +19,7 @@ namespace BugColony
             _distanceToEat = distanceToEat;
         }
 
-        public void Tick(Entity entity, SimulationContext context, float deltaTime)
+        public void Tick(Entity entity, SimulationContext context, float deltaTime, float scale)
         {
             if (entity.Behavior.Task == null || entity.Behavior.Task.IsComplete)
             {
@@ -37,13 +37,13 @@ namespace BugColony
                         else
                         {
                             var targetPosition = nearestResource.transform.position;
-                            entity.Behavior.SetAndStartTask(new MoveToTask(entity, nearestResource, targetPosition, _speed));
+                            entity.Behavior.SetAndStartTask(new MoveToTask(entity, nearestResource, targetPosition));
                         }
                     }
                     else
                     {
                         var targetPosition = GetRandomPositionAround(entity.transform.position, 5f);
-                        entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, targetPosition, _speed));
+                        entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, targetPosition));
                     }
                 }
                 else

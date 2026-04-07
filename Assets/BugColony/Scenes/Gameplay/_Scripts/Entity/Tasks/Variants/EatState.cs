@@ -34,11 +34,11 @@ namespace BugColony
         {
         }
 
-        public void Tick(float deltaTime)
+        public void Tick(float deltaTime, float scale)
         {
             if (_isComplete) return;
 
-            _timer += deltaTime;
+            _timer += deltaTime * scale;
 
             if (_timer >= _eatDuration)
             {
@@ -51,6 +51,17 @@ namespace BugColony
             if (_isComplete) return;
 
             _isComplete = true;
+        }
+
+
+        public void Puase()
+        {
+            
+        }
+
+        public void Resume()
+        {
+            
         }
 
         private void EndEating()

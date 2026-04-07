@@ -1,7 +1,7 @@
 using Untils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace BugColony
 {
@@ -11,16 +11,18 @@ namespace BugColony
         private readonly HUDView _view;
         private readonly Simulation _simulation;
 
-        private readonly float[] _speedSteps = { 1.0f, 0.2f };
+        private readonly float[] _speedSteps = { 0.2f, 1.0f, 9.0f };
 
-        private int _currentSpeedIndex = 0;
+        private int _currentSpeedIndex = 1;
         private float _currentTimeScale;
+        private CancellationTokenSource _puaseSource;
 
         public GameLoopState(FSMGameplay fsm, HUDView view, Simulation simulation)
         {
             _fsm = fsm;
             _view = view;
             _simulation = simulation;
+            _currentTimeScale = _speedSteps[_currentSpeedIndex];
             
             UI.SaveArea(view.SaveArea);
             view.Init(this, simulation);
@@ -31,22 +33,28 @@ namespace BugColony
         public void Enter()
         {
             _view.Open();
-            GameLoop().Forget();
+            StartLoop();
         }
 
         public void Exit()
         {
+            EndLoop();
+
             _view.Close();
             _view.Deinit(_simulation);
         }
 
         public void Resume()
         {
+            _simulation.SetPause(false);
             _view.Open();
+            StartLoop();
         }
 
         public void Suspend()
         {
+            EndLoop();
+            _simulation.SetPause(true);
             _view.Close();
         }
 
@@ -63,11 +71,23 @@ namespace BugColony
 
         private async UniTask GameLoop()
         {
-            while(true)
+            while(!_puaseSource.IsCancellationRequested)
             {
-                _simulation.Tick(Time.deltaTime);
-                await UniTask.Yield(PlayerLoopTiming.Update);
+                _simulation.Tick(Time.deltaTime, _currentTimeScale);
+                await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
             }
+        }
+
+        private void StartLoop()
+        {
+            _puaseSource = new CancellationTokenSource();
+            GameLoop().Forget();
+        }
+
+        private void EndLoop()
+        {
+            _puaseSource?.Cancel();
+            _puaseSource?.Dispose();
         }
     }
 }

@@ -10,24 +10,22 @@ namespace BugColony
         private readonly float _attackDistance;
         private readonly float _attackDuration;
         private readonly float _stunDurationTimer;
-        private readonly float _speed;
         private readonly int _eatToSplit;
 
         private int _eaten = 0;
         private float _timer;
 
-        public PredatorBehaviour(int eatToSplit, float lifeTimeInSeconds, float attackDuration, float attackDistance, float stunDurationTimer, float speed)
+        public PredatorBehaviour(int eatToSplit, float lifeTimeInSeconds, float attackDuration, float attackDistance, float stunDurationTimer)
         {
             _eatToSplit = eatToSplit;
             _lifeTimeInSeconds = lifeTimeInSeconds;
             _attackDistance = attackDistance;
             _attackDuration = attackDuration;
             _stunDurationTimer = stunDurationTimer;
-            _speed = speed;
             _timer = 0;
         }
 
-        public void Tick(Entity entity, SimulationContext context, float deltaTime)
+        public void Tick(Entity entity, SimulationContext context, float deltaTime, float scale)
         {
             if (_timer > _lifeTimeInSeconds)
             {
@@ -52,13 +50,13 @@ namespace BugColony
                         }
                         else
                         {
-                            entity.Behavior.SetAndStartTask(new ChaseTargetTask(entity, target, _speed));
+                            entity.Behavior.SetAndStartTask(new ChaseTargetTask(entity, target));
                         }
                     }
                     else
                     {
                         var roamPos = GetRandomRoamPosition(entity.transform.position, 10f);
-                        entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, roamPos, _speed * 0.5f));
+                        entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, roamPos));
                     }
                 }
                 else
@@ -68,7 +66,7 @@ namespace BugColony
                 }
             }
 
-            _timer += deltaTime;
+            _timer += deltaTime * scale;
         }
 
         private void Death(Entity entity, SimulationContext context)

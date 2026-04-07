@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81fc849ac0bb747618d704017f181a29, type: 3}
-  m_Name: NavMeshAgentSpecification
+  m_Name: NavMeshPredator
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.NavMeshAgentSpecification
-  _stopDistance: 1
+  _speed: 7
+  _stopDistance: 1.5

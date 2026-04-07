@@ -37,25 +37,16 @@ namespace BugColony
             SpawnInitial();
         }
 
-        public void Tick(float deltaTime)
+        public void Tick(float deltaTime, float scale)
         {
-            foreach (var pair in _entitiesByType)
-            {
-                var list = pair.Value;
-
-                for (var i = list.Count - 1; i >= 0; i--)
-                {
-                    var entity = list[i];
-
-                    if (entity && !entity.IsDead)
-                    {
-                        entity.Tick(_context, deltaTime);
-                    }
-                }
-            }
-
+            ForEachEntity(entity => entity.Tick(_context, deltaTime, scale));
             ApplyCommands();
             MaintainEntities(EntityType.Food, _config.ResourceCount);
+        }
+
+        public void SetPause(bool isPaused)
+        {
+            ForEachEntity(entity => entity.Behavior.SetPause(isPaused));
         }
 
         public void AddCommand(ISimulationCommand command)
@@ -125,6 +116,21 @@ namespace BugColony
 
             list.Add(entity);
             OnEntityAdded?.Invoke(entity);
+        }
+
+        private void ForEachEntity(Action<Entity> action)
+        {
+            foreach (var list in _entitiesByType.Values)
+            {
+                for (var i = list.Count - 1; i >= 0; i--)
+                {
+                    var entity = list[i];
+                    if (entity && !entity.IsDead)
+                    {
+                        action(entity);
+                    }
+                }
+            }
         }
 
         private void ApplyCommands()

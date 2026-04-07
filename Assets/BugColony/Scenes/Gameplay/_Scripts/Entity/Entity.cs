@@ -11,9 +11,9 @@ namespace BugColony
         public EntityBehavior Behavior { get; private set; }
         public NavMeshAgent Agent { get; private set; }
 
-        public void Tick(SimulationContext context, float time)
+        public void Tick(SimulationContext context, float deltaTime, float scale)
         {
-            Behavior?.Tick(this, context, time);
+            Behavior?.Tick(this, context, deltaTime, scale);
         }
 
         public bool SetDefaultInfo(EntityType type)

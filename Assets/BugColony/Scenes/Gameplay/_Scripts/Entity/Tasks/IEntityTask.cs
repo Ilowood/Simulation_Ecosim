@@ -6,7 +6,10 @@ namespace BugColony
         TaskVariants Variants { get; }
 
         void Start();
-        void Tick(float deltaTime);
+        void Tick(float deltaTime, float scale);
         void End();
+
+        void Puase();
+        void Resume();
     }
 }

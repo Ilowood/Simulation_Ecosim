@@ -2,7 +2,7 @@ namespace BugColony
 {
     public interface IBehaviour
     {
-        void Tick(Entity entity, SimulationContext context, float deltaTime);
+        void Tick(Entity entity, SimulationContext context, float deltaTime, float scale);
     }
 
     public class EntityBehavior
@@ -16,10 +16,10 @@ namespace BugColony
             _behaviour = behaviour.Create();
         }
 
-        public void Tick(Entity entity, SimulationContext context, float deltaTime)
+        public void Tick(Entity entity, SimulationContext context, float deltaTime, float scale)
         {
-            _behaviour?.Tick(entity, context, deltaTime);
-            Task?.Tick(deltaTime);
+            _behaviour?.Tick(entity, context, deltaTime, scale);
+            Task?.Tick(deltaTime, scale);
         }
 
         public void SetAndStartTask(IEntityTask task)
@@ -35,6 +35,12 @@ namespace BugColony
         {
             Task?.End();
             Task = null;
+        }
+
+        public void SetPause(bool isPause)
+        {
+            if (isPause) Task?.Puase();
+            else Task?.Resume();
         }
     }
 }

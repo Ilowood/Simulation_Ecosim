@@ -24,11 +24,11 @@ namespace BugColony
             _elapsed = 0f;
         }
 
-        public void Tick(float deltaTime)
+        public void Tick(float deltaTime, float scale)
         {
             if (_isComplete) return;
 
-            _elapsed += deltaTime;
+            _elapsed += deltaTime * scale;
 
             if (_elapsed >= _duration || !_entity || _entity.IsDead)
             {
@@ -42,6 +42,16 @@ namespace BugColony
                 return;
 
             _isComplete = true;
+        }
+
+        public void Puase()
+        {
+            
+        }
+
+        public void Resume()
+        {
+            
         }
     }
 }
