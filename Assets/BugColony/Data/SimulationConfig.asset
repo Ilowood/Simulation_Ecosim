@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SimulationConfig
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.SimulationConfig
   <WorkerStartCount>k__BackingField: 10
-  <PredatorStartCount>k__BackingField: 0
-  <ResourceCount>k__BackingField: 8
+  <PredatorStartCount>k__BackingField: 1
+  <ResourceCount>k__BackingField: 6

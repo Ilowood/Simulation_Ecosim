@@ -52,7 +52,7 @@ namespace BugColony
                     var countLiveEntities = context.Entities.Get(EntityType.Worker).Count + context.Entities.Get(EntityType.Predator).Count;
 
                     entity.IsDead = true;
-                    context.RemoveEntityWithCoolbackCommand(entity);
+                    context.RemoveEntityWithoutCoolbackCommand(entity);
                     _eaten = 0;
 
                     if (countLiveEntities > 10)
@@ -107,7 +107,7 @@ namespace BugColony
             {
                 resource.IsDead = true;
                 _eaten++;
-                context.RemoveEntityWithoutCoolbackCommand(resource);
+                context.RemoveEntityWithCoolbackCommand(resource);
             }
         }
     }

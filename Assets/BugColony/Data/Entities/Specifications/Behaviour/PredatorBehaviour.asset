@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3e5944bd260427d87f27395e3a2bea, type: 3}
   m_Name: PredatorBehaviour
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.PredatorBehaviourSpecification
+  _eatToSplit: 3
   _lifeTimeInSeconds: 10
+  _attackDistance: 2.5
+  _attackDuration: 0.3
+  _stunDurationTimer: 1
+  _speed: 7

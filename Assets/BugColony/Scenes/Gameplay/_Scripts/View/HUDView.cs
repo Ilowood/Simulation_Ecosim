@@ -11,6 +11,7 @@ namespace BugColony
         [Header("TMP")]
         [SerializeField] private TMP_Text _counterDeadWorkers;
         [SerializeField] private TMP_Text _counterDeadPredators;
+        [SerializeField] private TMP_Text _counterEatenFood;
 
         [Header("Buttons")]
         [SerializeField] private Button _speed;
@@ -26,7 +27,8 @@ namespace BugColony
             _deathHandlers = new Dictionary<EntityType, Action>
             {
                 { EntityType.Worker, AddDeadWorkers },
-                { EntityType.Predator, AddDeadPredators }
+                { EntityType.Predator, AddDeadPredators },
+                { EntityType.Food, AddEatenFood }
             };
 
             simulation.OnEntityRemoved += EntityRemoved;
@@ -59,6 +61,12 @@ namespace BugColony
         {
             var count = Convert.ToInt32(_counterDeadPredators.text) + 1;
             _counterDeadPredators.text = $"{count}";
+        }
+
+        private void AddEatenFood()
+        {
+            var count = Convert.ToInt32(_counterEatenFood.text) + 1;
+            _counterEatenFood.text = $"{count}";
         }
     }
 }

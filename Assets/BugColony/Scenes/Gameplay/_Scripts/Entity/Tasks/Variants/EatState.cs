@@ -42,7 +42,7 @@ namespace BugColony
 
             if (_timer >= _eatDuration)
             {
-                FinishEating();
+                EndEating();
             }
         }
 
@@ -53,7 +53,7 @@ namespace BugColony
             _isComplete = true;
         }
 
-        private void FinishEating()
+        private void EndEating()
         {
             if (_isComplete) return;
 
