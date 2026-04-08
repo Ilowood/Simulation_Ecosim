@@ -19,7 +19,7 @@ namespace Ecosim
 
         private Dictionary<EntityType, Action> _deathHandlers;
 
-        public void Init(GameLoopState state, Simulation simulation)
+        public void Init(SimulationState state, Simulation simulation)
         {
             _speed.onClick.AddListener(() => state.ToggleSpeed());
             _pause.onClick.AddListener(() => state.PauseState());
@@ -42,11 +42,10 @@ namespace Ecosim
             simulation.OnEntityRemoved -= EntityRemoved;
         }
 
-        private void EntityRemoved(Entity entity)
+        private void EntityRemoved(EntityType entityType)
         {
-            if (_deathHandlers.TryGetValue(entity.Type, out var handler))
+            if (_deathHandlers.TryGetValue(entityType, out var handler))
             {
-
                 handler.Invoke();
             }
         }

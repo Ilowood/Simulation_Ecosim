@@ -25,8 +25,8 @@ namespace Ecosim
             }
         }
 
-        public event Action<Entity> OnEntityAdded;
-        public event Action<Entity> OnEntityRemoved;
+        public event Action<EntityType> OnEntityAdded;
+        public event Action<EntityType> OnEntityRemoved;
 
         public IReadOnlyList<Entity> Get(EntityType type) => _entitiesByType[type];
 
@@ -39,7 +39,7 @@ namespace Ecosim
         {
             ForEachEntity(entity => entity.Tick(_context, deltaTime, scale));
             ApplyCommands();
-            MaintainEntities(EntityType.Resource, _config.ResourceCount);
+            MaintainAllEntities();
         }
 
         public void SetPause(bool isPaused)
@@ -63,7 +63,7 @@ namespace Ecosim
 
             foreach (var entities in _entitiesByType)
             {
-                if ((_config.TrackedEntities & entities.Key) != 0)
+                if ((_config.TrackedLiveEntities & entities.Key) != 0)
                 {
                     result += entities.Value.Count;
                 }
@@ -82,7 +82,7 @@ namespace Ecosim
         {
             RemoveEntity(entity);
             _spawner.Delete(entity);
-            OnEntityRemoved?.Invoke(entity);
+            OnEntityRemoved?.Invoke(entity.Type);
         }
 
         public void SpawnAndRegister(EntityType type, int count)
@@ -103,12 +103,23 @@ namespace Ecosim
             }
         }
 
+        private void MaintainAllEntities()
+        {
+            foreach (var data in _config.EntitiesSettings)
+            {
+                if (data.TargetPopulation > 0)
+                {
+                    MaintainEntities(data.Type, data.TargetPopulation);
+                }
+            }
+        }
+
         private void MaintainEntities(EntityType type, int targetCount)
         {
             if (!_entitiesByType.TryGetValue(type, out var list))
                 return;
 
-            int current = list.Count;
+            var current = list.Count;
 
             if (current < targetCount)
             {
@@ -119,9 +130,13 @@ namespace Ecosim
 
         private void SpawnInitial()
         {
-            SpawnAndRegister(EntityType.Worker, _config.WorkerStartCount);
-            SpawnAndRegister(EntityType.Predator, _config.PredatorStartCount);
-            SpawnAndRegister(EntityType.Resource, _config.ResourceCount);
+            foreach (var data in _config.EntitiesSettings)
+            {
+                if (data.StartCount > 0)
+                {
+                    SpawnAndRegister(data.Type, data.StartCount);
+                }
+            }
         }
 
         private void RegisterEntity(Entity entity)
@@ -133,7 +148,7 @@ namespace Ecosim
             }
 
             list.Add(entity);
-            OnEntityAdded?.Invoke(entity);
+            OnEntityAdded?.Invoke(entity.Type);
         }
 
         private void ForEachEntity(Action<Entity> action)

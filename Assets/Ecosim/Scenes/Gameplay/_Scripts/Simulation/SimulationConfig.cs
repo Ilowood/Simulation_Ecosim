@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ecosim
@@ -5,9 +6,10 @@ namespace Ecosim
     [CreateAssetMenu(menuName = "Config/SimulationConfig", fileName = "SimulationConfig")]
     public class SimulationConfig : ScriptableObject
     {
-        [field: SerializeField] public int WorkerStartCount { get; private set; }
-        [field: SerializeField] public int PredatorStartCount { get; private set; }
-        [field: SerializeField] public int ResourceCount { get; private set; }
-        [field: SerializeField] public EntityType TrackedEntities { get; private set; }
+        [Header("Entity Settings")]
+        [SerializeField] private List<SimulationEntityData> _entitiesSettings;
+        [field: SerializeField] public EntityType TrackedLiveEntities { get; private set; }
+
+        public IReadOnlyList<SimulationEntityData> EntitiesSettings => _entitiesSettings;
     }
 }

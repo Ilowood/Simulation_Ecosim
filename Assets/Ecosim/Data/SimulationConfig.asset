@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1021d3399b3764afd8f39f6652240679, type: 3}
   m_Name: SimulationConfig
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.SimulationConfig
-  <WorkerStartCount>k__BackingField: 10
-  <PredatorStartCount>k__BackingField: 2
-  <ResourceCount>k__BackingField: 20
-  <TrackedEntities>k__BackingField: 3
+  _entitiesSettings:
+  - Type: 1
+    StartCount: 10
+    TargetPopulation: 0
+  - Type: 2
+    StartCount: 2
+    TargetPopulation: 0
+  - Type: 8
+    StartCount: 8
+    TargetPopulation: 8
+  <TrackedLiveEntities>k__BackingField: 3

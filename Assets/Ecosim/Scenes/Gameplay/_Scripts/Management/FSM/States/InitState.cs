@@ -43,7 +43,7 @@ namespace Ecosim
                 await UniTask.Delay(System.TimeSpan.FromSeconds(delaySeconds));
             }
 
-            _fsm.EnterIn(StateGameplay.GameLoopState);
+            _fsm.EnterIn(StateGameplay.SimulationState);
         }
 
         public void Exit()

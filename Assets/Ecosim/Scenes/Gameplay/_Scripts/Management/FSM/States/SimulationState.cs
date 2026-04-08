@@ -5,19 +5,19 @@ using System.Threading;
 
 namespace Ecosim
 {
-    public class GameLoopState : ISuspendFSMState<StateGameplay>
+    public class SimulationState : ISuspendFSMState<StateGameplay>
     {
         private readonly FSMGameplay _fsm;
         private readonly HUDView _view;
         private readonly Simulation _simulation;
 
-        private readonly float[] _speedSteps = { 0.2f, 1.0f, 9.0f };
+        private readonly float[] _speedSteps = { 0.5f, 2.0f, 10.0f };
 
         private int _currentSpeedIndex = 1;
         private float _currentTimeScale;
         private CancellationTokenSource _puaseSource;
 
-        public GameLoopState(FSMGameplay fsm, HUDView view, Simulation simulation)
+        public SimulationState(FSMGameplay fsm, HUDView view, Simulation simulation)
         {
             _fsm = fsm;
             _view = view;
@@ -28,7 +28,7 @@ namespace Ecosim
             view.Init(this, simulation);
         }
 
-        public StateGameplay State => StateGameplay.GameLoopState;
+        public StateGameplay State => StateGameplay.SimulationState;
 
         public void Enter()
         {
@@ -77,7 +77,8 @@ namespace Ecosim
 
                 if (_simulation.GetTrackedEntityCount() == 0)
                 {
-                    
+                    _fsm.EnterIn(StateGameplay.ReportState);
+                    return;
                 }
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);

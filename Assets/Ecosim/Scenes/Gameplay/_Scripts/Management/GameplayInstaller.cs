@@ -38,7 +38,7 @@ namespace Ecosim
         private void InstallFSM()
         {
             Container.BindInterfacesAndSelfTo<InitState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<GameLoopState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SimulationState>().AsSingle();
             Container.BindInterfacesAndSelfTo<PauseState>().AsSingle();
 
             Container.Bind<FSMGameplay>().AsSingle();
