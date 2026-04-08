@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
+  m_Name: PredatorEntity
+  m_EditorClassIdentifier: Assembly-CSharp::BugColony.EntitySpecification
+  <Name>k__BackingField: Predator
+  <Type>k__BackingField: 2
+  Behaviour: {fileID: 11400000, guid: 246bd40a23b374925a574330034811ad, type: 2}
+  Configuration:
+  - {fileID: 11400000, guid: 8f53d04891aee4ed9940445ba390315e, type: 2}
+  - {fileID: 11400000, guid: b45707bee1b5643f1bda60b2a3f0c1e1, type: 2}
+  - {fileID: 11400000, guid: bbbaf6972039c438d8eb7f22df52e8ba, type: 2}
+  - {fileID: 11400000, guid: 568ebf16bc026425d9a864828aa124ab, type: 2}
