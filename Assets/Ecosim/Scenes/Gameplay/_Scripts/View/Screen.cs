@@ -12,7 +12,7 @@ namespace Ecosim
             gameObject.SetActive(false);
         }
 
-        public void Open()
+        public virtual void Open()
         {
             gameObject.SetActive(true);
         }

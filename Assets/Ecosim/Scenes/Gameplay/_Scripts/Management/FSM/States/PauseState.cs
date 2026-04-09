@@ -34,6 +34,11 @@ namespace Ecosim
             _fsm.ExitAndResume();
         }
 
+        public void Restart()
+        {
+            _fsm.EnterIn(StateGameplay.RestartState);
+        }
+
         public void MenuScreen()
         {
             SceneManager.LoadScene(Scenes.Menu);

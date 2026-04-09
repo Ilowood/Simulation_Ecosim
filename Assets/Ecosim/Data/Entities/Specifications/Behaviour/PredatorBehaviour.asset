@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PredatorBehaviour
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.PredatorBehaviourSpecification
   _eatToSplit: 3
-  _lifeTimeInSeconds: 10
+  _lifeTimeInSeconds: 120
   _attackDistance: 3
   _attackDuration: 0.1
   _stunDurationTimer: 1.5

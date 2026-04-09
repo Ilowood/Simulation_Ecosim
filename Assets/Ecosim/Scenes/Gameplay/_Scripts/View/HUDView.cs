@@ -19,7 +19,7 @@ namespace Ecosim
 
         private Dictionary<EntityType, Action> _deathHandlers;
 
-        public void Init(SimulationState state, Simulation simulation)
+        public void Init(SimulationState state)
         {
             _speed.onClick.AddListener(() => state.ToggleSpeed());
             _pause.onClick.AddListener(() => state.PauseState());
@@ -30,16 +30,25 @@ namespace Ecosim
                 { EntityType.Predator, AddDeadPredators },
                 { EntityType.Resource, AddEatenFood }
             };
-
-            simulation.OnEntityRemoved += EntityRemoved;
         }
 
-        public void Deinit(Simulation simulation)
+        public void Close(Simulation simulation)
         {
-            _speed.onClick.RemoveAllListeners();
-            _pause.onClick.RemoveAllListeners();
-            
             simulation.OnEntityRemoved -= EntityRemoved;
+            base.Close();
+        }
+
+        public void Open(Simulation simulation)
+        {
+            simulation.OnEntityRemoved += EntityRemoved;
+            base.Open();
+        }
+
+        public void ResetView()
+        {
+            _counterDeadWorkers.text = $"{0}";
+            _counterDeadPredators.text = $"{0}";
+            _counterEatenFood.text = $"{0}";
         }
 
         private void EntityRemoved(EntityType entityType)

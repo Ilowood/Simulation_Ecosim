@@ -6,6 +6,7 @@ namespace Ecosim
         SimulationState = 1,
         ReportState = 2,
 
+        RestartState = 999,
         PauseState = 1000
     }
 }

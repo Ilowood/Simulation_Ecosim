@@ -6,18 +6,18 @@ namespace Ecosim
     public class ReportState : IFSMState<StateGameplay>
     {
         private readonly FSMGameplay _fsm;
-        private readonly PauseView _view;
+        private readonly ReportView _view;
 
-        public ReportState(FSMGameplay fsm, PauseView view)
+        public ReportState(FSMGameplay fsm, ReportView view)
         {
             _fsm = fsm;
             _view = view;
             
-            // UIHelper.SaveArea(view.SaveArea);
-            // view.Init(this);
+            UIHelper.SaveArea(view.SaveArea);
+            view.Init(this);
         }
 
-        public StateGameplay State => StateGameplay.PauseState;
+        public StateGameplay State => StateGameplay.ReportState;
 
         public void Enter()
         {
@@ -31,7 +31,7 @@ namespace Ecosim
 
         public void Restar()
         {
-            
+            _fsm.EnterIn(StateGameplay.RestartState);
         }
 
         public void MenuScreen()

@@ -6,7 +6,7 @@ namespace Ecosim
     {
         IReadOnlyList<Entity> Get(EntityType type);
         int GetCount(EntityType type);
-        int GetTrackedEntityCount();
+        int GetTrackedCount();
     }
 
     public struct SimulationContext

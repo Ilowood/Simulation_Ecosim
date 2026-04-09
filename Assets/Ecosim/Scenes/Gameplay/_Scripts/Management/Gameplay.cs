@@ -7,7 +7,7 @@ namespace Ecosim
     {
         [Inject] private FSMGameplay _fSMGameplay;
 
-        private async void Start()
+        private void Start()
         {
             _fSMGameplay.EnterIn(StateGameplay.InitState);
         }

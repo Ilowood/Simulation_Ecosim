@@ -25,14 +25,14 @@ namespace Ecosim
             _currentTimeScale = _speedSteps[_currentSpeedIndex];
             
             UIHelper.SaveArea(view.SaveArea);
-            view.Init(this, simulation);
+            view.Init(this);
         }
 
         public StateGameplay State => StateGameplay.SimulationState;
 
         public void Enter()
         {
-            _view.Open();
+            _view.Open(_simulation);
             StartLoop();
         }
 
@@ -40,8 +40,8 @@ namespace Ecosim
         {
             EndLoop();
 
-            _view.Close();
-            _view.Deinit(_simulation);
+            _view.Close(_simulation);
+            _view.ResetView();
         }
 
         public void Resume()
@@ -69,13 +69,13 @@ namespace Ecosim
             _currentTimeScale = _speedSteps[_currentSpeedIndex];
         }
 
-        private async UniTask GameLoop()
+        private async UniTask Loop()
         {
             while(!_puaseSource.IsCancellationRequested)
             {
                 _simulation.Tick(Time.deltaTime, _currentTimeScale);
 
-                if (_simulation.GetTrackedEntityCount() == 0)
+                if (_simulation.GetTrackedCount() == 0)
                 {
                     _fsm.EnterIn(StateGameplay.ReportState);
                     return;
@@ -88,7 +88,7 @@ namespace Ecosim
         private void StartLoop()
         {
             _puaseSource = new CancellationTokenSource();
-            GameLoop().Forget();
+            Loop().Forget();
         }
 
         private void EndLoop()

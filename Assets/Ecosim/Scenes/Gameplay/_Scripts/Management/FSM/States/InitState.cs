@@ -39,7 +39,7 @@ namespace Ecosim
 
             if (elapsed < minDuration)
             {
-                float delaySeconds = minDuration - elapsed;
+                var delaySeconds = minDuration - elapsed;
                 await UniTask.Delay(System.TimeSpan.FromSeconds(delaySeconds));
             }
 

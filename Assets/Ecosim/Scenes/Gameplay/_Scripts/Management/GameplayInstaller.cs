@@ -27,6 +27,7 @@ namespace Ecosim
             Container.Bind<LoadView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<HUDView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<PauseView>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<ReportView>().FromComponentInHierarchy().AsSingle();
         }
 
         private void InstallSystem()
@@ -40,6 +41,8 @@ namespace Ecosim
             Container.BindInterfacesAndSelfTo<InitState>().AsSingle();
             Container.BindInterfacesAndSelfTo<SimulationState>().AsSingle();
             Container.BindInterfacesAndSelfTo<PauseState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ReportState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RestartState>().AsSingle();
 
             Container.Bind<FSMGameplay>().AsSingle();
         }

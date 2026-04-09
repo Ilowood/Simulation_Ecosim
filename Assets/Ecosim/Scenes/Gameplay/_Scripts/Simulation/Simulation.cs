@@ -35,6 +35,11 @@ namespace Ecosim
             SpawnInitial();
         }
 
+        public void Deinit()
+        {
+            DestroyDeinitial();
+        }
+
         public void Tick(float deltaTime, float scale)
         {
             ForEachEntity(entity => entity.Tick(_context, deltaTime, scale));
@@ -57,7 +62,7 @@ namespace Ecosim
             return _entitiesByType[type].Count;
         }
 
-        public int GetTrackedEntityCount()
+        public int GetTrackedCount()
         {
             var result = 0;
 
@@ -136,6 +141,19 @@ namespace Ecosim
                 {
                     SpawnAndRegister(data.Type, data.StartCount);
                 }
+            }
+        }
+
+        private void DestroyDeinitial()
+        {
+            foreach (var (type, entities) in _entitiesByType)
+            {
+                for (var i = 0; i < entities.Count; i++)
+                {
+                    _spawner.Delete(entities[i]);
+                }
+
+                entities.Clear();
             }
         }
 
