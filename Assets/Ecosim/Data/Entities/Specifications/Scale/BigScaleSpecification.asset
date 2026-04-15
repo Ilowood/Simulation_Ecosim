@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b89562ccf5fbb4a7b90761a0563db877, type: 3}
-  m_Name: BigScaleSpecification 1
+  m_Name: BigScaleSpecification
   m_EditorClassIdentifier: 
   _scale: {x: 2, y: 2, z: 2}

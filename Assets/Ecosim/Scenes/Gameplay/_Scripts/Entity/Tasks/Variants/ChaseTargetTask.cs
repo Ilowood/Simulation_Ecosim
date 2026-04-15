@@ -5,8 +5,10 @@ namespace Ecosim
 {
     public class ChaseTargetTask : IEntityTask
     {
-        private readonly Entity _entity;
+        private readonly NavMeshAgent _agent;
+
         private readonly Entity _target;
+
         private readonly float _updateInterval;
         private readonly float _startEntitySpeed;
 
@@ -18,16 +20,17 @@ namespace Ecosim
 
         public ChaseTargetTask(Entity entity, Entity target, float updateInterval = 0.2f)
         {
-            _entity = entity;
+            _agent = entity.GetComponent<NavMeshAgent>();
             _target = target;
+
             _updateInterval = updateInterval;
-            _startEntitySpeed = _entity.Agent.speed;
+            _startEntitySpeed = _agent.speed;
         }
 
         public void Start()
         {
-            _entity.Agent.isStopped = false;
-            _entity.Agent.SetDestination(_target.transform.position);
+            _agent.isStopped = false;
+            _agent.SetDestination(_target.transform.position);
 
             _timer = 0f;
         }
@@ -35,7 +38,7 @@ namespace Ecosim
         public void Tick(float deltaTime, float scale)
         {
             if (_isComplete) return;
-            _entity.Agent.speed = _startEntitySpeed * scale;
+            _agent.speed = _startEntitySpeed * scale;
 
             if (!IsTargetValid())
             {
@@ -47,11 +50,11 @@ namespace Ecosim
 
             if (_timer >= _updateInterval)
             {
-                _entity.Agent.SetDestination(_target.transform.position);
+                _agent.SetDestination(_target.transform.position);
                 _timer = 0f;
             }
 
-            if (IsReachedTarget(_entity.Agent))
+            if (IsReachedTarget(_agent))
             {
                 End();
             }
@@ -62,22 +65,22 @@ namespace Ecosim
             if (_isComplete)
                 return;
 
-            _entity.Agent.speed = _startEntitySpeed;
-            _entity.Agent.isStopped = true;
-            _entity.Agent.ResetPath();
-            _entity.Agent.velocity = Vector3.zero;
+            _agent.speed = _startEntitySpeed;
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _agent.velocity = Vector3.zero;
 
             _isComplete = true;
         }
 
         public void Puase()
         {
-            _entity.Agent.isStopped = true;
+            _agent.isStopped = true;
         }
 
         public void Resume()
         {
-            _entity.Agent.isStopped = false;
+            _agent.isStopped = false;
         }
 
         private bool IsTargetValid()

@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 080a8323909a64d81837b150adaaef0b, type: 3}
-  m_Name: FoodBehaviour
-  m_EditorClassIdentifier: Assembly-CSharp::BugColony.FoodBehaviourSpecification
+  m_Script: {fileID: 11500000, guid: 2a6d7e44216a94763b2a5f648683267f, type: 3}
+  m_Name: BlueColorSpecification
+  m_EditorClassIdentifier: 
+  _color: {r: 0.12001601, g: 0.3949513, b: 0.8207547, a: 1}

@@ -5,7 +5,7 @@ namespace Ecosim
 {
     public class MoveToTask : IEntityTask
     {
-        private readonly Entity _entity;
+        private readonly NavMeshAgent _agent;
         private readonly Entity _targetEntity;
         private readonly Vector3 _targetPosition;
         private readonly float _startEntitySpeed;
@@ -16,24 +16,24 @@ namespace Ecosim
 
         public MoveToTask(Entity entity, Entity targetEntity, Vector3 targetPosition)
         {
-            _entity = entity;
+            _agent = entity.GetComponent<NavMeshAgent>();
             _targetEntity = targetEntity;
             _targetPosition = targetPosition;
-            _startEntitySpeed = _entity.Agent.speed;
+            _startEntitySpeed = _agent.speed;
         }
 
         public void Start()
         {
-            _entity.Agent.isStopped = false;
-            _entity.Agent.SetDestination(_targetPosition);
+            _agent.isStopped = false;
+            _agent.SetDestination(_targetPosition);
         }
 
         public void Tick(float deltaTime, float scale)
         {
             if (_isComplete) return;
 
-            _entity.Agent.speed = _startEntitySpeed * scale;
-            if (IsDestinationReached(_entity.Agent) || !IsTargetValid())
+            _agent.speed = _startEntitySpeed * scale;
+            if (IsDestinationReached(_agent) || !IsTargetValid())
             {
                 End();
             }
@@ -44,22 +44,22 @@ namespace Ecosim
             if (_isComplete)
                 return;
 
-            _entity.Agent.speed = _startEntitySpeed;
-            _entity.Agent.isStopped = true;
-            _entity.Agent.ResetPath();  
-            _entity.Agent.velocity = Vector3.zero; 
+            _agent.speed = _startEntitySpeed;
+            _agent.isStopped = true;
+            _agent.ResetPath();  
+            _agent.velocity = Vector3.zero; 
 
             _isComplete = true;
         }
 
         public void Puase()
         {
-            _entity.Agent.isStopped = true;
+            _agent.isStopped = true;
         }
 
         public void Resume()
         {
-            _entity.Agent.isStopped = false;
+            _agent.isStopped = false;
         }
 
         private bool IsTargetValid()

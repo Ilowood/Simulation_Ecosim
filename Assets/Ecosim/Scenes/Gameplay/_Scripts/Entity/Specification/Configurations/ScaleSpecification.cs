@@ -9,8 +9,10 @@ namespace Ecosim
 
         public override void Apply(Entity entity)
         {
-            entity.Model.SetScale(_scale);
-            entity.Model.SetLocalPosition(new(0f, 0.5f * _scale.y, 0f));
+            var model = entity.GetComponentInChildren<EntityModel>();
+            
+            model.SetScale(_scale);
+            model.SetLocalPosition(new (0f, 0.5f * _scale.y, 0f));
         }
     }
 }

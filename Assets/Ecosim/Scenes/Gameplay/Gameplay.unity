@@ -4117,14 +4117,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1bde9d9e9bd44acb924cca2c480fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.GameplayInstaller
-  _spawnerEntityConfig:
+  _spawnerConfig:
     EntitySpawnConfigs:
+    - <Specification>k__BackingField: {fileID: 11400000, guid: 3c4a4fc96ee914e20bf85e3a67df0b1e, type: 2}
+      <Parent>k__BackingField: {fileID: 1869046659}
     - <Specification>k__BackingField: {fileID: 11400000, guid: 5949d8252542a4d728fac70c5cfa6d98, type: 2}
       <Parent>k__BackingField: {fileID: 1763282036}
     - <Specification>k__BackingField: {fileID: 11400000, guid: 96efa46fd908f421397005238f2116f7, type: 2}
       <Parent>k__BackingField: {fileID: 1972843217}
-    - <Specification>k__BackingField: {fileID: 11400000, guid: 3c4a4fc96ee914e20bf85e3a67df0b1e, type: 2}
-      <Parent>k__BackingField: {fileID: 1869046659}
     InitialPoolSize: 500
   _simulationConfig: {fileID: 11400000, guid: cc4876356070d4fa58e7538e2651f1df, type: 2}
 --- !u!114 &417721981
@@ -4446,7 +4446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467732155}
   m_Layer: 0
-  m_Name: ----------------------------------- (1)
+  m_Name: ------------------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

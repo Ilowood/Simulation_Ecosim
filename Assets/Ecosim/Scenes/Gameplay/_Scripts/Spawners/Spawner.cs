@@ -9,13 +9,16 @@ namespace Ecosim
     {
         private const int Max_PRE_FRAME = 50;
 
+
+        private readonly EntityFactory _factory;
         private readonly SpawnerConfig _config;
 
         private Dictionary<EntityType, PoolObj<Entity>> _pools = new();
         private Dictionary<EntityType, EntitySpecification> _configs = new();
 
-        public Spawner(SpawnerConfig config)
+        public Spawner(EntityFactory factory, SpawnerConfig config)
         {
+            _factory = factory;
             _config = config;
         }
 
@@ -75,7 +78,8 @@ namespace Ecosim
 
         private Entity InstantiateEntity(EntityConfig config)
         {
-            return EntityFactory.Create(Vector3.zero, config.Parent, config.Specification);
+            return _factory.Create(config.Specification, Vector3.zero, config.Parent);
+            // return EntityFactory.Create(Vector3.zero, config.Parent, config.Specification);
         }
 
         private void Release(Entity entity)

@@ -9,7 +9,7 @@ namespace Ecosim
 
         public override void Apply(Entity entity)
         {
-            entity.Model.SetColor(_color);
+            entity.GetComponentInChildren<EntityModel>().SetColor(_color);
         }
     }
 }

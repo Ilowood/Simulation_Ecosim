@@ -9,7 +9,7 @@ namespace Ecosim
 
         public override void Apply(Entity entity)
         {
-            entity.Model.SetLocalPosition(_offset);
+            entity.GetComponentInChildren<EntityModel>().SetLocalPosition(_offset);
         }
     }
 }

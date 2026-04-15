@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a6d7e44216a94763b2a5f648683267f, type: 3}
-  m_Name: BlueColorSpecification 1
+  m_Name: PinkColorSpecification
   m_EditorClassIdentifier: 
-  _color: {r: 0.12001601, g: 0.3949513, b: 0.8207547, a: 1}
+  _color: {r: 0.754717, g: 0.16019939, b: 0.43645456, a: 1}

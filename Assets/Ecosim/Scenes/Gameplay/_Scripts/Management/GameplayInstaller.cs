@@ -5,12 +5,13 @@ namespace Ecosim
 {
     public class GameplayInstaller : MonoInstaller
     {
-        [SerializeField] private SpawnerConfig _spawnerEntityConfig;
+        [SerializeField] private SpawnerConfig _spawnerConfig;
         [SerializeField] private SimulationConfig _simulationConfig;
 
         public override void InstallBindings()
         {
             InstallConfigs();
+            InstallFractory();
             InstallView();
             InstallSystem();
             InstallFSM();
@@ -18,8 +19,13 @@ namespace Ecosim
 
         private void InstallConfigs()
         {
-            Container.Bind<SpawnerConfig>().FromInstance(_spawnerEntityConfig).AsSingle();
+            Container.Bind<SpawnerConfig>().FromInstance(_spawnerConfig).AsSingle();
             Container.Bind<SimulationConfig>().FromInstance(_simulationConfig).AsSingle();
+        }
+
+        private void InstallFractory()
+        {
+            Container.Bind<EntityFactory>().AsSingle();
         }
 
         private void InstallView()

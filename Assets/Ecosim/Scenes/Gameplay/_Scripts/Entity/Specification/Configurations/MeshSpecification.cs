@@ -9,8 +9,7 @@ namespace Ecosim
 
         public override void Apply(Entity entity)
         {
-            var instance = Instantiate(_entityModel, entity.transform);
-            entity.SetModel3D(instance);
+            Instantiate(_entityModel, entity.transform);
         }
     }
 }
