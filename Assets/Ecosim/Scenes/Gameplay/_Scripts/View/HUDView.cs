@@ -26,9 +26,9 @@ namespace Ecosim
 
             _deathHandlers = new Dictionary<EntityType, Action>
             {
-                { EntityType.Worker, AddDeadWorkers },
-                { EntityType.Predator, AddDeadPredators },
-                { EntityType.Resource, AddEatenFood }
+                // { EntityType.Unit, AddDeadWorkers },
+                // { EntityType.Unit, AddDeadPredators },
+                // { EntityType.Warehouse, AddEatenFood }
             };
         }
 

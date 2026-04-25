@@ -5,8 +5,8 @@ namespace Ecosim
 {
     public class MoveToTask : IEntityTask
     {
-        private readonly NavMeshAgent _agent;
-        private readonly Entity _targetEntity;
+        private readonly NavMeshAgent _thisAgent;
+        private readonly Entity _target;
         private readonly Vector3 _targetPosition;
         private readonly float _startEntitySpeed;
 
@@ -16,24 +16,25 @@ namespace Ecosim
 
         public MoveToTask(Entity entity, Entity targetEntity, Vector3 targetPosition)
         {
-            _agent = entity.GetComponent<NavMeshAgent>();
-            _targetEntity = targetEntity;
+            _thisAgent = entity.GetComponent<NavMeshAgent>();
+
+            _target = targetEntity;
             _targetPosition = targetPosition;
-            _startEntitySpeed = _agent.speed;
+            _startEntitySpeed = _thisAgent.speed;
         }
 
         public void Start()
         {
-            _agent.isStopped = false;
-            _agent.SetDestination(_targetPosition);
+            _thisAgent.isStopped = false;
+            _thisAgent.SetDestination(_targetPosition);
         }
 
         public void Tick(float deltaTime, float scale)
         {
             if (_isComplete) return;
 
-            _agent.speed = _startEntitySpeed * scale;
-            if (IsDestinationReached(_agent) || !IsTargetValid())
+            _thisAgent.speed = _startEntitySpeed * scale;
+            if (IsDestinationReached(_thisAgent) || !IsTargetValid())
             {
                 End();
             }
@@ -44,27 +45,27 @@ namespace Ecosim
             if (_isComplete)
                 return;
 
-            _agent.speed = _startEntitySpeed;
-            _agent.isStopped = true;
-            _agent.ResetPath();  
-            _agent.velocity = Vector3.zero; 
+            _thisAgent.speed = _startEntitySpeed;
+            _thisAgent.isStopped = true;
+            _thisAgent.ResetPath();  
+            _thisAgent.velocity = Vector3.zero; 
 
             _isComplete = true;
         }
 
         public void Puase()
         {
-            _agent.isStopped = true;
+            _thisAgent.isStopped = true;
         }
 
         public void Resume()
         {
-            _agent.isStopped = false;
+            _thisAgent.isStopped = false;
         }
 
         private bool IsTargetValid()
         {
-            return _targetEntity != null && !_targetEntity.IsDead;
+            return _target != null && _target.IsActive;
         }
 
         private bool IsDestinationReached(NavMeshAgent agent)

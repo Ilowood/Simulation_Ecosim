@@ -85,7 +85,7 @@ namespace Ecosim
 
         private bool IsTargetValid()
         {
-            return _target != null && !_target.IsDead;
+            return _target != null && _target.IsActive;
         }
 
         private bool IsReachedTarget(NavMeshAgent agent)

@@ -102,9 +102,9 @@ namespace Ecosim
 
         private void RemoveEntity(Entity entity)
         {
-            if (_entitiesByType.TryGetValue(entity.Type, out var list))
+            if (_entitiesByType.TryGetValue(entity.Type, out var entities))
             {
-                list.Remove(entity);
+                entities.Remove(entity);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Ecosim
 
         private void DestroyDeinitial()
         {
-            foreach (var (type, entities) in _entitiesByType)
+            foreach (var entities in _entitiesByType.Values)
             {
                 for (var i = 0; i < entities.Count; i++)
                 {
@@ -171,14 +171,13 @@ namespace Ecosim
 
         private void ForEachEntity(Action<Entity> action)
         {
-            foreach (var list in _entitiesByType.Values)
+            foreach (var entities in _entitiesByType.Values)
             {
-                for (var i = list.Count - 1; i >= 0; i--)
+                for (var i = entities.Count - 1; i >= 0; i--)
                 {
-                    var entity = list[i];
-                    if (entity && !entity.IsDead)
+                    if (entities[i] && entities[i].IsActive)
                     {
-                        action(entity);
+                        action(entities[i]);
                     }
                 }
             }

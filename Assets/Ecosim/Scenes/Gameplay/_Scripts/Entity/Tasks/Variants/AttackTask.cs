@@ -38,7 +38,7 @@ namespace Ecosim
 
             _timer += deltaTime * scale;
 
-            if (_timer >= _attackDuration || !_entity || _entity.IsDead || !_target || _target.IsDead)
+            if (_timer >= _attackDuration || !_entity || _entity.IsActive || !_target || _target.IsActive)
             {
                 EndAttacking();
             }

@@ -30,7 +30,12 @@ namespace Ecosim
 
             _elapsed += deltaTime * scale;
 
-            if (_elapsed >= _duration || !_entity || _entity.IsDead)
+            if (_elapsed >= _duration || !_entity)
+            {
+                End();
+            }
+
+            if (_elapsed >= _duration || !_entity || _entity.IsActive)
             {
                 End();
             }

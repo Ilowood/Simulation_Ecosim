@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 080a8323909a64d81837b150adaaef0b, type: 3}
-  m_Name: ResourceBehaviour
-  m_EditorClassIdentifier: Assembly-CSharp::BugColony.FoodBehaviourSpecification
+  m_Script: {fileID: 11500000, guid: 2e43edb41bbd040dc8eaae9e71fe6d9b, type: 3}
+  m_Name: StorageComponent
+  m_EditorClassIdentifier: Assembly-CSharp::Ecosim.StorageComponentSpecification
+  _slotsCount: 16
+  _slotCapacity: 20
+  _totalCapacity: 90

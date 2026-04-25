@@ -69,7 +69,7 @@ namespace Ecosim
             _currentTimeScale = _speedSteps[_currentSpeedIndex];
         }
 
-        private async UniTask Loop()
+        private async UniTaskVoid Loop()
         {
             while(!_puaseSource.IsCancellationRequested)
             {

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ca89ce769e234bacb5317cf3e420350, type: 3}
-  m_Name: WorkerBehaviour
+  m_Name: UnitBehaviour
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.WorkerBehaviourSpecification
   _speed: 5
   _eatToSplit: 2

@@ -21,7 +21,7 @@ namespace Ecosim
 
         public StateGameplay State => StateGameplay.InitState;
 
-        public async void Enter()
+        public void Enter()
         {
             EnterAsync().Forget();
         }
@@ -35,7 +35,7 @@ namespace Ecosim
             _simulation.Init();
 
             var elapsed = Time.realtimeSinceStartup - startTime;
-            var minDuration = 3.0f;
+            var minDuration = 2.0f;
 
             if (elapsed < minDuration)
             {

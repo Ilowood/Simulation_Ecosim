@@ -16,12 +16,7 @@ namespace Ecosim
 
         public StateGameplay State => StateGameplay.RestartState;
 
-        public async void Enter()
-        {
-            EnterAsync().Forget();
-        }
-
-        private async UniTaskVoid EnterAsync()
+        public void Enter()
         {
             _simulation.Deinit();
             _simulation.Init();

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -12,17 +13,16 @@ namespace Ecosim
             _container = container;
         }
 
-        public Entity Create(EntitySpecification specifications, Vector3 position, Transform parent)
+        public Entity Create(Guid id, EntitySpecification specifications, Vector3 position, Transform parent)
         {
             var gameObject = new GameObject(specifications.Name);
             var entity = _container.InstantiateComponent<Entity>(gameObject);
-
-            gameObject.transform.SetParent(parent);
-            gameObject.transform.position = position;
+            
+            entity.Setup(specifications.Type, new EntityBehavior(specifications.Behaviour));
+            entity.transform.SetParent(parent);
+            entity.transform.position = position;
 
             specifications.Configuration.ForEach(spec => spec.Apply(entity));
-            entity.SetDefaultInfo(specifications.Type);
-            entity.SetBehavior(new EntityBehavior(specifications.Behaviour));
 
             return entity;
         }

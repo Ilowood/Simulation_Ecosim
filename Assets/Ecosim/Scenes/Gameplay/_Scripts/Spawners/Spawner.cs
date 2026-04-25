@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using Untils;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace Ecosim
 {
     public class Spawner
     {
         private const int Max_PRE_FRAME = 50;
-
 
         private readonly EntityFactory _factory;
         private readonly SpawnerConfig _config;
@@ -26,7 +26,7 @@ namespace Ecosim
         {
             var currentFrameCount = 0;
 
-            foreach (var entityConfig in _config.EntitySpawnConfigs)
+            foreach (var entityConfig in _config.PoolConfigs)
             {
                 var type = entityConfig.Specification.Type;
                 _configs[type] = entityConfig.Specification;
@@ -34,7 +34,7 @@ namespace Ecosim
                 var pool = new PoolObj<Entity>(() => InstantiateEntity(entityConfig), Release, Get);
                 _pools[type] = pool;
 
-                var remainingToReserve = _config.InitialPoolSize;
+                var remainingToReserve = entityConfig.Size;
 
                 while (remainingToReserve > 0)
                 {
@@ -50,7 +50,7 @@ namespace Ecosim
 
                     if (currentFrameCount >= Max_PRE_FRAME)
                     {
-                        await UniTask.Yield(PlayerLoopTiming.Update);
+                        await UniTask.NextFrame();
                         currentFrameCount = 0;
                     }
                 }
@@ -76,10 +76,9 @@ namespace Ecosim
             _pools[entity.Type].Release(entity);
         }
 
-        private Entity InstantiateEntity(EntityConfig config)
+        private Entity InstantiateEntity(PoolConfig config)
         {
-            return _factory.Create(config.Specification, Vector3.zero, config.Parent);
-            // return EntityFactory.Create(Vector3.zero, config.Parent, config.Specification);
+            return _factory.Create(Guid.NewGuid(), config.Specification, Vector3.zero, config.Parent);
         }
 
         private void Release(Entity entity)
@@ -89,7 +88,8 @@ namespace Ecosim
 
         private void Get(Entity entity, int index)
         {
-            entity.IsDead = false;
+            var uid = Guid.NewGuid();
+            entity.Init(uid, $"{entity.Type.ToString()}_{uid.ToString()}");
             entity.gameObject.SetActive(true);
         }
     }

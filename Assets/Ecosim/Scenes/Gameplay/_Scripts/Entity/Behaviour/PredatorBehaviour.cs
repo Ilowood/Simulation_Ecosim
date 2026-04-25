@@ -33,46 +33,46 @@ namespace Ecosim
                 return;
             }
 
-            if (entity.Behavior.Task == null || entity.Behavior.Task.IsComplete)
-            {
-                if (_eaten < _eatToSplit)
-                {
-                    var target = FindNearestFromRandomType(entity, context);
+            // if (entity.Behavior.Task == null || entity.Behavior.Task.IsComplete)
+            // {
+            //     if (_eaten < _eatToSplit)
+            //     {
+            //         var target = FindNearestFromRandomType(entity, context);
 
-                    if (target != null)
-                    {
-                        var distance = Vector3.Distance(entity.transform.position, target.transform.position);
+            //         if (target != null)
+            //         {
+            //             var distance = Vector3.Distance(entity.transform.position, target.transform.position);
 
-                        if (distance <= _attackDistance)
-                        {
-                            target.Behavior.SetAndStartTask(new StunTask(target, _stunDurationTimer));
-                            entity.Behavior.SetAndStartTask(new AttackTask(entity, target, _attackDistance, _attackDuration, entity => OnKill(entity, context)));
-                        }
-                        else
-                        {
-                            entity.Behavior.SetAndStartTask(new ChaseTargetTask(entity, target));
-                        }
-                    }
-                    else
-                    {
-                        var roamPos = GetRandomRoamPosition(entity.transform.position, 10f);
-                        entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, roamPos));
-                    }
-                }
-                else
-                {
-                    Death(entity, context);
-                    context.SpawnEntityCompand(2, EntityType.Predator);
-                }
-            }
+            //             if (distance <= _attackDistance)
+            //             {
+            //                 target.Behavior.SetAndStartTask(new StunTask(target, _stunDurationTimer));
+            //                 entity.Behavior.SetAndStartTask(new AttackTask(entity, target, _attackDistance, _attackDuration, entity => OnKill(entity, context)));
+            //             }
+            //             else
+            //             {
+            //                 entity.Behavior.SetAndStartTask(new ChaseTargetTask(entity, target));
+            //             }
+            //         }
+            //         else
+            //         {
+            //             var roamPos = GetRandomRoamPosition(entity.transform.position, 10f);
+            //             entity.Behavior.SetAndStartTask(new MoveToTask(entity, null, roamPos));
+            //         }
+            //     }
+            //     else
+            //     {
+            //         Death(entity, context);
+            //         context.SpawnEntityCompand(2, EntityType.Predator);
+            //     }
+            // }
 
             _timer += deltaTime * scale;
         }
 
         private void Death(Entity entity, SimulationContext context)
         {
-                entity.IsDead = true;
                 entity.Behavior.EndTask();
+                entity.Deinit();
                 _timer = 0;
                 _eaten = 0;
                 context.RemoveEntityWithCoolbackCommand(entity);
@@ -95,7 +95,7 @@ namespace Ecosim
                 for (int i = 0; i < entities.Count; i++)
                 {
                     var target = entities[i];
-                    if (target == self || target.IsDead) continue;
+                    // if (target == self || target.IsDead) continue;
 
                     var dist = Vector3.Distance(self.transform.position, target.transform.position);
                     if (dist < minDistance)
@@ -116,9 +116,9 @@ namespace Ecosim
 
         private void OnKill(Entity victim, SimulationContext context)
         {
-            if (!victim.IsDead)
+            if (victim.IsActive)
             {
-                victim.IsDead = true;
+                victim.Deinit();
                 _eaten++;
                 context.RemoveEntityWithCoolbackCommand(victim);
             }
