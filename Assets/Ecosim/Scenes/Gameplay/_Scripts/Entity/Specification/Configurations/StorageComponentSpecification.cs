@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Entity/Variants/StorageComponent", fileName = "StorageComponent")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/StorageComponent", fileName = "StorageComponent")]
     public class StorageComponentSpecification : Specification
     {
         [SerializeField] private int _slotsCount = 16;

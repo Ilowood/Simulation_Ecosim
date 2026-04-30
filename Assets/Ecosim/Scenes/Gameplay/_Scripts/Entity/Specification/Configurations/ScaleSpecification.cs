@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Entity/Variants/Scale", fileName = "ScaleSpecification")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/Scale", fileName = "ScaleSpecification")]
     public class ScaleSpecification : Specification
     {
         [SerializeField] private Vector3 _scale;

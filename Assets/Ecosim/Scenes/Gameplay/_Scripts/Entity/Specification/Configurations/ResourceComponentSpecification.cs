@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Entity/Variants/ResourceComponent", fileName = "ResourceComponent")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/ResourceComponent", fileName = "ResourceComponent")]
     public class ResourceComponentSpecification : Specification
     {
         [SerializeField] private int _amount = 100;

@@ -2,7 +2,6 @@ using System;
 
 namespace Ecosim
 {
-    [Flags]
     public enum EntityType
     {
         None = 0,

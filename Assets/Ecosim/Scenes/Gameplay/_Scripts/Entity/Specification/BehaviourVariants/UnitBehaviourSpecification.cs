@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Entity/Variants/Behaviour/UnitBehaviour", fileName = "UnitBehaviour")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Behaviours/UnitBehaviour", fileName = "UnitBehaviour")]
     public class UnitBehaviourSpecification : BehaviourSpecification
     {
         public override IBehaviour Create()

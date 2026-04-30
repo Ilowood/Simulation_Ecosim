@@ -1,0 +1,9 @@
+<engine:UXML xmlns:xsi="http://w3.org"
+    xmlns:engine="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+>
+    <engine:VisualElement style="flex-direction: row; margin-bottom: 2px;">
+        <engine:Button name="SelectButton" style="flex-grow: 1; -unity-text-align: middle-left;" />
+        <engine:Button name="PingButton" text="P" style="width: 25px;" />
+    </engine:VisualElement>
+</engine:UXML>

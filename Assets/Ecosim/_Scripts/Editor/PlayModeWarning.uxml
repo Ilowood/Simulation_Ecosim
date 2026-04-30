@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://w3.org" xmlns:engine="UnityEngine.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="WarningContainer" style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgb(38, 38, 38);">
+        <engine:Image name="WarningIcon" style="width: 40px; height: 40px; margin-bottom: 10px;" />
+        <engine:Label text="Database Editing is disabled in Play Mode" style="font-size: 14px; -unity-font-style: bold; color: rgb(180, 180, 180);" />
+        <engine:Label text="Please exit Play Mode to modify specifications." style="font-size: 11px; color: rgb(120, 120, 120);" />
+    </engine:VisualElement>
+</engine:UXML>

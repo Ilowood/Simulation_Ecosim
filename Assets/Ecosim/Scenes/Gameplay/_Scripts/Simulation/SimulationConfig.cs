@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Config/SimulationConfig", fileName = "SimulationConfig")]
+    [CreateAssetMenu(menuName = "Ecosim/Config/SimulationConfig", fileName = "SimulationConfig")]
     public class SimulationConfig : ScriptableObject
     {
         [Header("Entity Settings")]

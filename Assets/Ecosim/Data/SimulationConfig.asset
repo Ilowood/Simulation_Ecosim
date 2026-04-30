@@ -16,10 +16,4 @@ MonoBehaviour:
   - Type: 1
     StartCount: 10
     TargetPopulation: 0
-  - Type: 2
-    StartCount: 2
-    TargetPopulation: 0
-  - Type: 8
-    StartCount: 8
-    TargetPopulation: 8
   <TrackedLiveEntities>k__BackingField: 1

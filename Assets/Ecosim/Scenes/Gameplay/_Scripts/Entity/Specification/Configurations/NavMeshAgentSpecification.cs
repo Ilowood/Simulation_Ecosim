@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Entity/Variants/NavMeshAgent", fileName = "NavMeshAgentSpecification")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/NavMeshAgent", fileName = "NavMeshAgentSpecification")]
     public class NavMeshAgentSpecification : Specification
     {
         [SerializeField] private float _speed;
