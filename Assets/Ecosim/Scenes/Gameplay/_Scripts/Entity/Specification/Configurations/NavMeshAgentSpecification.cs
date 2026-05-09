@@ -17,6 +17,8 @@ namespace Ecosim
             agent.speed = _speed;
             agent.acceleration = _acceleration;
             agent.stoppingDistance = _stopDistance;
+
+            entity.AddComponent(new NavMeshComponent());
         }
     }
 }
