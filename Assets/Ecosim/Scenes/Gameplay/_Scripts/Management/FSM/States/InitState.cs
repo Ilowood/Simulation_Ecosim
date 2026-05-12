@@ -7,15 +7,15 @@ namespace Ecosim
     public class InitState : IFSMState<StateGameplay>
     {
         private readonly FSMGameplay _fsm;
-        private readonly Simulation _simulation;
-        private readonly Spawner _spawner;
+        private readonly World _world;
         private readonly LoadView _view;
+        private readonly ISaveService _saveService;
 
-        public InitState(FSMGameplay fsm, Simulation simulation, Spawner spawner, LoadView view)
+        public InitState(FSMGameplay fsm, World world, LoadView view, ISaveService saveService)
         {
             _fsm = fsm;
-            _simulation = simulation;
-            _spawner = spawner;
+            _saveService = saveService;
+            _world = world;
             _view = view;
         }
 
@@ -31,8 +31,8 @@ namespace Ecosim
             _view.Open();
 
             var startTime = Time.realtimeSinceStartup;
-            await _spawner.InitAsync(); 
-            _simulation.Init();
+
+            await _world.InitAsync(_saveService.LoadWorld("Ecosim")); 
 
             var elapsed = Time.realtimeSinceStartup - startTime;
             var minDuration = 2.0f;

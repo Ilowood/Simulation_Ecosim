@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Untils;
 
 namespace Ecosim
@@ -6,21 +5,21 @@ namespace Ecosim
     public class RestartState : IFSMState<StateGameplay>
     {
         private readonly FSMGameplay _fsm;
-        private readonly Simulation _simulation;
+        private readonly World _world;
         
-        public RestartState(FSMGameplay fsm, Simulation simulation)
+        public RestartState(FSMGameplay fsm, World world)
         {
             _fsm = fsm;
-            _simulation = simulation;
+            _world = world;
         }
 
         public StateGameplay State => StateGameplay.RestartState;
 
         public void Enter()
         {
-            _simulation.Deinit();
-            _simulation.Init();
-            _fsm.EnterIn(StateGameplay.SimulationState);
+            // _simulation.Deinit();
+            // _simulation.Init();
+            // _fsm.EnterIn(StateGameplay.SimulationState);
         }
 
         public void Exit()

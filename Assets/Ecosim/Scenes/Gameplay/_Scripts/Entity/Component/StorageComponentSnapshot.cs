@@ -1,12 +1,19 @@
 using System;
-using System.Collections.Generic;
 
 namespace Ecosim
 {
     [Serializable]
-    public class StorageComponentSnapshot
+    public class StorageComponentSnapshot : IComponentSnapshot
     {
-        public List<StorageSlotSnapshot> Slots = new();
-        public int CurrentTotalAmount;
+        public readonly StorageSlotSnapshot[] Slots;
+        public readonly int CurrentTotalAmount;
+
+        public Type ComponentType => typeof(StorageComponent);
+
+        public StorageComponentSnapshot(StorageSlotSnapshot[] slots, int currentTotalAmount)
+        {
+            Slots = slots;
+            CurrentTotalAmount = currentTotalAmount;
+        }
     }
 }

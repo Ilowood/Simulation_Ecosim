@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/Mesh", fileName = "MeshSpecification")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Specifications/Mesh", fileName = "Mesh (Spec)")]
     public class MeshSpecification : Specification
     {
         [SerializeField] private EntityModel _entityModel;

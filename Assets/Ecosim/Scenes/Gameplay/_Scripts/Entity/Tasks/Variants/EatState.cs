@@ -1,72 +1,72 @@
-using System;
+// using System;
 
-namespace Ecosim
-{
-    public class EatState : IEntityTask
-    {
-        private readonly SimulationContext _simulationContext;
+// namespace Ecosim
+// {
+//     public class EatState : IEntityTask
+//     {
+//         private readonly WorldContext _simulationContext;
 
-        private readonly Entity _unit;
-        private readonly Entity _food;
-        private readonly float _eatDuration;
-        private readonly Action<Entity> _onEat;
+//         private readonly Entity _unit;
+//         private readonly Entity _food;
+//         private readonly float _eatDuration;
+//         private readonly Action<Entity> _onEat;
 
-        private float _timer;
+//         private float _timer;
 
-        private bool _isComplete = false;
-        public bool IsComplete => _isComplete;
-        public TaskVariants Variants => TaskVariants.Eat;
+//         private bool _isComplete = false;
+//         public bool IsComplete => _isComplete;
+//         public TaskVariants Variants => TaskVariants.Eat;
 
-        public EatState(Entity unit, Entity food, float duration, Action<Entity> onEat)
-        {
-            _unit = unit;
-            _food = food;
-            _eatDuration = duration;
-            _onEat = onEat;
+//         public EatState(Entity unit, Entity food, float duration, Action<Entity> onEat)
+//         {
+//             _unit = unit;
+//             _food = food;
+//             _eatDuration = duration;
+//             _onEat = onEat;
 
-            _timer = 0f;
-        }
+//             _timer = 0f;
+//         }
 
-        public void Start()
-        {
-        }
+//         public void Start()
+//         {
+//         }
 
-        public void Tick(float deltaTime, float scale)
-        {
-            if (_isComplete) return;
+//         public void Tick(float deltaTime, float scale)
+//         {
+//             if (_isComplete) return;
 
-            _timer += deltaTime * scale;
+//             _timer += deltaTime * scale;
 
-            if (_timer >= _eatDuration)
-            {
-                EndEating();
-            }
-        }
+//             if (_timer >= _eatDuration)
+//             {
+//                 EndEating();
+//             }
+//         }
 
-        public void End()
-        {
-            if (_isComplete) return;
+//         public void End()
+//         {
+//             if (_isComplete) return;
 
-            _isComplete = true;
-        }
+//             _isComplete = true;
+//         }
 
 
-        public void Puase()
-        {
+//         public void Puase()
+//         {
             
-        }
+//         }
 
-        public void Resume()
-        {
+//         public void Resume()
+//         {
             
-        }
+//         }
 
-        private void EndEating()
-        {
-            if (_isComplete) return;
+//         private void EndEating()
+//         {
+//             if (_isComplete) return;
 
-            _onEat?.Invoke(_food);
-            _isComplete = true; 
-        }
-    }
-}
+//             _onEat?.Invoke(_food);
+//             _isComplete = true; 
+//         }
+//     }
+// }

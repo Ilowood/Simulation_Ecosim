@@ -2,8 +2,8 @@ namespace Ecosim
 {
     public interface IEntityComponent
     {
-        object GetSnapshot();
-        void Restore(object snapshot);
+        IComponentSnapshot GetSnapshot();
+        void Restore(IComponentSnapshot snapshot);
         void Reset();
     }
 }

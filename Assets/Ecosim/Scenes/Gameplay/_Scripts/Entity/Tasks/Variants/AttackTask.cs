@@ -1,77 +1,77 @@
-using System;
-using UnityEngine;
+// using System;
+// using UnityEngine;
 
-namespace Ecosim
-{
-    public class AttackTask : IEntityTask
-    {
-        private readonly Entity _entity;
-        private readonly Entity _target;
+// namespace Ecosim
+// {
+//     public class AttackTask : IEntityTask
+//     {
+//         private readonly Entity _entity;
+//         private readonly Entity _target;
 
-        private readonly float _attackRange;
-        private readonly float _attackDuration;
-        private readonly Action<Entity> _onAttack;
+//         private readonly float _attackRange;
+//         private readonly float _attackDuration;
+//         private readonly Action<Entity> _onAttack;
 
-        private float _timer;
-        private bool _isComplete = false;
+//         private float _timer;
+//         private bool _isComplete = false;
 
-        public bool IsComplete => _isComplete;
-        public TaskVariants Variants => TaskVariants.Attack;
+//         public bool IsComplete => _isComplete;
+//         public TaskVariants Variants => TaskVariants.Attack;
 
-        public AttackTask(Entity entity, Entity target, float attackRange, float attackDuration, Action<Entity> onAttack)
-        {
-            _entity = entity;
-            _target = target;
-            _attackRange = attackRange;
-            _attackDuration = attackDuration;
-            _onAttack = onAttack;
-        }
+//         public AttackTask(Entity entity, Entity target, float attackRange, float attackDuration, Action<Entity> onAttack)
+//         {
+//             _entity = entity;
+//             _target = target;
+//             _attackRange = attackRange;
+//             _attackDuration = attackDuration;
+//             _onAttack = onAttack;
+//         }
 
-        public void Start()
-        {
-            _timer = 0f;
-        }
+//         public void Start()
+//         {
+//             _timer = 0f;
+//         }
 
-        public void Tick(float deltaTime, float scale)
-        {
-            if (_isComplete) return;
+//         public void Tick(float deltaTime, float scale)
+//         {
+//             if (_isComplete) return;
 
-            _timer += deltaTime * scale;
+//             _timer += deltaTime * scale;
 
-            if (_timer >= _attackDuration || !_entity || _entity.IsActive || !_target || _target.IsActive)
-            {
-                EndAttacking();
-            }
-        }
+//             if (_timer >= _attackDuration || !_entity || _entity.IsActive || !_target || _target.IsActive)
+//             {
+//                 EndAttacking();
+//             }
+//         }
 
-        public void End()
-        {
-            if (_isComplete)
-                return;
+//         public void End()
+//         {
+//             if (_isComplete)
+//                 return;
 
-            _isComplete = true;
-        }
+//             _isComplete = true;
+//         }
 
-        public void Puase()
-        {
+//         public void Puase()
+//         {
             
-        }
+//         }
 
-        public void Resume()
-        {
+//         public void Resume()
+//         {
             
-        }
+//         }
 
-        private void EndAttacking()
-        {
-            if (_isComplete) return;
+//         private void EndAttacking()
+//         {
+//             if (_isComplete) return;
 
-            if (Vector3.Distance(_target.transform.position, _entity.transform.position) < _attackRange)
-            {
-                _onAttack?.Invoke(_target);
-            }
+//             if (Vector3.Distance(_target.transform.position, _entity.transform.position) < _attackRange)
+//             {
+//                 _onAttack?.Invoke(_target);
+//             }
 
-            _isComplete = true; 
-        }
-    }
-}
+//             _isComplete = true; 
+//         }
+//     }
+// }

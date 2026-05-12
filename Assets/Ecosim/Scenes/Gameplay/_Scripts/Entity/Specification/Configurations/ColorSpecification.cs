@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/Color", fileName = "ColorSpecification")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Specifications/Color", fileName = "Color (Spec)")]
     public class ColorSpecification : Specification
     {
         [SerializeField] private Color _color;

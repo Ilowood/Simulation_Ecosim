@@ -6,33 +6,44 @@ namespace Ecosim
 {
     public class Entity : MonoBehaviour
     {
-        public Guid Id { get; private set; }
+        public long Id { get; private set; }
+        public long SpecId { get; private set; }
         public EntityType Type { get; private set; }
-        public string Name { get; private set; }
 
         private readonly Dictionary<Type, IEntityComponent> _components = new();
         public EntityBehavior Behavior { get; private set; }
 
         public bool IsActive { get; private set; }
 
-        public void Init(Guid id, string name)
+        public void Init(long id)
         {
             Id = id;
-            Name = name;
             IsActive = true;
+        }
+
+        public void Deactivate()
+        {
+            IsActive = false;
+            Behavior.EndTask();
         }
 
         public void Deinit()
         {
-            Name = string.Empty;
             IsActive = false;
+            Behavior.EndTask();
 
             foreach (var component in _components.Values) 
                 component.Reset();
         }
 
-        public bool Setup(EntityType type, EntityBehavior behavior)
+        public void Tick(WorldContext context, float deltaTime, float scale)
         {
+            if (IsActive) Behavior?.Tick(this, context, deltaTime, scale);
+        }
+
+        public bool Setup(long specId, EntityType type, EntityBehavior behavior)
+        {
+            SpecId = specId;
             return SetBehavior(behavior) && SetType(type);
         }
 
@@ -46,17 +57,42 @@ namespace Ecosim
             return _components.Remove(typeof(T));
         }
 
-        public void Tick(SimulationContext context, float deltaTime, float scale)
-        {
-            Behavior?.Tick(this, context, deltaTime, scale);
-        }
-
-        public T GetData<T>() where T : IEntityComponent
+        public T Get<T>() where T : IEntityComponent
         {
             if (_components.TryGetValue(typeof(T), out IEntityComponent component))
                 return (T)component;
 
             return default;
+        }
+
+        public EntitySnapshot GetSnapshot()
+        {
+            var snapshot = new EntitySnapshot
+            {
+                SpecId = SpecId,
+                InstanceId = Id,
+                Position = transform.position,
+                Rotation = transform.rotation,
+                Task = Behavior.Task.GetSnapshot()
+            };
+
+            foreach (var component in _components.Values)
+            {
+                snapshot.Components.Add(component.GetSnapshot());
+            }
+
+            return snapshot;
+        }
+
+        public void Restore(EntitySnapshot snapshot)
+        {
+            transform.SetPositionAndRotation(snapshot.Position, snapshot.Rotation);
+
+            foreach (var data in snapshot.Components)
+            {
+                if (_components.TryGetValue(data.ComponentType, out var component))
+                    component.Restore(data);
+            }
         }
 
         private bool SetBehavior(EntityBehavior behavior)

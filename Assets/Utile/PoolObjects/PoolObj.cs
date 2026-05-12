@@ -5,59 +5,62 @@ namespace Untils
 {
     public class PoolObj<T>
     {
-        public List<T> poolObj { get; private set; } = new List<T>();
-        private Queue<T> poolDisabledObj = new Queue<T>();
+        public List<T> _poolObj { get; private set; } = new List<T>();
+        private Queue<T> _poolDisabledObj = new Queue<T>();
 
-        private Func<T> generationEvent;
-        private Action<T> releaseEvent;
-        private Action<T, int> getEvent;
+        private Func<T> _generateEvent;
+        private Action<T> _releaseEvent;
+        private Action<T, int> _getEvent;
 
-        public PoolObj(Func<T> generation, Action<T> release, 
-            Action<T, int> get) 
+        public PoolObj(Func<T> generate, Action<T> release, Action<T, int> get) 
         {
-            generationEvent += generation;
-            releaseEvent += release;
-            getEvent += get;
+            _generateEvent += generate;
+            _releaseEvent += release;
+            _getEvent += get;
         }
 
         public void Reserv(int countObjs)
         {
             for (var i = 0;  i < countObjs; i++) 
             {
-                var obj = generationEvent();
-                poolObj.Add(obj);
+                var obj = _generateEvent();
+                _poolObj.Add(obj);
                 Release(obj); 
             }
         }
 
         public void Release(T obj)
         {
-            releaseEvent(obj);
-            poolDisabledObj.Enqueue(obj);
+            _releaseEvent(obj);
+            _poolDisabledObj.Enqueue(obj);
         }
 
-        public List<T> Get(int countObjs)
+        public T Get()
         {
-            var objs = new List<T>();
+            var obj = _poolDisabledObj.Count > 0 ? _poolDisabledObj.Dequeue() : CreateNew();
+            _getEvent?.Invoke(obj, 0);
+            return obj;
+        }
 
-            for (var i = 0; i < countObjs; i++)
+        public List<T> Get(int count)
+        {
+            var result = new List<T>(count);
+
+            for (var i = 0; i < count; i++)
             {
-                T obj;
-                if (poolDisabledObj.Count > 0)
-                {
-                    obj = poolDisabledObj.Dequeue();
-                }
-                else
-                {
-                    obj = generationEvent();
-                    poolObj.Add(obj); 
-                }
-
-                objs.Add(obj);
-                getEvent(obj, i);
+                var obj = Get();
+                _getEvent?.Invoke(obj, i); 
+                result.Add(obj);
             }
 
-            return objs;
+            return result;
+        }
+
+        private T CreateNew()
+        {
+            var obj = _generateEvent();
+            _poolObj.Add(obj);
+            return obj;
         }
     }
 }

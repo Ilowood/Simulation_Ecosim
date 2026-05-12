@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    [CreateAssetMenu(menuName = "Ecosim/Entity/Variants/LocalPos", fileName = "LocalPosSpecification")]
+    [CreateAssetMenu(menuName = "Ecosim/Entity/Specifications/LocalPos", fileName = "LocalPosition (Spec)")]
     public class LocalPositionSpecification : Specification
     {
         [SerializeField] private Vector3 _offset;

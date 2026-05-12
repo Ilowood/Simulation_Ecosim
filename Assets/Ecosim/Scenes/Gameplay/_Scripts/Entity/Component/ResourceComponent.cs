@@ -11,12 +11,12 @@ namespace Ecosim
             Amount = capacity;
         }
 
-        public object GetSnapshot()
+        public IComponentSnapshot GetSnapshot()
         {
             return new ResourceSnapshot(Amount);
         }
 
-        public void Restore(object snapshot)
+        public void Restore(IComponentSnapshot snapshot)
         {
             if (snapshot is ResourceSnapshot data)
             {

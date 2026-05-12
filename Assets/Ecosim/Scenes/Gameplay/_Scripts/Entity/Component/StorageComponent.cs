@@ -21,35 +21,35 @@ namespace Ecosim
             MaxTotalCapacity = countSlots * slotCapacity;
         }
 
-        public object GetSnapshot()
+        public IComponentSnapshot GetSnapshot()
         {
-            var snapshot = new StorageComponentSnapshot();
-            snapshot.CurrentTotalAmount = CurrentTotalAmount;
+            var slotSnapshots = new StorageSlotSnapshot[Slots.Length];
 
-            foreach (var slot in Slots)
+            for (int i = 0; i < Slots.Length; i++)
             {
-                snapshot.Slots.Add(new StorageSlotSnapshot 
+                var sourceSlot = Slots[i];
+                
+                slotSnapshots[i] = new StorageSlotSnapshot 
                 { 
-                    ResourceId = slot.ResourceId, 
-                    Amount = slot.Amount 
-                });
+                    ResourceId = sourceSlot.ResourceId, 
+                    Amount = sourceSlot.Amount 
+                };
             }
-            return snapshot;
+
+            return new StorageComponentSnapshot(slotSnapshots, CurrentTotalAmount);
         }
 
-        public void Restore(object snapshot)
+        public void Restore(IComponentSnapshot snapshot)
         {
             if (snapshot is StorageComponentSnapshot data)
             {
                 CurrentTotalAmount = data.CurrentTotalAmount;
 
-                for (int i = 0; i < Slots.Length; i++)
+                int i = 0;
+                foreach (var slotSnapshot in data.Slots)
                 {
-                    if (i < data.Slots.Count)
-                    {
-                        var slotData = data.Slots[i];
-                        Slots[i].Restore(slotData.ResourceId, slotData.Amount);
-                    }
+                    Slots[i].Restore(slotSnapshot.ResourceId, slotSnapshot.Amount);
+                    i++;
                 }
             }
         }

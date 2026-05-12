@@ -16,13 +16,15 @@ namespace Ecosim
         [Header("Buttons")]
         [SerializeField] private Button _speed;
         [SerializeField] private Button _pause;
+        [SerializeField] private Button _save;
 
         private Dictionary<EntityType, Action> _deathHandlers;
 
-        public void Init(SimulationState state)
+        public void Init(WorldState state)
         {
             _speed.onClick.AddListener(() => state.ToggleSpeed());
             _pause.onClick.AddListener(() => state.PauseState());
+            _save.onClick.AddListener(() => state.SaveWorld());
 
             _deathHandlers = new Dictionary<EntityType, Action>
             {
@@ -32,13 +34,13 @@ namespace Ecosim
             };
         }
 
-        public void Close(Simulation simulation)
+        public void Close(World simulation)
         {
             simulation.OnEntityRemoved -= EntityRemoved;
             base.Close();
         }
 
-        public void Open(Simulation simulation)
+        public void Open(World simulation)
         {
             simulation.OnEntityRemoved += EntityRemoved;
             base.Open();

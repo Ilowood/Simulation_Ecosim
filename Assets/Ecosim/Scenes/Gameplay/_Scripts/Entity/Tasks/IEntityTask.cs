@@ -11,5 +11,8 @@ namespace Ecosim
 
         void Puase();
         void Resume();
+
+        ITaskSnapshot GetSnapshot();
+        void Resume(Entity root, ITaskSnapshot snapshot);
     }
 }

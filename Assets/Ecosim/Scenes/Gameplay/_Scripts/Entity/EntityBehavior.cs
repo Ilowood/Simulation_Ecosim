@@ -2,7 +2,7 @@ namespace Ecosim
 {
     public interface IBehaviour
     {
-        void Tick(Entity entity, SimulationContext context, float deltaTime, float scale);
+        void Tick(Entity entity, WorldContext context, float deltaTime, float scale);
     }
 
     public class EntityBehavior
@@ -16,7 +16,7 @@ namespace Ecosim
             _behaviour = behaviour.Create();
         }
 
-        public void Tick(Entity entity, SimulationContext context, float deltaTime, float scale)
+        public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)
         {
             _behaviour?.Tick(entity, context, deltaTime, scale);
             Task?.Tick(deltaTime, scale);

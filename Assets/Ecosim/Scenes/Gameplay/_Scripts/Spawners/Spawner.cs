@@ -8,38 +8,40 @@ namespace Ecosim
 {
     public class Spawner
     {
-        private const int Max_PRE_FRAME = 50;
-
+        private readonly EntityRegistry _registry;
         private readonly EntityFactory _factory;
         private readonly SpawnerConfig _config;
 
-        private Dictionary<EntityType, PoolObj<Entity>> _pools = new();
-        private Dictionary<EntityType, EntitySpecification> _configs = new();
+        private Dictionary<long, PoolObj<Entity>> _pools = new();
 
-        public Spawner(EntityFactory factory, SpawnerConfig config)
+        private Transform _globalContainer;
+
+        public Spawner(EntityFactory factory, SpawnerConfig config, EntityRegistry registry)
         {
+            _registry = registry;
             _factory = factory;
             _config = config;
         }
 
         public async UniTask InitAsync()
         {
+            _globalContainer = new GameObject("World (Dinamic)").transform;
             var currentFrameCount = 0;
 
-            foreach (var entityConfig in _config.PoolConfigs)
+            foreach (var config in _config.PoolConfigs)
             {
-                var type = entityConfig.Specification.Type;
-                _configs[type] = entityConfig.Specification;
+                var spec = _registry.GetById(config.SpecId);
+                
+                var container = new GameObject($"Pool_{spec.Id}").transform;
+                container.SetParent(_globalContainer); 
 
-                var pool = new PoolObj<Entity>(() => InstantiateEntity(entityConfig), Release, Get);
-                _pools[type] = pool;
-
-                var remainingToReserve = entityConfig.Size;
+                var pool = new PoolObj<Entity>(() => Instantiate(spec, container), Release, Get);
+                var remainingToReserve = config.Size;
 
                 while (remainingToReserve > 0)
                 {
-                    var spaceInFrame = Max_PRE_FRAME - currentFrameCount;
-                    var amountToSpawn = System.Math.Min(remainingToReserve, spaceInFrame);
+                    var spaceInFrame = _config.MAX_PRE_FRAME - currentFrameCount;
+                    var amountToSpawn = Math.Min(remainingToReserve, spaceInFrame);
 
                     if (amountToSpawn > 0)
                     {
@@ -48,48 +50,45 @@ namespace Ecosim
                         currentFrameCount += amountToSpawn;
                     }
 
-                    if (currentFrameCount >= Max_PRE_FRAME)
+                    if (currentFrameCount >= _config.MAX_PRE_FRAME)
                     {
                         await UniTask.NextFrame();
                         currentFrameCount = 0;
                     }
                 }
+
+                _pools[config.SpecId] = pool;
             }
 
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
-        public List<Entity> Spawn(EntityType type, int count)
+        public Entity Spawn(long instanceId, long specId)
         {
-            var entities = _pools[type].Get(count);
-
-            for (var i = 0; i < entities.Count; i++)
-            {
-                entities[i].transform.position = NavMeshHelper.GetRandomPoint();
-            }
-
-            return entities;
+            var entity = _pools[specId].Get();
+            
+            entity.Init(instanceId);
+            return entity;
         }
 
-        public void Delete(Entity entity)
+        public void Despawn(Entity entity)
         {
-            _pools[entity.Type].Release(entity);
+            _pools[entity.SpecId].Release(entity);
         }
 
-        private Entity InstantiateEntity(PoolConfig config)
+        private Entity Instantiate(EntitySpecification specification, Transform parent)
         {
-            return _factory.Create(Guid.NewGuid(), config.Specification, Vector3.zero, config.Parent);
+            return _factory.Create(specification, Vector3.zero, parent);
         }
 
         private void Release(Entity entity)
         {
+            entity.Deinit();
             entity.gameObject.SetActive(false);
         }
 
         private void Get(Entity entity, int index)
         {
-            var uid = Guid.NewGuid();
-            entity.Init(uid, $"{entity.Type.ToString()}_{uid.ToString()}");
             entity.gameObject.SetActive(true);
         }
     }

@@ -7,7 +7,7 @@ namespace Ecosim
             
         }
 
-        public void Tick(Entity entity, SimulationContext context, float deltaTime, float scale)
+        public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)
         {
 
         }
