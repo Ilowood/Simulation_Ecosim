@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +17,7 @@ namespace Ecosim
             var gameObject = new GameObject(specifications.Name);
             var entity = _container.InstantiateComponent<Entity>(gameObject);
             
-            entity.Setup(specifications.Id, specifications.Type, new EntityBehavior(specifications.Behaviour));
+            entity.Setup(specifications.SpecId, specifications.Type, new EntityBehavior(specifications.Behaviour));
             entity.transform.SetParent(parent);
             entity.transform.position = position;
 

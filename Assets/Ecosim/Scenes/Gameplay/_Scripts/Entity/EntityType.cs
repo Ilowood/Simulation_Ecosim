@@ -6,7 +6,6 @@ namespace Ecosim
     {
         None = 0,
         Unit = 1 << 0,
-        Tree = 1 << 1,
-        Warehouse = 2 << 2,
+        Resource = 2 << 0,
     }
 }

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://w3.org" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 4px; padding: 4px; background-color: rgb(51, 51, 51); border-radius: 4px;">
+        <ui:Label name="IdLabel" text="ID: 000000" style="width: auto; -unity-font-style: bold;"/>
+        <uie:PropertyField name="StackableField" binding-path="_isStackable" label="Stackable" style="flex-grow: 1; height: auto; min-height: auto; min-width: auto;"/>
+    </ui:VisualElement>
+</ui:UXML>

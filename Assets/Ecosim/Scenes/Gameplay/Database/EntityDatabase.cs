@@ -27,72 +27,41 @@ namespace Ecosim
             for (int i = 0; i < _specifications.Count; i++)
             {
                 if (_specifications[i] != null) 
-                    _locations[_specifications[i].Id] = i;
+                    _locations[_specifications[i].SpecId] = i;
             }
         }
 
 #if UNITY_EDITOR
+        public const string PATH = "Assets/Ecosim/Data";
+        public const string PATH_SPECIFICATION = "Assets/Ecosim/Data/Entities";
+
         public bool HasSpecification(long id) => _locations.ContainsKey(id);
-
-        public EntitySpecification CreateNewSpecificationAsset()
-        {
-            var folderPath = "Assets/Ecosim/Data/Entities";
-            
-            if (!UnityEditor.AssetDatabase.IsValidFolder(folderPath))
-            {
-                System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Application.dataPath, "Ecosim/Data/Entities"));
-                UnityEditor.AssetDatabase.Refresh();
-            }
-
-            var fileName = "NewEntitySpecification.asset";
-            var fullPath = UnityEditor.AssetDatabase.GenerateUniqueAssetPath($"{folderPath}/{fileName}");
-
-            var specification = CreateInstance<EntitySpecification>();
-            UnityEditor.AssetDatabase.CreateAsset(specification, fullPath);
-            UnityEditor.AssetDatabase.SaveAssets();
-
-            Debug.Log($"<b>Ecosim:</b> Created <color=cyan>{specification.name}</color>");
-            return specification;
-        }
-
-        public void DeleteAssetFile(EntitySpecification specification)
-        {
-            if (specification == null) return;
-
-            var assetPath = UnityEditor.AssetDatabase.GetAssetPath(specification);
-            if (!string.IsNullOrEmpty(assetPath))
-            {
-                Debug.Log($"<color=red>Ecosim:</color> Specification <b>{specification.name}</b> was deleted instantly.");
-                UnityEditor.AssetDatabase.DeleteAsset(assetPath);
-            }
-        }
 
         public void Remove(long id)
         {
             if (!_locations.TryGetValue(id, out int index)) return;
 
             _specifications.RemoveAt(index);
-            _locations.Remove(id);
-
             UpdateCache();
+
             UnityEditor.EditorUtility.SetDirty(this);
         }
 
-        public bool Add(EntitySpecification specification)
+        public void Add(EntitySpecification specification)
         {
-            if (specification == null || _specifications.Contains(specification)) return false;
+            if (specification == null || _specifications.Contains(specification)) return;
 
-            _locations[specification.Id] = _specifications.Count;
             _specifications.Add(specification);
+            UpdateCache();
 
             UnityEditor.EditorUtility.SetDirty(this);
-            return true;
         }
 
         public void CleanupNullReferences()
         {
             _specifications.RemoveAll(spec => spec == null);
             UpdateCache();
+
             UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif

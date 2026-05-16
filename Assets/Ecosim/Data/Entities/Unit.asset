@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
   m_Name: Unit
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _id: 1601879756
+  _specId: 5072577398122940851
   <Name>k__BackingField: Unit
   <Type>k__BackingField: 1
   Behaviour: {fileID: 11400000, guid: 04f56dcafd6074387bf7f76df4d78e21, type: 2}
   Configuration:
+  - {fileID: 11400000, guid: a59feb54ec9a1488883671ea52221721, type: 2}
+  - {fileID: 11400000, guid: 33e748d624900421f9502dd59646c007, type: 2}
+  - {fileID: 11400000, guid: 14ef57d3589c54de1b2745f61ce5333e, type: 2}
   - {fileID: 11400000, guid: 568ebf16bc026425d9a864828aa124ab, type: 2}
   - {fileID: 11400000, guid: 8fe1131f21f7e4b589077a9766cc9567, type: 2}
-  - {fileID: 11400000, guid: a59feb54ec9a1488883671ea52221721, type: 2}
-  - {fileID: 11400000, guid: bfa2126bd1cc44cf1a7fb472ae2858ef, type: 2}
-  - {fileID: 11400000, guid: 14ef57d3589c54de1b2745f61ce5333e, type: 2}

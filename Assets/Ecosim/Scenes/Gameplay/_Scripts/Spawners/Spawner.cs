@@ -32,7 +32,7 @@ namespace Ecosim
             {
                 var spec = _registry.GetById(config.SpecId);
                 
-                var container = new GameObject($"Pool_{spec.Id}").transform;
+                var container = new GameObject($"Pool_{spec.SpecId}").transform;
                 container.SetParent(_globalContainer); 
 
                 var pool = new PoolObj<Entity>(() => Instantiate(spec, container), Release, Get);

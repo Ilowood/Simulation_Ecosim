@@ -3,38 +3,40 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-namespace Ecosim
+namespace Ecosim.Editor
 {
-    public class EntryRegistry : EditorWindow
+    public class EntityRegistryWindow : EditorWindow
     {
-        private const string EDITOR_RESOURCES_PATH = "Assets/Ecosim/Editor/EntryRegistry";
+        private const string EDITOR_RESOURCES_PATH = "Assets/Ecosim/Editor/Window/EntityRegistry";
         private const string WINDOW_UXML_PATH = EDITOR_RESOURCES_PATH + "/EntityRegistryWindow.uxml";
-        private const string LIST_ENTRY_UXML_PATH = EDITOR_RESOURCES_PATH + "/ListEntry.uxml";
+        private const string SPEC_UXML_PATH = EDITOR_RESOURCES_PATH + "/ListEntry.uxml";
         private const string WARNING_UXML_PATH = EDITOR_RESOURCES_PATH + "/PlayModeWarning.uxml";
 
         private const string REGISTRY_SEARCH_FILTER = "t:EntityRegistry";
         private const string SPEC_SEARCH_FILTER = "t:EntitySpecification";
 
-        [SerializeField] private VisualTreeAsset _listEntryTemplate;
-        [SerializeField] private VisualTreeAsset _visualTreeUXML;
-        [SerializeField] private VisualTreeAsset _playModeWarningUXML;
+        private VisualTreeAsset _specTemplate;
+        private VisualTreeAsset _window;
+        private VisualTreeAsset _playModeWarningUXML;
         
         private VisualElement _detailsContainer;
         private ScrollView _listSpecifications;
         private EntityRegistry _registry;
+
+        private EntitySpecification _currentSelectedSpec;
         
         [MenuItem("Ecosim/Entity Registry")]
         private static void Open()
         {
-            var window = GetWindow<EntryRegistry>("Entity Registry");
+            var window = GetWindow<EntityRegistryWindow>("Entity Registry");
             window.minSize = new Vector2(300, 400);
             window.maxSize = new Vector2(800, 900);
         }
 
         private void OnEnable()
         {
-            _visualTreeUXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WINDOW_UXML_PATH);
-            _listEntryTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(LIST_ENTRY_UXML_PATH);
+            _window = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WINDOW_UXML_PATH);
+            _specTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(SPEC_UXML_PATH);
             _playModeWarningUXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(WARNING_UXML_PATH);
         }
 
@@ -46,7 +48,7 @@ namespace Ecosim
                 return;
             }
 
-            var treeUXML = _visualTreeUXML.Instantiate();
+            var treeUXML = _window.Instantiate();
             rootVisualElement.Add(treeUXML);
 
             _detailsContainer = rootVisualElement.Q<VisualElement>("DetailsContainer");
@@ -56,7 +58,11 @@ namespace Ecosim
             dbField.objectType = typeof(EntityRegistry);
             dbField.RegisterValueChangedCallback(RegistryChanged);
 
-            _registry = FindRegistry();
+            var asset = EcosimEditorUtils.FindRegistry<EntityRegistry>(REGISTRY_SEARCH_FILTER);
+            _registry = asset != null 
+                ? asset 
+                : EcosimEditorUtils.CreateAsset<EntityRegistry>(EntityRegistry.PATH);
+
             dbField.value = _registry;
 
             rootVisualElement.Q<Button>("SyncButton").clicked += RefreshEditorWindow;
@@ -75,18 +81,6 @@ namespace Ecosim
                 icon.image = EditorGUIUtility.IconContent("console.warnicon").image;
 
             rootVisualElement.Add(warning);
-        }
-
-        private EntityRegistry FindRegistry()
-        {
-            string[] guids = AssetDatabase.FindAssets(REGISTRY_SEARCH_FILTER);
-            
-            if (guids.Length > 0)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                return AssetDatabase.LoadAssetAtPath<EntityRegistry>(path);
-            }
-            return null;
         }
 
         private void RegistryChanged(ChangeEvent<Object> evt)
@@ -127,7 +121,7 @@ namespace Ecosim
 
         private void AddSpecificationEntry(EntitySpecification spec)
         {
-            var entry = _listEntryTemplate.Instantiate();
+            var entry = _specTemplate.Instantiate();
             var selectBtn = entry.Q<Button>("SelectButton");
 
             selectBtn.text = $"{spec.Name}";
@@ -143,28 +137,41 @@ namespace Ecosim
         {
             _detailsContainer.style.display = DisplayStyle.Flex;
 
+            if (_currentSelectedSpec)
+            {
+                var oldCopyBtn = _detailsContainer.Q<Button>("CopyIdButton");
+                oldCopyBtn.clickable = null;
+
+                var oldDeleteBtn = _detailsContainer.Q<Button>("DeleteButton");
+                oldDeleteBtn.clickable = null;
+            }
+
+            _currentSelectedSpec = spec;
+
             var scriptField = _detailsContainer.Q<ObjectField>("ScriptField");
-            if (scriptField != null) scriptField.value = MonoScript.FromScriptableObject(spec);
+            if (scriptField != null) scriptField.value = MonoScript.FromScriptableObject(_currentSelectedSpec);
+
+            var id = _detailsContainer.Q<LongField>("Id");
+            id.value = spec.SpecId;
 
             var copyBtn = _detailsContainer.Q<Button>("CopyIdButton");
-            copyBtn.clicked += () => GUIUtility.systemCopyBuffer = spec.Id.ToString();
+            copyBtn.clicked += () => GUIUtility.systemCopyBuffer = _currentSelectedSpec.SpecId.ToString();
 
             var deleteBtn = _detailsContainer.Q<Button>("DeleteButton");
             deleteBtn.clicked += () => {
-                _registry.DeleteAssetFile(spec);
-                _registry.Remove(spec.Id);
+                _registry.Remove(_currentSelectedSpec.SpecId);
+                EcosimEditorUtils.DeleteAssetFile(_currentSelectedSpec);
                 _detailsContainer.style.display = DisplayStyle.None;
                 RefreshEditorWindow();
             };
 
-            _detailsContainer.Bind(new SerializedObject(spec));
+            _detailsContainer.Bind(new SerializedObject(_currentSelectedSpec));
         }
 
         private void CreateNewSpecification()
         {
             if (_registry == null) return;
-            var spec = _registry.CreateNewSpecificationAsset();
-            Selection.activeObject = spec;
+            EcosimEditorUtils.CreateAsset<EntitySpecification>(EntityRegistry.PATH_SPECIFICATION);
             RefreshEditorWindow();
         }
     }

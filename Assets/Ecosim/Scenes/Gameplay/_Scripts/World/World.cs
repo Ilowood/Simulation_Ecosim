@@ -11,7 +11,7 @@ namespace Ecosim
         private readonly IdGenerator _idGenerator = new();
         
         private readonly Dictionary<long, Entity> _entities = new(capacity: 2048);
-        private readonly Dictionary<EntityType, List<Entity>> _entitiesByType = new();
+        private readonly Dictionary<long, List<Entity>> _entitiesBySpecId = new();
         
         private readonly Queue<ISimulationCommand> _commands = new();
         private readonly WorldContext _context;
@@ -20,17 +20,12 @@ namespace Ecosim
         {
             _spawner = spawner;
             _context = new WorldContext(this);
-
-            foreach (EntityType type in Enum.GetValues(typeof(EntityType)))
-            {
-                _entitiesByType[type] = new List<Entity>();
-            }
         }
 
         public event Action<EntityType> OnEntityAdded;
         public event Action<EntityType> OnEntityRemoved;
 
-        public IReadOnlyList<Entity> Get(EntityType type) => _entitiesByType[type];
+        public IReadOnlyList<Entity> Get(long specId) => _entitiesBySpecId[specId];
 
         public async UniTask InitAsync(WorldSnapshot data)
         {
@@ -70,7 +65,7 @@ namespace Ecosim
 
             snapshot.IdGenerator = _idGenerator.GetSnapshot();
 
-            foreach (var entityList in _entitiesByType.Values)
+            foreach (var entityList in _entitiesBySpecId.Values)
             {
                 foreach (var entity in entityList)
                 {
@@ -117,9 +112,9 @@ namespace Ecosim
             _commands.Enqueue(command);
         }
 
-        public int GetCount(EntityType type) 
+        public int GetCount(long specId) 
         {
-            return _entitiesByType[type].Count;
+            return _entitiesBySpecId[specId].Count;
         }
 
         public int GetTrackedCount()
@@ -160,7 +155,7 @@ namespace Ecosim
 
         private void RemoveEntity(Entity entity)
         {
-            if (_entitiesByType.TryGetValue(entity.Type, out var entities))
+            if (_entitiesBySpecId.TryGetValue(entity.SpecId, out var entities))
             {
                 entities.Remove(entity);
 
@@ -171,7 +166,7 @@ namespace Ecosim
 
         private void AllDestroy()
         {
-            foreach (var entities in _entitiesByType.Values)
+            foreach (var entities in _entitiesBySpecId.Values)
             {
                 for (var i = 0; i < entities.Count; i++)
                 {
@@ -187,10 +182,10 @@ namespace Ecosim
 
         private void RegisterEntity(Entity entity)
         {
-            if (!_entitiesByType.TryGetValue(entity.Type, out var list))
+            if (!_entitiesBySpecId.TryGetValue(entity.SpecId, out var list))
             {
                 list = new List<Entity>();
-                _entitiesByType[entity.Type] = list;
+                _entitiesBySpecId[entity.SpecId] = list;
             }
 
             list.Add(entity);
@@ -200,7 +195,7 @@ namespace Ecosim
 
         private void ForEachAllEntities(Action<Entity> action)
         {
-            foreach (var entities in _entitiesByType.Values)
+            foreach (var entities in _entitiesBySpecId.Values)
             {
                 for (var i = entities.Count - 1; i >= 0; i--)
                 {

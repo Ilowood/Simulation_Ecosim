@@ -1,7 +1,7 @@
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-namespace Ecosim
+namespace Ecosim.Editor
 {
     public static class UIExtensions 
     {

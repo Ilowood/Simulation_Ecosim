@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.SpawnerConfig
   <MAX_PRE_FRAME>k__BackingField: 50
   <PoolConfigs>k__BackingField:
-  - _spec: {fileID: 11400000, guid: 200a3c03ba34443f89b28fe2c9722024, type: 2}
+  - _spec: {fileID: 11400000, guid: 50e017df07db64dc1be25a8ece5e6b64, type: 2}
     <Size>k__BackingField: 20

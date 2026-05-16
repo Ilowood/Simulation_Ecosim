@@ -8,8 +8,6 @@ namespace Ecosim
         public int MaxTotalCapacity { get; private set; }
         public int CurrentTotalAmount { get; private set; } = 0;
 
-        public bool IsFull => Slots.All(x => x.IsFull);
-
         public StorageComponent(int countSlots, int slotCapacity)
         {
             Slots = new StorageSlot[countSlots];
@@ -29,11 +27,11 @@ namespace Ecosim
             {
                 var sourceSlot = Slots[i];
                 
-                slotSnapshots[i] = new StorageSlotSnapshot 
-                { 
-                    ResourceId = sourceSlot.ResourceId, 
-                    Amount = sourceSlot.Amount 
-                };
+                // slotSnapshots[i] = new StorageSlotSnapshot 
+                // { 
+                //     // SpecId = sourceSlot.SpecId, 
+                //     // Amount = sourceSlot.Amount 
+                // };
             }
 
             return new StorageComponentSnapshot(slotSnapshots, CurrentTotalAmount);
@@ -48,7 +46,7 @@ namespace Ecosim
                 int i = 0;
                 foreach (var slotSnapshot in data.Slots)
                 {
-                    Slots[i].Restore(slotSnapshot.ResourceId, slotSnapshot.Amount);
+                    // Slots[i].Restore(slotSnapshot.SpecId, slotSnapshot.Amount);
                     i++;
                 }
             }

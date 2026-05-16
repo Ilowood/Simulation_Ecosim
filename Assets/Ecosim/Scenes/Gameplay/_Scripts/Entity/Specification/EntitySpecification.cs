@@ -6,7 +6,7 @@ namespace Ecosim
     [CreateAssetMenu(menuName = "Ecosim/Entity/Specification", fileName = "EntitySpecification")]
     public class EntitySpecification : ScriptableObject
     {
-        [ReadOnly, SerializeField] private long _id; 
+        [ReadOnly, SerializeField] private long _specId; 
 
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public EntityType Type { get; private set; }
@@ -14,14 +14,14 @@ namespace Ecosim
         [Space, SerializeField] public BehaviourSpecification Behaviour;
         [SerializeField] public List<Specification> Configuration;
 
-        public long Id => _id;
+        public long SpecId => _specId;
 
 #if UNITY_EDITOR
         private void Awake()
         {
-            if (_id == 0)
+            if (_specId == 0)
             {
-                _id = GenerateUniqueId();
+                _specId = GenerateUniqueId();
                 UnityEditor.EditorUtility.SetDirty(this);
             }
         }
