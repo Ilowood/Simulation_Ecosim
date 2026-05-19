@@ -1,7 +1,15 @@
+using System;
+
 namespace Ecosim
 {
+    [Serializable]
     public class CellSnapshot
     {
-        public uint Amount { get; private set; }
+        public readonly ushort Amount;
+
+        public CellSnapshot(ushort amount)
+        {
+            Amount = amount;
+        }
     }
 }

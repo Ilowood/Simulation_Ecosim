@@ -25,7 +25,7 @@ namespace Ecosim
         public event Action<EntityType> OnEntityAdded;
         public event Action<EntityType> OnEntityRemoved;
 
-        public IReadOnlyList<Entity> Get(long specId) => _entitiesBySpecId[specId];
+        public IReadOnlyList<Entity> GetEntitiesBySpecId(long specId) => _entitiesBySpecId[specId];
 
         public async UniTask InitAsync(WorldSnapshot data)
         {
@@ -147,10 +147,12 @@ namespace Ecosim
             OnEntityRemoved?.Invoke(entity.Type);
         }
 
-        public void SpawnAndRegister(long specId)
+        public Entity SpawnAndRegister(long specId)
         {
             var entity = _spawner.Spawn(_idGenerator.GetNext(), specId);
             RegisterEntity(entity);
+
+            return entity;
         }
 
         private void RemoveEntity(Entity entity)

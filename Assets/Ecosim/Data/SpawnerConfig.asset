@@ -16,3 +16,5 @@ MonoBehaviour:
   <PoolConfigs>k__BackingField:
   - _spec: {fileID: 11400000, guid: 50e017df07db64dc1be25a8ece5e6b64, type: 2}
     <Size>k__BackingField: 20
+  - _spec: {fileID: 11400000, guid: 5756ac058f1ab4696a70ed9f0102286a, type: 2}
+    <Size>k__BackingField: 1

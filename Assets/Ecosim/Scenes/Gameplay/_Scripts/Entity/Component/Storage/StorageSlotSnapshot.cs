@@ -7,9 +7,9 @@ namespace Ecosim
     public class StorageSlotSnapshot
     {
         public readonly long? SpecId;
-        public readonly List<Cell> Cells;
+        public readonly List<CellSnapshot> Cells;
 
-        public StorageSlotSnapshot(long? specId, List<Cell> cells)
+        public StorageSlotSnapshot(long? specId, List<CellSnapshot> cells)
         {
             SpecId = specId;
             Cells = cells;

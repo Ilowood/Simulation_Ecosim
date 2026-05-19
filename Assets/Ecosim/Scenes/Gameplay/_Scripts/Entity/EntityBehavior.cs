@@ -13,7 +13,7 @@ namespace Ecosim
 
         public EntityBehavior(BehaviourSpecification behaviour)
         {
-            _behaviour = behaviour.Create();
+            _behaviour = behaviour?.Create();
         }
 
         public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)

@@ -51,6 +51,21 @@ namespace Ecosim
         {
             if (specification == null || _specifications.Contains(specification)) return;
 
+            var isIdTaken = false;
+            foreach (var spec in _specifications)
+            {
+                if (spec != null && spec.SpecId == specification.SpecId)
+                {
+                    isIdTaken = true;
+                    break;
+                }
+            }
+
+            if (isIdTaken)
+            {
+                specification.GenerateUniqueId(); 
+            }
+
             _specifications.Add(specification);
             UpdateCache();
 

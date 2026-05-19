@@ -6,14 +6,12 @@ namespace Ecosim
     public class StorageComponentSnapshot : IComponentSnapshot
     {
         public readonly StorageSlotSnapshot[] Slots;
-        public readonly int CurrentTotalAmount;
 
         public Type ComponentType => typeof(StorageComponent);
 
-        public StorageComponentSnapshot(StorageSlotSnapshot[] slots, int currentTotalAmount)
+        public StorageComponentSnapshot(StorageSlotSnapshot[] slots)
         {
             Slots = slots;
-            CurrentTotalAmount = currentTotalAmount;
         }
     }
 }

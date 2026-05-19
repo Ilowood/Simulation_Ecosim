@@ -73,7 +73,7 @@ namespace Ecosim
                 InstanceId = Id,
                 Position = transform.position,
                 Rotation = transform.rotation,
-                Task = Behavior.Task.GetSnapshot()
+                Task = Behavior.Task?.GetSnapshot()
             };
 
             foreach (var component in _components.Values)

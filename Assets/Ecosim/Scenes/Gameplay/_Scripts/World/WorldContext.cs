@@ -4,7 +4,7 @@ namespace Ecosim
 {
     public interface IReadOnlyEntityStorage
     {
-        IReadOnlyList<Entity> Get(long specId);
+        IReadOnlyList<Entity> GetEntitiesBySpecId(long specId);
         int GetCount(long specId);
         int GetTrackedCount();
     }

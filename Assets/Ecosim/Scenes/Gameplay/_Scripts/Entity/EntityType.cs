@@ -7,5 +7,6 @@ namespace Ecosim
         None = 0,
         Unit = 1 << 0,
         Resource = 2 << 0,
+        Building = 3 << 0,
     }
 }

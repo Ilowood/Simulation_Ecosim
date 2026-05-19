@@ -4,6 +4,11 @@ namespace Ecosim
 {
     public class Cell
     {
-        public ushort Amount { get; private set; } = 0;
+        public ushort Amount = 0;
+
+        public Cell(ushort amount)
+        {
+            Amount = amount;
+        }
     }
 }

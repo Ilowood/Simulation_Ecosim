@@ -36,7 +36,11 @@ namespace Ecosim
         public void Enter()
         {
             _view.Open(_world);
+            var storage = _world.GetById(0).Get<StorageComponent>();
+            StorageService.TryAdd(storage, 5644808556783927713, 30, true);
+
             _world.SetPause(false);
+            
 
             StartLoop();
         }

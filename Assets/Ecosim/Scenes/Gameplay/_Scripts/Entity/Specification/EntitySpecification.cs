@@ -21,15 +21,15 @@ namespace Ecosim
         {
             if (_specId == 0)
             {
-                _specId = GenerateUniqueId();
-                UnityEditor.EditorUtility.SetDirty(this);
+                GenerateUniqueId();
             }
         }
 
-        private long GenerateUniqueId()
+        public void GenerateUniqueId()
         {
-            byte[] gb = System.Guid.NewGuid().ToByteArray();
-            return System.BitConverter.ToInt64(gb, 0);
+            var gb = System.Guid.NewGuid().ToByteArray();
+            _specId = System.BitConverter.ToInt64(gb, 0);
+            UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif
     }

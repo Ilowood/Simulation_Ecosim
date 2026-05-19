@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Ecosim
@@ -5,18 +6,17 @@ namespace Ecosim
     public class StorageComponent : IEntityComponent
     {
         public StorageSlot[] Slots { get; private set; }
-        public int MaxTotalCapacity { get; private set; }
-        public int CurrentTotalAmount { get; private set; } = 0;
+        public readonly int StackSize;
 
-        public StorageComponent(int countSlots, int slotCapacity)
+        public StorageComponent(int slotCount, int cellsPerSlot, int stackSize)
         {
-            Slots = new StorageSlot[countSlots];
-            for (int i = 0; i < countSlots; i++) 
-            {
-                Slots[i] = new(slotCapacity);
-            }
+            Slots = new StorageSlot[slotCount];
+            StackSize = stackSize;
 
-            MaxTotalCapacity = countSlots * slotCapacity;
+            for (int i = 0; i < slotCount; i++) 
+            {
+                Slots[i] = new(cellsPerSlot);
+            }
         }
 
         public IComponentSnapshot GetSnapshot()
@@ -26,28 +26,27 @@ namespace Ecosim
             for (int i = 0; i < Slots.Length; i++)
             {
                 var sourceSlot = Slots[i];
-                
-                // slotSnapshots[i] = new StorageSlotSnapshot 
-                // { 
-                //     // SpecId = sourceSlot.SpecId, 
-                //     // Amount = sourceSlot.Amount 
-                // };
+                var cells = new List<CellSnapshot>(sourceSlot.MaxCells);
+
+                for (var j = 0; j < sourceSlot.CountCells; j++)
+                {
+                    cells.Add(new CellSnapshot(sourceSlot.GetCell(j).Amount));
+                }
+
+                slotSnapshots[i] = new StorageSlotSnapshot(sourceSlot.SpecId, cells);
             }
 
-            return new StorageComponentSnapshot(slotSnapshots, CurrentTotalAmount);
+            return new StorageComponentSnapshot(slotSnapshots);
         }
 
         public void Restore(IComponentSnapshot snapshot)
         {
             if (snapshot is StorageComponentSnapshot data)
             {
-                CurrentTotalAmount = data.CurrentTotalAmount;
-
-                int i = 0;
-                foreach (var slotSnapshot in data.Slots)
+                var slots = data.Slots;
+                for (var i = 0; i < slots.Count(); i++)
                 {
-                    // Slots[i].Restore(slotSnapshot.SpecId, slotSnapshot.Amount);
-                    i++;
+                    Slots[i].Restore(slots[i].SpecId, slots[i].Cells);
                 }
             }
         }
@@ -58,8 +57,6 @@ namespace Ecosim
             {
                 Slots[i].Reset();
             }
-
-            CurrentTotalAmount = 0;
         }
     }
 }
