@@ -2,12 +2,12 @@ namespace Ecosim
 {
     public class ResourceBehaviour : IBehaviour
     {
-        public ResourceBehaviour()
+        public ResourceBehaviour(Entity owner)
         {
             
         }
 
-        public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)
+        public void Tick(WorldContext context, float deltaTime, float scale)
         {
 
         }

@@ -7,11 +7,11 @@ namespace Ecosim
     {
         [SerializeField] private int _slotCount = 16;
         [SerializeField] private int _cellsPerSlot = 20;
-        [SerializeField] private int _stackSize = 8;
+        [SerializeField] private int _possibleStackSize = 8;
 
         public override void Apply(Entity entity)
         {
-            entity.AddComponent(new StorageComponent(_slotCount, _cellsPerSlot, _stackSize));
+            entity.AddComponent(new StorageComponent(_slotCount, _cellsPerSlot, _possibleStackSize));
         }
     }
 }

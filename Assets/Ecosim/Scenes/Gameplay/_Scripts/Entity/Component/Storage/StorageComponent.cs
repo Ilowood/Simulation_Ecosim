@@ -5,13 +5,13 @@ namespace Ecosim
 {
     public class StorageComponent : IEntityComponent
     {
-        public StorageSlot[] Slots { get; private set; }
-        public readonly int StackSize;
+        public readonly StorageSlot[] Slots;
+        public readonly int PossibleStackSize;
 
-        public StorageComponent(int slotCount, int cellsPerSlot, int stackSize)
+        public StorageComponent(int slotCount, int cellsPerSlot, int possibleStackSize)
         {
             Slots = new StorageSlot[slotCount];
-            StackSize = stackSize;
+            PossibleStackSize = possibleStackSize;
 
             for (int i = 0; i < slotCount; i++) 
             {
@@ -23,17 +23,17 @@ namespace Ecosim
         {
             var slotSnapshots = new StorageSlotSnapshot[Slots.Length];
 
-            for (int i = 0; i < Slots.Length; i++)
+            for (var i = 0; i < Slots.Length; i++)
             {
-                var sourceSlot = Slots[i];
-                var cells = new List<CellSnapshot>(sourceSlot.MaxCells);
+                var slot = Slots[i];
+                var cells = new CellSnapshot[slot.Cells.Length];
 
-                for (var j = 0; j < sourceSlot.CountCells; j++)
+                for (var j = 0; j < cells.Length; j++)
                 {
-                    cells.Add(new CellSnapshot(sourceSlot.GetCell(j).Amount));
+                    cells[j] = new CellSnapshot(slot.Cells[j].Amount);
                 }
 
-                slotSnapshots[i] = new StorageSlotSnapshot(sourceSlot.SpecId, cells);
+                slotSnapshots[i] = new StorageSlotSnapshot(slot.SpecId, cells);
             }
 
             return new StorageComponentSnapshot(slotSnapshots);

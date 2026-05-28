@@ -5,11 +5,13 @@ namespace Ecosim
 {
     public class EcosimInstaller : MonoInstaller
     {
-        [SerializeField] private EntityRegistry _registry;
+        [SerializeField] private EntityDatabase _entityDatabase;
+        [SerializeField] private ItemDatabase _itemDatabase;
         
         public override void InstallBindings()
         {
-            Container.Bind<EntityRegistry>().FromInstance(_registry).AsSingle();
+            Container.Bind<EntityDatabase>().FromInstance(_entityDatabase).AsSingle();
+            Container.Bind<ItemDatabase>().FromInstance(_itemDatabase).AsSingle();
         }
     }
 }

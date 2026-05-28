@@ -12,7 +12,7 @@ namespace Ecosim.Editor
         private const string SPEC_UXML_PATH = EDITOR_RESOURCES_PATH + "/ListEntry.uxml";
         private const string WARNING_UXML_PATH = EDITOR_RESOURCES_PATH + "/PlayModeWarning.uxml";
 
-        private const string REGISTRY_SEARCH_FILTER = "t:EntityRegistry";
+        private const string REGISTRY_SEARCH_FILTER = "t:EntityDatabase";
         private const string SPEC_SEARCH_FILTER = "t:EntitySpecification";
 
         private VisualTreeAsset _specTemplate;
@@ -21,7 +21,7 @@ namespace Ecosim.Editor
         
         private VisualElement _detailsContainer;
         private ScrollView _listSpecifications;
-        private EntityRegistry _registry;
+        private EntityDatabase _registry;
 
         private EntitySpecification _currentSelectedSpec;
         
@@ -55,13 +55,13 @@ namespace Ecosim.Editor
             _listSpecifications = rootVisualElement.Q<ScrollView>("ListSpecification");
 
             var dbField = rootVisualElement.Q<ObjectField>("DataBaseField");
-            dbField.objectType = typeof(EntityRegistry);
+            dbField.objectType = typeof(EntityDatabase);
             dbField.RegisterValueChangedCallback(RegistryChanged);
 
-            var asset = EcosimEditorUtils.FindRegistry<EntityRegistry>(REGISTRY_SEARCH_FILTER);
+            var asset = EcosimEditorUtils.FindRegistry<EntityDatabase>(REGISTRY_SEARCH_FILTER);
             _registry = asset != null 
                 ? asset 
-                : EcosimEditorUtils.CreateAsset<EntityRegistry>(EntityRegistry.PATH);
+                : EcosimEditorUtils.CreateAsset<EntityDatabase>(EntityDatabase.PATH);
 
             dbField.value = _registry;
 
@@ -85,7 +85,7 @@ namespace Ecosim.Editor
 
         private void RegistryChanged(ChangeEvent<Object> evt)
         {
-            _registry = evt.newValue as EntityRegistry;
+            _registry = evt.newValue as EntityDatabase;
             RefreshEditorWindow();
         }
 
@@ -171,7 +171,7 @@ namespace Ecosim.Editor
         private void CreateNewSpecification()
         {
             if (_registry == null) return;
-            EcosimEditorUtils.CreateAsset<EntitySpecification>(EntityRegistry.PATH_SPECIFICATION);
+            EcosimEditorUtils.CreateAsset<EntitySpecification>(EntityDatabase.PATH_SPECIFICATION);
             RefreshEditorWindow();
         }
     }

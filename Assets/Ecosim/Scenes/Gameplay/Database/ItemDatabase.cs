@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public class ItemRegistry : ScriptableObject
+    public class ItemDatabase : ScriptableObject
     {
         [SerializeField] private List<ItemConfig> _configs = new();
 

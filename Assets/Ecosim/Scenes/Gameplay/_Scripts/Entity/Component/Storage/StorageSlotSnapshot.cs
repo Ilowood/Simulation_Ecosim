@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Ecosim
 {
@@ -7,9 +6,9 @@ namespace Ecosim
     public class StorageSlotSnapshot
     {
         public readonly long? SpecId;
-        public readonly List<CellSnapshot> Cells;
+        public readonly CellSnapshot[] Cells;
 
-        public StorageSlotSnapshot(long? specId, List<CellSnapshot> cells)
+        public StorageSlotSnapshot(long? specId, CellSnapshot[] cells)
         {
             SpecId = specId;
             Cells = cells;

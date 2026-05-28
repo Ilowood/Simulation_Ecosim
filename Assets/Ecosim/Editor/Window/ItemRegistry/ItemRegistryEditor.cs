@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Ecosim.Editor
 {
-    [CustomEditor(typeof(ItemRegistry))]
+    [CustomEditor(typeof(ItemDatabase))]
     public class ItemRegistryEditor : UnityEditor.Editor
     {
         private const string EDITOR_PATH = "Assets/Ecosim/Editor/Window/ItemRegistry";
@@ -19,14 +19,14 @@ namespace Ecosim.Editor
         private VisualTreeAsset _inspector;
         private VisualTreeAsset _rowTemplate;
 
-        private ItemRegistry _registry;
+        private ItemDatabase _registry;
 
         private void OnEnable()
         {
             _inspector = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(INSPECTOR_UXML);
             _rowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ROW_UXML);
 
-            _registry = target as ItemRegistry;
+            _registry = target as ItemDatabase;
         }
 
         public override VisualElement CreateInspectorGUI()

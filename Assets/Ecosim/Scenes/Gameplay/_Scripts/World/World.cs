@@ -1,31 +1,30 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Untils;
 
 namespace Ecosim
 {
-    public class World : IReadOnlyEntityStorage
+    public class World
     {
-        private readonly Spawner _spawner;
-        private readonly IdGenerator _idGenerator = new();
+        private readonly SpawnSystem _spawner;
         
-        private readonly Dictionary<long, Entity> _entities = new(capacity: 2048);
-        private readonly Dictionary<long, List<Entity>> _entitiesBySpecId = new();
-        
-        private readonly Queue<ISimulationCommand> _commands = new();
+        private readonly Queue<IWorldCommand> _commands = new();
         private readonly WorldContext _context;
+        
+        public EntityRegistry Registry { get; }
+        public TaskFactory TaskFactory { get; }
 
-        public World(Spawner spawner)
+        public World(EntityRegistry registry, SpawnSystem spawner, TaskFactory taskFactory)
         {
+            Registry = registry;
+            TaskFactory = taskFactory;
+
             _spawner = spawner;
             _context = new WorldContext(this);
         }
 
         public event Action<EntityType> OnEntityAdded;
         public event Action<EntityType> OnEntityRemoved;
-
-        public IReadOnlyList<Entity> GetEntitiesBySpecId(long specId) => _entitiesBySpecId[specId];
 
         public async UniTask InitAsync(WorldSnapshot data)
         {
@@ -35,7 +34,14 @@ namespace Ecosim
 
         public void Deinit()
         {
-            AllDestroy();
+            var specIds = Registry.GetRegisteredSpecIds();
+            for (var i = 0; i < specIds.Count; i++)
+            {
+                foreach (var entity in Registry.GetBySpecId(specIds[i]))
+                    _spawner.Despawn(entity);
+            }
+
+            Registry.Clear();
         }
 
         public void Tick(float deltaTime, float scale)
@@ -49,162 +55,86 @@ namespace Ecosim
             ForEachAllEntities(entity => entity.Behavior.SetPause(isPaused));
         }
 
-        public Entity GetById(long instanceId)
-        {
-            if (_entities.TryGetValue(instanceId, out var entity))
-            {
-                return entity;
-            }
-            
-            return null;
-        }
-
         public WorldSnapshot GetSnapshot()
         {
             var snapshot = new WorldSnapshot();
+            snapshot.IdGenerator = Registry.GetSnapshot();
 
-            snapshot.IdGenerator = _idGenerator.GetSnapshot();
-
-            foreach (var entityList in _entitiesBySpecId.Values)
+            var specIds = Registry.GetRegisteredSpecIds();
+            for (var i = 0; i < specIds.Count; i++)
             {
-                foreach (var entity in entityList)
-                {
-                    if (entity != null && entity.IsActive)
-                    {
-                        snapshot.Entities.Add(entity.GetSnapshot());
-                    }
-                }
+                foreach (var entity in Registry.GetBySpecId(specIds[i]))
+                    snapshot.Entities.Add(entity.GetSnapshot());
             }
 
             return snapshot;
         }
 
-        public void Restore(WorldSnapshot data)
+        public void Restore(WorldSnapshot worldSnapshot)
         {
-            AllDestroy();
+            Registry.Clear();
+            Registry.Restore(worldSnapshot.IdGenerator);
 
-            _idGenerator.Reset(); 
-            _idGenerator.Restore(data.IdGenerator);
-
-            var entities = new List<Entity>(data.Entities.Count);
-
-            foreach (var snapshot in data.Entities)
+            var entities = new List<Entity>(worldSnapshot.Entities.Count);
+            foreach (var snapshot in worldSnapshot.Entities)
             {
                 var entity = _spawner.Spawn(snapshot.InstanceId, snapshot.SpecId);
 
                 entities.Add(entity);
                 entity.Restore(snapshot);
-                RegisterEntity(entity);
+                Registry.Register(entity);
             }
 
-            for (var i = 0; i < data.Entities.Count; i++)
+            for (var i = 0; i < worldSnapshot.Entities.Count; i++)
             {
-                if (data.Entities[i].Task != null)
+                if (worldSnapshot.Entities[i].Task != null)
                 {
-                    entities[i].Behavior.SetAndStartTask(data.Entities[i].Task.CreateTask(entities[i]));
+                    entities[i].Behavior.SetAndStartTask(worldSnapshot.Entities[i].Task.CreateTask(_context, entities[i]));
                     entities[i].Behavior.SetPause(true);
                 }
             }
         }
 
-        public void AddCommand(ISimulationCommand command)
+        public void AddCommand(IWorldCommand command)
         {
             _commands.Enqueue(command);
-        }
-
-        public int GetCount(long specId) 
-        {
-            return _entitiesBySpecId[specId].Count;
-        }
-
-        public int GetTrackedCount()
-        {
-            // var result = 0;
-
-            // foreach (var entities in _entitiesByType)
-            // {
-            //     if ((_config.TrackedLiveEntities & entities.Key) != 0)
-            //     {
-            //         result += entities.Value.Count;
-            //     }
-            // }
-            
-            // return result;
-            return 10;
         }
 
         public void RemoveEntityWithoutCallback(Entity entity)
         {
             RemoveEntity(entity);
-            _spawner.Despawn(entity);
         }
 
         public void RemoveEntityWithCallback(Entity entity)
         {
             RemoveEntity(entity);
-            _spawner.Despawn(entity);
-
             OnEntityRemoved?.Invoke(entity.Type);
         }
 
-        public Entity SpawnAndRegister(long specId)
+        public Entity AddEntity(long specId)
         {
-            var entity = _spawner.Spawn(_idGenerator.GetNext(), specId);
-            RegisterEntity(entity);
-
+            var entity = _spawner.Spawn(Registry.GenerateNextId(), specId);
+            Registry.Register(entity);
+            
+            OnEntityAdded?.Invoke(entity.Type);
             return entity;
         }
 
         private void RemoveEntity(Entity entity)
         {
-            if (_entitiesBySpecId.TryGetValue(entity.SpecId, out var entities))
-            {
-                entities.Remove(entity);
-
-                _idGenerator.Release(entity.Id);
-                _entities.Remove(entity.Id);
-            }
-        }
-
-        private void AllDestroy()
-        {
-            foreach (var entities in _entitiesBySpecId.Values)
-            {
-                for (var i = 0; i < entities.Count; i++)
-                {
-                    _spawner.Despawn(entities[i]);
-                }
-
-                entities.Clear();
-            }
-
-            _entities.Clear();
-            _idGenerator.Reset();
-        }
-
-        private void RegisterEntity(Entity entity)
-        {
-            if (!_entitiesBySpecId.TryGetValue(entity.SpecId, out var list))
-            {
-                list = new List<Entity>();
-                _entitiesBySpecId[entity.SpecId] = list;
-            }
-
-            list.Add(entity);
-            _entities[entity.Id] = entity;
-            OnEntityAdded?.Invoke(entity.Type);
+            Registry.Unregister(entity);
+            _spawner.Despawn(entity);
         }
 
         private void ForEachAllEntities(Action<Entity> action)
         {
-            foreach (var entities in _entitiesBySpecId.Values)
+            var specIds = Registry.GetRegisteredSpecIds();
+            for (var i = 0; i < specIds.Count; i++)
             {
-                for (var i = entities.Count - 1; i >= 0; i--)
+                foreach (var entity in Registry.GetBySpecId(specIds[i]))
                 {
-                    if (entities[i] && entities[i].IsActive)
-                    {
-                        action(entities[i]);
-                    }
+                    if (entity && entity.IsActive)
+                        action(entity);
                 }
             }
         }

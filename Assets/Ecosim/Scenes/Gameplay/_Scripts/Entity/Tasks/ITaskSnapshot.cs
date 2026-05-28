@@ -4,6 +4,6 @@ namespace Ecosim
 {
     public interface ITaskSnapshot
     {
-        IEntityTask CreateTask(Entity root);
+        IEntityTask CreateTask(WorldContext context, Entity owner);
     }
 }

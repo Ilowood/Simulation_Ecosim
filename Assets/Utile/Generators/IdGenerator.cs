@@ -34,7 +34,7 @@ namespace Untils
             _freeIds = new List<long>(snapshot.FreeIds);
         }
 
-        public void Reset()
+        public void Clear()
         {
             _lastId = 0;
             _freeIds.Clear();

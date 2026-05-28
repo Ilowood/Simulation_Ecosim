@@ -1,5 +1,6 @@
 using Zenject;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 namespace Ecosim
 {
@@ -9,6 +10,9 @@ namespace Ecosim
 
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<EntityRegistry>().AsSingle();
+            Container.Bind<World>().AsSingle();
+
             InstallData();
             InstallFractory();
             InstallView();
@@ -24,7 +28,11 @@ namespace Ecosim
 
         private void InstallFractory()
         {
+            Container.BindInterfacesAndSelfTo<ResourceTransferFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MoveToPointFactory>().AsSingle();
+
             Container.Bind<EntityFactory>().AsSingle();
+            Container.Bind<TaskFactory>().AsSingle();
         }
 
         private void InstallView()
@@ -33,12 +41,13 @@ namespace Ecosim
             Container.Bind<HUDView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<PauseView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<ReportView>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<NavMeshSurface>().FromComponentInHierarchy().AsSingle();
         }
 
         private void InstallSystem()
         {
-            Container.Bind<Spawner>().AsSingle();
-            Container.Bind<World>().AsSingle();
+            Container.Bind<SpawnSystem>().AsSingle();
+            Container.Bind<StorageSystem>().AsSingle();
         }
 
         private void InstallFSM()

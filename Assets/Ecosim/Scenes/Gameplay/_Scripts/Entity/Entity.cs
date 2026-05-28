@@ -38,7 +38,7 @@ namespace Ecosim
 
         public void Tick(WorldContext context, float deltaTime, float scale)
         {
-            if (IsActive) Behavior?.Tick(this, context, deltaTime, scale);
+            if (IsActive) Behavior?.Tick(context, deltaTime, scale);
         }
 
         public bool Setup(long specId, EntityType type, EntityBehavior behavior)

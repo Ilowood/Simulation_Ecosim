@@ -16,12 +16,14 @@ namespace Ecosim
         {
             var gameObject = new GameObject(specifications.Name);
             var entity = _container.InstantiateComponent<Entity>(gameObject);
-            
-            entity.Setup(specifications.SpecId, specifications.Type, new EntityBehavior(specifications.Behaviour));
+
+            specifications.Configuration.ForEach(spec => spec.Apply(entity));
+
             entity.transform.SetParent(parent);
             entity.transform.position = position;
 
-            specifications.Configuration.ForEach(spec => spec.Apply(entity));
+            var behavior = specifications.Behaviour?.Create(entity, _container);
+            entity.Setup(specifications.SpecId, specifications.Type, new EntityBehavior(behavior));
 
             return entity;
         }

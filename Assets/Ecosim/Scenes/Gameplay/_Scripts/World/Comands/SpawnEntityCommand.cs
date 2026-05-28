@@ -1,6 +1,6 @@
 namespace Ecosim
 {
-    public class SpawnEntityCommand : ISimulationCommand
+    public class SpawnEntityCommand : IWorldCommand
     {
         private readonly long _specId;
 
@@ -13,7 +13,7 @@ namespace Ecosim
 
         public void Execute(World simulation)
         {
-            simulation.SpawnAndRegister(_specId);
+            simulation.AddEntity(_specId);
         }
     }
 }

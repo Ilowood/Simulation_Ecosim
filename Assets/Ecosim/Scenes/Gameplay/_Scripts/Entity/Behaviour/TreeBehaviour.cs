@@ -2,12 +2,12 @@ namespace Ecosim
 {
     public class TreeBehaviour : IBehaviour
     {
-        public TreeBehaviour()
+        public TreeBehaviour(Entity owner)
         {
             
         }
 
-        public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)
+        public void Tick(WorldContext context, float deltaTime, float scale)
         {
             
         }

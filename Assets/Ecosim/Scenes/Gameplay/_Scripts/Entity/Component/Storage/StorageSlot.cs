@@ -1,47 +1,35 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Ecosim
 {
     public class StorageSlot
     {
-        private List<Cell> _cells;
-        
-        public long? SpecId { get; private set; } 
-        public int MaxCells { get; private set; } 
+        public readonly Cell[] Cells;
 
-        public int CountCells => _cells.Count;
-        public bool IsEmpty => SpecId == null;
+        public long? SpecId;
 
         public StorageSlot(int cellCount)
         {
-            MaxCells = cellCount;
-            _cells = new(cellCount);
+            Cells = new Cell[cellCount];
+            for (int i = 0; i < cellCount; i++) Cells[i] = new Cell(0);
         }
 
-        public void SetSpecId(long specId) => SpecId = specId;
-        public void AddCell(ushort amount) => _cells.Add(new Cell(amount));
-        public void RemoveCellAt(int index) => _cells.RemoveAt(index);
-
-        public bool IsFull(int sizeStack) => _cells.Count == MaxCells && _cells.TrueForAll(x => x.Amount >= sizeStack);
-        public int GetTotalAmount() => _cells.Sum(x => x.Amount);
-
-        public Cell GetCell(int index) => _cells[index];
-
-        public void Restore(long? resourceId, List<CellSnapshot> cells)
+        public void Restore(long? resourceId, CellSnapshot[] cells)
         {
             SpecId = resourceId;
 
-            for (var i = 0; i < cells.Count; i++)
+            for (var i = 0; i < cells.Length; i++)
             {
-                _cells.Add(new Cell(cells[i].Amount));
+                Cells[i] = new Cell(cells[i].Amount);
             }
         }
 
         public void Reset()
         {
             SpecId = null;
-            _cells.Clear();
+            
+            foreach (var cell in Cells) 
+            {
+                cell.Amount = 0;
+            }
         }
     }
 }

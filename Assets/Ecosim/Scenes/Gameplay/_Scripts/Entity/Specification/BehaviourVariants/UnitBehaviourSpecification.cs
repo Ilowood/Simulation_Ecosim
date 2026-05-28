@@ -1,13 +1,15 @@
 using UnityEngine;
+using Zenject;
 
 namespace Ecosim
 {
     [CreateAssetMenu(menuName = "Ecosim/Entity/Behaviours/UnitBehaviour", fileName = "UnitBehaviour")]
     public class UnitBehaviourSpecification : BehaviourSpecification
     {
-        public override IBehaviour Create()
+        public override IBehaviour Create(Entity owner, DiContainer container)
         {
-            return new UnitBehaviour();
+            var storageSystem = container.Instantiate<StorageSystem>();
+            return new UnitBehaviour(owner, storageSystem);
         }
     }
 }

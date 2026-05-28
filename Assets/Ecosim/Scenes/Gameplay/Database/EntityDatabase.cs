@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public class EntityRegistry : ScriptableObject
+    public class EntityDatabase : ScriptableObject
     {
         [HideInInspector, SerializeField] private List<EntitySpecification> _specifications = new();
 

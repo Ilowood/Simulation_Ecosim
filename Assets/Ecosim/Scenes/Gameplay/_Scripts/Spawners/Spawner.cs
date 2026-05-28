@@ -6,9 +6,9 @@ using System;
 
 namespace Ecosim
 {
-    public class Spawner
+    public class SpawnSystem
     {
-        private readonly EntityRegistry _registry;
+        private readonly EntityDatabase _database;
         private readonly EntityFactory _factory;
         private readonly SpawnerConfig _config;
 
@@ -16,9 +16,9 @@ namespace Ecosim
 
         private Transform _globalContainer;
 
-        public Spawner(EntityFactory factory, SpawnerConfig config, EntityRegistry registry)
+        public SpawnSystem(EntityFactory factory, EntityDatabase database, SpawnerConfig config)
         {
-            _registry = registry;
+            _database = database;
             _factory = factory;
             _config = config;
         }
@@ -30,7 +30,7 @@ namespace Ecosim
 
             foreach (var config in _config.PoolConfigs)
             {
-                var spec = _registry.GetById(config.SpecId);
+                var spec = _database.GetById(config.SpecId);
                 
                 var container = new GameObject($"Pool_{spec.SpecId}").transform;
                 container.SetParent(_globalContainer); 

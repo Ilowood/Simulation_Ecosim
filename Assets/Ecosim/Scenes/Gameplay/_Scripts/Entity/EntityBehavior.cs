@@ -1,8 +1,10 @@
+using Zenject;
+
 namespace Ecosim
 {
     public interface IBehaviour
     {
-        void Tick(Entity entity, WorldContext context, float deltaTime, float scale);
+        void Tick(WorldContext context, float deltaTime, float scale);
     }
 
     public class EntityBehavior
@@ -11,14 +13,14 @@ namespace Ecosim
 
         public IEntityTask Task { get; private set; }
 
-        public EntityBehavior(BehaviourSpecification behaviour)
+        public EntityBehavior(IBehaviour behaviour)
         {
-            _behaviour = behaviour?.Create();
+            _behaviour = behaviour;
         }
 
-        public void Tick(Entity entity, WorldContext context, float deltaTime, float scale)
+        public void Tick(WorldContext context, float deltaTime, float scale)
         {
-            _behaviour?.Tick(entity, context, deltaTime, scale);
+            _behaviour?.Tick(context, deltaTime, scale);
             Task?.Tick(deltaTime, scale);
         }
 

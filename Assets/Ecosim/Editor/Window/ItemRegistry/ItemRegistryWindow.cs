@@ -5,28 +5,28 @@ namespace Ecosim.Editor
 {
     public class ItemRegistryWindow : EditorWindow 
     {
-        private const string ITEM_REGISTRY_SEARCH_FILTER = "t:ItemRegistry";
-        private const string ENTITY_REGISTRY_SEARCH_FILTER = "t:EntityRegistry";
+        private const string ITEM_REGISTRY_SEARCH_FILTER = "t:ItemDatabase";
+        private const string ENTITY_REGISTRY_SEARCH_FILTER = "t:EntityDatabase";
 
         [MenuItem("Ecosim/Item Registry")]
         private static void ShowEditor()
         {
-            var itemAsset = EcosimEditorUtils.FindRegistry<ItemRegistry>(ITEM_REGISTRY_SEARCH_FILTER);
+            var itemAsset = EcosimEditorUtils.FindRegistry<ItemDatabase>(ITEM_REGISTRY_SEARCH_FILTER);
             var itemRegistry = itemAsset != null 
                 ? itemAsset 
-                : EcosimEditorUtils.CreateAsset<ItemRegistry>(ItemRegistry.PATH);
+                : EcosimEditorUtils.CreateAsset<ItemDatabase>(ItemDatabase.PATH);
 
-            var entityAsset = EcosimEditorUtils.FindRegistry<EntityRegistry>(ENTITY_REGISTRY_SEARCH_FILTER);
+            var entityAsset = EcosimEditorUtils.FindRegistry<EntityDatabase>(ENTITY_REGISTRY_SEARCH_FILTER);
             var entityRegistry = entityAsset != null 
                 ? entityAsset 
-                : EcosimEditorUtils.CreateAsset<EntityRegistry>(EntityRegistry.PATH);
+                : EcosimEditorUtils.CreateAsset<EntityDatabase>(EntityDatabase.PATH);
 
-            AutoPopulateRegistry(itemRegistry, entityRegistry);
+            AutoItemRegistry(itemRegistry, entityRegistry);
             Selection.activeObject = itemRegistry;
             EditorGUIUtility.PingObject(itemRegistry);
         }
 
-        private static void AutoPopulateRegistry(ItemRegistry itemRegistry, EntityRegistry entityRegistry) 
+        private static void AutoItemRegistry(ItemDatabase itemRegistry, EntityDatabase entityRegistry) 
         {
             itemRegistry.Clear();
 

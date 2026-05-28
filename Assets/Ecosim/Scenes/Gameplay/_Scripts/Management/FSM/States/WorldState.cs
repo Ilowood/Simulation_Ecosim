@@ -36,8 +36,10 @@ namespace Ecosim
         public void Enter()
         {
             _view.Open(_world);
-            var storage = _world.GetById(0).Get<StorageComponent>();
-            StorageService.TryAdd(storage, 5644808556783927713, 30, true);
+
+            // var entity = _world.SpawnAndRegister(5335613391166528385);
+            // var storage = _world.GetById(0).Get<StorageComponent>();
+            // StorageService.TryAdd(storage, 5644808556783927713, 30, true);
 
             _world.SetPause(false);
             
@@ -103,11 +105,11 @@ namespace Ecosim
             {
                 _world.Tick(Time.deltaTime, _currentTimeScale);
 
-                if (_world.GetTrackedCount() == 0)
-                {
-                    _fsm.EnterIn(StateGameplay.ReportState);
-                    return;
-                }
+                // if (_world.GetTrackedCount() == 0)
+                // {
+                //     _fsm.EnterIn(StateGameplay.ReportState);
+                //     return;
+                // }
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
             }

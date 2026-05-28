@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Unity.AI.Navigation;
 using UnityEngine;
 using Untils;
 
@@ -8,14 +9,16 @@ namespace Ecosim
     {
         private readonly FSMGameplay _fsm;
         private readonly World _world;
+        private readonly NavMeshSurface _surface;
         private readonly LoadView _view;
         private readonly ISaveService _saveService;
 
-        public InitState(FSMGameplay fsm, World world, LoadView view, ISaveService saveService)
+        public InitState(FSMGameplay fsm, World world, NavMeshSurface surface, LoadView view, ISaveService saveService)
         {
             _fsm = fsm;
             _saveService = saveService;
             _world = world;
+            _surface = surface;
             _view = view;
         }
 
@@ -33,6 +36,7 @@ namespace Ecosim
             var startTime = Time.realtimeSinceStartup;
 
             await _world.InitAsync(_saveService.LoadWorld("Ecosim")); 
+            // await _surface.UpdateNavMesh(_surface.navMeshData);
 
             var elapsed = Time.realtimeSinceStartup - startTime;
             var minDuration = 2.0f;

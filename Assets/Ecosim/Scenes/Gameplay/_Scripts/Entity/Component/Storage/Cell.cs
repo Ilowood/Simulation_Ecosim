@@ -4,9 +4,9 @@ namespace Ecosim
 {
     public class Cell
     {
-        public ushort Amount = 0;
+        public int Amount = 0;
 
-        public Cell(ushort amount)
+        public Cell(int amount)
         {
             Amount = amount;
         }

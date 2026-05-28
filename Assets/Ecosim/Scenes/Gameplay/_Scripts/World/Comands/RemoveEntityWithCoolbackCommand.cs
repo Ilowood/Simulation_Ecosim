@@ -1,14 +1,13 @@
 namespace Ecosim
 {
-    public class RemoveEntityWithCoolbackCommand : ISimulationCommand
+    public class RemoveEntityWithCoolbackCommand : IWorldCommand
     {
         private readonly Entity _entity;
 
-        public int Priority { get; private set; }
+        public int Priority { get; private set; } = 0;
 
         public RemoveEntityWithCoolbackCommand(Entity entity)
         {
-            Priority = 0;
             _entity = entity;
         }
 

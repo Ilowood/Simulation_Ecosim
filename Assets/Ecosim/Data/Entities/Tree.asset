@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
   _specId: 5335613391166528385
   <Name>k__BackingField: Tree
-  <Type>k__BackingField: 2
+  <Type>k__BackingField: 1
   Behaviour: {fileID: 11400000, guid: c8231f954594341a7be639251c913f45, type: 2}
-  Configuration: []
+  Configuration:
+  - {fileID: 11400000, guid: 9428c52373c0647dc911d9fb7c6e6357, type: 2}

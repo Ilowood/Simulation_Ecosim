@@ -74,4 +74,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9720e16d7df0f47448c761af70180993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EcosimInstaller
-  _registry: {fileID: 11400000, guid: 761699595d90c44349747b0ae88fcec5, type: 2}
+  _entityDatabase: {fileID: 11400000, guid: 761699595d90c44349747b0ae88fcec5, type: 2}
+  _itemDatabase: {fileID: 11400000, guid: 312691657da7644d8a221f697bcfbc16, type: 2}

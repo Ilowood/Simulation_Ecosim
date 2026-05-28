@@ -1,39 +1,37 @@
-using System.Collections.Generic;
-
 namespace Ecosim
 {
-    public interface IReadOnlyEntityStorage
-    {
-        IReadOnlyList<Entity> GetEntitiesBySpecId(long specId);
-        int GetCount(long specId);
-        int GetTrackedCount();
-    }
-
     public struct WorldContext
     {
-        private readonly World _simulation;
+        private readonly World _world;
 
-        public IReadOnlyEntityStorage Entities { get; private set; }
+        public TaskFactory TaskFactory { get; }
+        public IEntityRegistry Registry { get; }
 
-        public WorldContext(World simulation)
+        public WorldContext(World world)
         {
-            _simulation = simulation;
-            Entities = simulation;
+            _world = world;
+            
+            TaskFactory = world.TaskFactory;
+            Registry = world.Registry;
         }
 
         public void RemoveEntityWithoutCoolbackCommand(Entity entity)
         {
-            _simulation.AddCommand(new RemoveEntityWithoutCoolbackCommand(entity));
+            entity.Deactivate();
+            _world.AddCommand(new RemoveEntityWithoutCoolbackCommand(entity));
         }
 
         public void RemoveEntityWithCoolbackCommand(Entity entity)
         {
-            _simulation.AddCommand(new RemoveEntityWithCoolbackCommand(entity));
+            entity.Deactivate();
+            _world.AddCommand(new RemoveEntityWithCoolbackCommand(entity));
         }
 
         public void SpawnEntityCompand(long specId)
         {
-            _simulation.AddCommand(new SpawnEntityCommand(specId));
+            _world.AddCommand(new SpawnEntityCommand(specId));
         }
     }
 }
+
+
