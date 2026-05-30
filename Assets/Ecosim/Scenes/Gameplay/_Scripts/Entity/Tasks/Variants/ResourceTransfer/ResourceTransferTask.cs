@@ -5,7 +5,7 @@ namespace Ecosim
     public class ResourceTransferTask : IEntityTask
     {
         private readonly Entity _owner;
-        private readonly Entity _targetStorageEntity;
+        private readonly Entity _target;
         private readonly StorageSystem _storageSystem;
         private readonly long _resourceSpecId;
         
@@ -25,12 +25,12 @@ namespace Ecosim
         {
             _storageSystem = storageSystem;
             _owner = owner;
-            _targetStorageEntity = targetStorageEntity;
+            _target = targetStorageEntity;
             _resourceSpecId = resourceId;
             _amount = amount;
 
             _ownerStorage = _owner.Get<StorageComponent>();
-            _targetStorage = _targetStorageEntity.Get<StorageComponent>();
+            _targetStorage = _target.Get<StorageComponent>();
 
             _timer = startTime;
         }
@@ -71,13 +71,13 @@ namespace Ecosim
 
         public ITaskSnapshot GetSnapshot()
         {
-            return new ResourceTransferSnapshot(_owner.Id, _resourceSpecId, _amount, _timer);
+            return new ResourceTransferSnapshot(_target.Id, _resourceSpecId, _amount, _timer);
         }
 
         public void Restore(Entity root, ITaskSnapshot snapshot)
         {
             _ownerStorage = root.Get<StorageComponent>();
-            _targetStorage = _targetStorageEntity.Get<StorageComponent>();
+            _targetStorage = _target.Get<StorageComponent>();
         }
     }
 }
