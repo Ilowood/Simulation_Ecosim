@@ -63,22 +63,18 @@ namespace Ecosim
 
         public ITaskSnapshot GetSnapshot()
         {
-            var snapshot = new MoveToPointSnapshot
-            {
-                
-            };
-
+            var snapshot = new MoveToPointSnapshot(_destination);
             return snapshot;
         }
 
-        public void Restore(Entity root, ITaskSnapshot snapshot)
-        {
-            _component = root.Get<NavigationComponent>();
-            _agent = root.GetComponent<NavMeshAgent>();
+        // public void Restore(Entity root, ITaskSnapshot snapshot)
+        // {
+        //     _component = root.Get<NavigationComponent>();
+        //     _agent = root.GetComponent<NavMeshAgent>();
 
-            _destination = _component.Destination;
-            _startSpeed = _agent.speed;
-        }
+        //     _destination = _component.Destination;
+        //     _startSpeed = _agent.speed;
+        // }
 
         private bool IsReached()
         {

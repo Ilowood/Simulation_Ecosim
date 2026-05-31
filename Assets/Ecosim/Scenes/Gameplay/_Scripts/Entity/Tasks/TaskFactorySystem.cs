@@ -14,10 +14,10 @@ namespace Ecosim
                 _factories[factory.Variant] = factory;
         }
 
-        public IEntityTask Create(TaskVariants variant, Entity owner, ITaskParams parameters)
+        public IEntityTask Create(TaskVariants variant, WorldContext context, Entity owner, ITaskParams parameters)
         {
             if (_factories.TryGetValue(variant, out var factory))
-                return factory.Create(owner, parameters);
+                return factory.Create(context, owner, parameters);
 
             throw new System.Exception($"No factory for variant: {variant}");
         }

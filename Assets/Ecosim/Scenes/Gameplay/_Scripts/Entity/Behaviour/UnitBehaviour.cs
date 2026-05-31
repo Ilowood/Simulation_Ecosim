@@ -52,14 +52,12 @@ namespace Ecosim
                     {
                         if (Vector3.Distance(closestWarehouse.transform.position, _owner.transform.position) > 1f)
                         {
-                            Debug.Log(2);
                             _owner.Behavior.SetAndStartTask(new MoveToPointTask(_owner, closestWarehouse.transform.position));
                             return;
                         }
                         
                         if (_storageSystem.HasItem(_storageOwner, specIdWood))
                         {
-                            Debug.Log(1);
                             var count = _storageSystem.GetItemCount(_storageOwner, specIdWood);
 
                             _owner.Behavior.SetAndStartTask(new ResourceTransferTask(

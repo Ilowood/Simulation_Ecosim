@@ -38,12 +38,7 @@ namespace Ecosim
         public void Puase() { }
         public void Resume() { }
 
-        public void Start()
-        {
-            Debug.Log($"ResourceTransferTask!");
-            Debug.Log($"owner has item: {_storageSystem.HasItem(_ownerStorage, _resourceSpecId)}");
-            Debug.Log($"target has space:  {_storageSystem.CanAddAny(_targetStorage, _resourceSpecId)}");
-        }
+        public void Start() { }
 
         public void Tick(float deltaTime, float scale)
         {
@@ -74,10 +69,10 @@ namespace Ecosim
             return new ResourceTransferSnapshot(_target.Id, _resourceSpecId, _amount, _timer);
         }
 
-        public void Restore(Entity root, ITaskSnapshot snapshot)
-        {
-            _ownerStorage = root.Get<StorageComponent>();
-            _targetStorage = _target.Get<StorageComponent>();
-        }
+        // public void Restore(Entity root, ITaskSnapshot snapshot)
+        // {
+        //     _ownerStorage = root.Get<StorageComponent>();
+        //     _targetStorage = _target.Get<StorageComponent>();
+        // }
     }
 }

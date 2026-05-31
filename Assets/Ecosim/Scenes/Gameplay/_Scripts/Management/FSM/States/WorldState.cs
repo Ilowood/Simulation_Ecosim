@@ -37,8 +37,9 @@ namespace Ecosim
         {
             _view.Open(_world);
 
-            // var entity = _world.SpawnAndRegister(5335613391166528385);
-            // var storage = _world.GetById(0).Get<StorageComponent>();
+            // var entity = _world.AddEntity(5072577398122940851);
+            // _world.AddEntity();
+            // var storage = entity.Get<StorageComponent>();
             // StorageService.TryAdd(storage, 5644808556783927713, 30, true);
 
             _world.SetPause(false);

@@ -4,15 +4,15 @@ namespace Ecosim
     {
         public TaskVariants Variant => TaskVariants.Move;
 
-        public IEntityTask Create(Entity owner, ITaskParams parameters)
+        public IEntityTask Create(WorldContext context, Entity owner, ITaskParams parameters)
         {
             if (parameters is MoveToPointParams p)
-                return Create(owner, p);
+                return Create(context, owner, p);
             
             throw new System.ArgumentException("Invalid params");
         }
 
-        public IEntityTask Create(Entity owner, MoveToPointParams parameters)
+        public IEntityTask Create(WorldContext context, Entity owner, MoveToPointParams parameters)
         {
             return new MoveToPointTask(owner, parameters.Destination);
         }

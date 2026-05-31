@@ -4,7 +4,7 @@ namespace Ecosim
 {
     public class NavigationComponent : IEntityComponent
     {
-        public Vector3 Destination { get; set; }
+        public Vector3 Destination;
 
         public void Reset()
         {
@@ -13,12 +13,12 @@ namespace Ecosim
 
         public IComponentSnapshot GetSnapshot()
         {
-            return new NavMeshSnapshot(Destination);
+            return new NavigationSnapshot(Destination);
         }
 
         public void Restore(IComponentSnapshot snapshot)
         {
-            if (snapshot is NavMeshSnapshot data)
+            if (snapshot is NavigationSnapshot data)
             {
                 Destination = data.Destination;
             }

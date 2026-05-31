@@ -13,6 +13,6 @@ namespace Ecosim
         void Resume();
 
         ITaskSnapshot GetSnapshot();
-        void Restore(Entity root, ITaskSnapshot snapshot);
+        // void Restore(Entity root, ITaskSnapshot snapshot);
     }
 }

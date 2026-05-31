@@ -12,7 +12,7 @@ namespace Ecosim
         {
             Container.BindInterfacesAndSelfTo<EntityRegistry>().AsSingle();
             Container.Bind<World>().AsSingle();
-
+            
             InstallData();
             InstallFractory();
             InstallView();
@@ -28,6 +28,7 @@ namespace Ecosim
 
         private void InstallFractory()
         {
+            Container.BindInterfacesAndSelfTo<SequenceTaskrFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceTransferFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<MoveToPointFactory>().AsSingle();
 

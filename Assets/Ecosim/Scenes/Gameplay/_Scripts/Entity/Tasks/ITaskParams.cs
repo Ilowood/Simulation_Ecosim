@@ -1,4 +1,7 @@
 namespace Ecosim
 {
-    public interface ITaskParams { }
+    public interface ITaskParams
+    {
+        TaskVariants Variants { get; }
+    }
 }

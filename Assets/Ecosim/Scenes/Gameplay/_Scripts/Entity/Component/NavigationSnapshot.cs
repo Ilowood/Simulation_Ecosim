@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public class NavMeshSnapshot : IComponentSnapshot
+    public class NavigationSnapshot : IComponentSnapshot
     {
         public readonly Vector3 Destination;
 
         public Type ComponentType => typeof(NavigationComponent);
 
-        public NavMeshSnapshot(Vector3 destination)
+        public NavigationSnapshot(Vector3 destination)
         {
             Destination = destination;
         }

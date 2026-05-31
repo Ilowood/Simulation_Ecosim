@@ -2,8 +2,8 @@ namespace Ecosim
 {
     public class ResourceComponent : IEntityComponent
     {
-        public int Amount { get; set; }
-        public int Capacity { get; private set; }
+        public int Amount;
+        public int Capacity { get; }
 
         public ResourceComponent(int capacity)
         {

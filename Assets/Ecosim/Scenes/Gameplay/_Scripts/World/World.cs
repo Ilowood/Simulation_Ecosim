@@ -72,25 +72,28 @@ namespace Ecosim
 
         public void Restore(WorldSnapshot worldSnapshot)
         {
-            Registry.Clear();
-            Registry.Restore(worldSnapshot.IdGenerator);
-
-            var entities = new List<Entity>(worldSnapshot.Entities.Count);
-            foreach (var snapshot in worldSnapshot.Entities)
+            if (worldSnapshot != null)
             {
-                var entity = _spawner.Spawn(snapshot.InstanceId, snapshot.SpecId);
+                Registry.Clear();
+                Registry.Restore(worldSnapshot.IdGenerator);
 
-                entities.Add(entity);
-                entity.Restore(snapshot);
-                Registry.Register(entity);
-            }
-
-            for (var i = 0; i < worldSnapshot.Entities.Count; i++)
-            {
-                if (worldSnapshot.Entities[i].Task != null)
+                var entities = new List<Entity>(worldSnapshot.Entities.Count);
+                foreach (var snapshot in worldSnapshot.Entities)
                 {
-                    entities[i].Behavior.SetAndStartTask(worldSnapshot.Entities[i].Task.CreateTask(_context, entities[i]));
-                    entities[i].Behavior.SetPause(true);
+                    var entity = _spawner.Spawn(snapshot.InstanceId, snapshot.SpecId);
+
+                    entities.Add(entity);
+                    entity.Restore(snapshot);
+                    Registry.Register(entity);
+                }
+
+                for (var i = 0; i < worldSnapshot.Entities.Count; i++)
+                {
+                    if (worldSnapshot.Entities[i].Task != null)
+                    {
+                        entities[i].Behavior.SetAndStartTask(worldSnapshot.Entities[i].Task.CreateTask(_context, entities[i]));
+                        entities[i].Behavior.SetPause(true);
+                    }
                 }
             }
         }

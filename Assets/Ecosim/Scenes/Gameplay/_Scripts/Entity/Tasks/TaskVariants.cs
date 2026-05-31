@@ -4,6 +4,6 @@ namespace Ecosim
     {
         Move = 1,
         TransferResource = 2,
-        
+        SequenceTask = 3,
     }
 }
