@@ -23,7 +23,7 @@ namespace Ecosim
             entity.transform.position = position;
 
             var behavior = specifications.Behaviour?.Create(entity, _container);
-            entity.Setup(specifications.SpecId, specifications.Type, new EntityBehavior(behavior));
+            entity.Setup(specifications.Id, specifications.Type, new EntityBehavior(behavior));
 
             return entity;
         }

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _specId: 5644808556783927713
+  _id: 4873298962958223481
   <Name>k__BackingField: Wood
   <Type>k__BackingField: 2
+  <Icon>k__BackingField: {fileID: 21300000, guid: 5d5201422192a4e3caa4d34fab341336, type: 3}
   Behaviour: {fileID: 0}
   Configuration: []

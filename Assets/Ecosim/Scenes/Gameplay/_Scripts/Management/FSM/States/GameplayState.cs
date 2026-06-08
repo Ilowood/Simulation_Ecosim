@@ -5,10 +5,11 @@ using System.Threading;
 
 namespace Ecosim
 {
-    public class WorldState : ISuspendFSMState<StateGameplay>
+    public class GameplayState : ISuspendFSMState<StateGameplay>
     {
         private readonly FSMGameplay _fsm;
         private readonly ISaveService _saveService;
+        private readonly IInputDeviceProvider _input;
         private readonly HUDView _view;
         private readonly World _world;
 
@@ -18,23 +19,27 @@ namespace Ecosim
         private float _currentTimeScale;
         private CancellationTokenSource _puaseSource;
 
-        public WorldState(FSMGameplay fsm, HUDView view, World world, ISaveService saveService)
+        public GameplayState(FSMGameplay fsm, HUDView view, World world, ISaveService saveService, IInputDeviceProvider input)
         {
             _fsm = fsm;
             _saveService = saveService;
+            _input = input;
 
             _view = view;
             _world = world;
             _currentTimeScale = _speedSteps[_currentSpeedIndex];
             
-            UIHelper.SaveArea(view.SaveArea);
-            view.Init(this);
+            UIHelper.SaveArea(_view.SaveArea);
+            _view.Init(this);
+
+            _input.OnPauseEvent += PauseState;
         }
 
-        public StateGameplay State => StateGameplay.SimulationState;
+        public StateGameplay State => StateGameplay.GameplayState;
 
         public void Enter()
         {
+            _input.OnGameplayEnable();
             _view.Open(_world);
 
             // var entity = _world.AddEntity(5072577398122940851);
@@ -43,8 +48,6 @@ namespace Ecosim
             // StorageService.TryAdd(storage, 5644808556783927713, 30, true);
 
             _world.SetPause(false);
-            
-
             StartLoop();
         }
 
@@ -58,6 +61,7 @@ namespace Ecosim
 
         public void Resume()
         {
+            _input.OnGameplayEnable();
             _world.SetPause(false);
             _view.Open();
             StartLoop();
@@ -96,8 +100,12 @@ namespace Ecosim
 
         private void EndLoop()
         {
-            _puaseSource?.Cancel();
-            _puaseSource?.Dispose();
+            if (_puaseSource != null)
+            {
+                _puaseSource?.Cancel();
+                _puaseSource?.Dispose(); 
+                _puaseSource = null;
+            }
         }
 
         private async UniTaskVoid Loop()
@@ -105,13 +113,6 @@ namespace Ecosim
             while(!_puaseSource.IsCancellationRequested)
             {
                 _world.Tick(Time.deltaTime, _currentTimeScale);
-
-                // if (_world.GetTrackedCount() == 0)
-                // {
-                //     _fsm.EnterIn(StateGameplay.ReportState);
-                //     return;
-                // }
-
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
             }
         }

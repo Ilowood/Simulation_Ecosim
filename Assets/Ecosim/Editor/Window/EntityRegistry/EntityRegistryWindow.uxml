@@ -17,6 +17,7 @@
                 </UIEngine:VisualElement>
                 <UIEngine:TextField label="Name" binding-path="&lt;Name&gt;k__BackingField"/>
                 <UIEditor:EnumField label="Type" binding-path="&lt;Type&gt;k__BackingField"/>
+                <UIEditor:ObjectField label="Icon" binding-path="&lt;Icon&gt;k__BackingField" type="UnityEngine.Sprite, UnityEngine"/>
                 <UIEditor:PropertyField label="Behaviour" binding-path="Behaviour"/>
                 <UIEditor:PropertyField binding-path="Configuration"/>
                 <UIEngine:Button name="DeleteButton" text="Delete" style="background-color: rgb(132, 44, 44); color: white; margin-top: 20px; height: 28px; border-radius: 4px; -unity-font-style: bold;"/>

@@ -152,14 +152,14 @@ namespace Ecosim.Editor
             if (scriptField != null) scriptField.value = MonoScript.FromScriptableObject(_currentSelectedSpec);
 
             var id = _detailsContainer.Q<LongField>("Id");
-            id.value = spec.SpecId;
+            id.value = spec.Id;
 
             var copyBtn = _detailsContainer.Q<Button>("CopyIdButton");
-            copyBtn.clicked += () => GUIUtility.systemCopyBuffer = _currentSelectedSpec.SpecId.ToString();
+            copyBtn.clicked += () => GUIUtility.systemCopyBuffer = _currentSelectedSpec.Id.ToString();
 
             var deleteBtn = _detailsContainer.Q<Button>("DeleteButton");
             deleteBtn.clicked += () => {
-                _registry.Remove(_currentSelectedSpec.SpecId);
+                _registry.Remove(_currentSelectedSpec.Id);
                 EcosimEditorUtils.DeleteAssetFile(_currentSelectedSpec);
                 _detailsContainer.style.display = DisplayStyle.None;
                 RefreshEditorWindow();

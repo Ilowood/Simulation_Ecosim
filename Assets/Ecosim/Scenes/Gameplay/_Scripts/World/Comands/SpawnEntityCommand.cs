@@ -13,7 +13,7 @@ namespace Ecosim
 
         public void Execute(World simulation)
         {
-            simulation.AddEntity(_specId);
+            simulation.CreateEntity(_specId);
         }
     }
 }

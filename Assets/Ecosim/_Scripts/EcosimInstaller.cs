@@ -12,6 +12,8 @@ namespace Ecosim
         {
             Container.Bind<EntityDatabase>().FromInstance(_entityDatabase).AsSingle();
             Container.Bind<ItemDatabase>().FromInstance(_itemDatabase).AsSingle();
+
+            Container.Bind<IInputDeviceProvider>().To<KeyboardMouseProvider>().AsSingle();
         }
     }
 }

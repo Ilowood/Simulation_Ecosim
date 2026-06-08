@@ -17,7 +17,7 @@ namespace Untils
         {
             if (States.TryGetValue(state, out IFSMState<TEnum> stateObj))
             {
-                if (HasState)
+                while (HasState)
                 {
                     StackStates.Pop().Exit();
                 }

@@ -6,9 +6,9 @@ namespace Ecosim
 {
     public class UnitBehaviour : IBehaviour
     {
-        private const long specIdWarehouses = 5026868158493881616;
-        private const long specIdTree = 5335613391166528385;
-        private const long specIdWood = 5644808556783927713;
+        private readonly long _specIdWarehouses;
+        private readonly long _specIdTree;
+        private readonly long _specIdWood;
 
         private readonly StorageSystem _storageSystem;
 
@@ -17,11 +17,15 @@ namespace Ecosim
 
         private const float SearchRadius = 20f;
         
-        public UnitBehaviour(Entity owner, StorageSystem storageSystem)
+        public UnitBehaviour(Entity owner, StorageSystem storageSystem, long specIdWarehouses, long specIdTree, long specIdWood)
         {
             _owner = owner;
             _storageSystem = storageSystem;
             _storageOwner = _owner.Get<StorageComponent>();
+
+            _specIdWarehouses = specIdWarehouses;
+            _specIdTree = specIdTree;
+            _specIdWood = specIdWood;
         }
 
         public void Tick(WorldContext context, float deltaTime, float scale)
@@ -30,7 +34,7 @@ namespace Ecosim
             {
                 if (!_storageSystem.IsAllSlotsReserved(_storageOwner))
                 {
-                    var trees = context.Registry.GetBySpecId(specIdTree);
+                    var trees = context.Registry.GetBySpecId(_specIdTree);
                     var closestTree = FindClosestEntity(trees);
 
                     if (closestTree != null)
@@ -45,7 +49,7 @@ namespace Ecosim
                 }
                 else
                 {
-                    var warehouses = context.Registry.GetBySpecId(specIdWarehouses);
+                    var warehouses = context.Registry.GetBySpecId(_specIdWarehouses);
                     var closestWarehouse = FindClosestEntity(warehouses);
 
                     if (closestWarehouse != null)
@@ -56,15 +60,15 @@ namespace Ecosim
                             return;
                         }
                         
-                        if (_storageSystem.HasItem(_storageOwner, specIdWood))
+                        if (_storageSystem.HasItem(_storageOwner, _specIdWood))
                         {
-                            var count = _storageSystem.GetItemCount(_storageOwner, specIdWood);
+                            var count = _storageSystem.GetItemCount(_storageOwner, _specIdWood);
 
                             _owner.Behavior.SetAndStartTask(new ResourceTransferTask(
                                 _storageSystem, 
                                 _owner, 
                                 closestWarehouse, 
-                                specIdWood, 
+                                _specIdWood, 
                                 count, 
                                 0));
                         }

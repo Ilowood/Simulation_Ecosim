@@ -10,6 +10,6 @@ namespace Ecosim
         
         [field: SerializeField] public int Size { get; private set; }
 
-        public long SpecId => _spec.SpecId;
+        public long SpecId => _spec.Id;
     }
 }

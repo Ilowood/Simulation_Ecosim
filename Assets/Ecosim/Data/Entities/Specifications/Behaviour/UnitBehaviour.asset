@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca89ce769e234bacb5317cf3e420350, type: 3}
   m_Name: UnitBehaviour
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.WorkerBehaviourSpecification
-  _speed: 5
-  _eatToSplit: 2
+  _specIdWarehouses: {fileID: 11400000, guid: 5756ac058f1ab4696a70ed9f0102286a, type: 2}
+  _specIdTree: {fileID: 11400000, guid: 762b076e1432447f4a8a8601a8623b0c, type: 2}
+  _specIdWood: {fileID: 11400000, guid: ff6044898292647ba916cdc08689d6db, type: 2}

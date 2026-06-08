@@ -36,6 +36,11 @@ namespace Ecosim
             return _entitiesBySpecId[specId].Count;
         }
 
+        public bool IsRegistred(Entity entity)
+        {
+            return _entities.ContainsKey(entity.Id) && _entities[entity.Id] == entity;
+        }
+
         public void Register(Entity entity)
         {
             _entities[entity.Id] = entity;

@@ -27,7 +27,7 @@ namespace Ecosim
             for (int i = 0; i < _specifications.Count; i++)
             {
                 if (_specifications[i] != null) 
-                    _locations[_specifications[i].SpecId] = i;
+                    _locations[_specifications[i].Id] = i;
             }
         }
 
@@ -54,7 +54,7 @@ namespace Ecosim
             var isIdTaken = false;
             foreach (var spec in _specifications)
             {
-                if (spec != null && spec.SpecId == specification.SpecId)
+                if (spec != null && spec.Id == specification.Id)
                 {
                     isIdTaken = true;
                     break;

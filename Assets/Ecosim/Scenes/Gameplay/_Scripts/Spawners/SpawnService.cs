@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Untils;
 using Cysharp.Threading.Tasks;
 using System;
+using Utils;
 
 namespace Ecosim
 {
-    public class SpawnSystem
+    public class SpawnService
     {
         private readonly EntityDatabase _database;
         private readonly EntityFactory _factory;
@@ -16,7 +16,7 @@ namespace Ecosim
 
         private Transform _globalContainer;
 
-        public SpawnSystem(EntityFactory factory, EntityDatabase database, SpawnerConfig config)
+        public SpawnService(EntityFactory factory, EntityDatabase database, SpawnerConfig config)
         {
             _database = database;
             _factory = factory;
@@ -25,14 +25,14 @@ namespace Ecosim
 
         public async UniTask InitAsync()
         {
-            _globalContainer = new GameObject("World (Dinamic)").transform;
+            _globalContainer = new GameObject("World (Dynamic)").transform;
             var currentFrameCount = 0;
 
             foreach (var config in _config.PoolConfigs)
             {
                 var spec = _database.GetById(config.SpecId);
                 
-                var container = new GameObject($"Pool_{spec.SpecId}").transform;
+                var container = new GameObject($"Pool_{spec.Id}").transform;
                 container.SetParent(_globalContainer); 
 
                 var pool = new PoolObj<Entity>(() => Instantiate(spec, container), Release, Get);
@@ -63,12 +63,9 @@ namespace Ecosim
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
-        public Entity Spawn(long instanceId, long specId)
+        public Entity Spawn(long specId)
         {
-            var entity = _pools[specId].Get();
-            
-            entity.Init(instanceId);
-            return entity;
+            return _pools[specId].Get();
         }
 
         public void Despawn(Entity entity)

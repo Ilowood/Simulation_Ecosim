@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ItemDatabase
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.ItemRegistry
   _configs:
-  - _specId: 5644808556783927713
+  - _specId: 4873298962958223481
     _isStackable: 1

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
   m_Name: Tree
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _specId: 5335613391166528385
+  _id: 4852661101533325499
   <Name>k__BackingField: Tree
   <Type>k__BackingField: 1
+  <Icon>k__BackingField: {fileID: 21300000, guid: d821481a20c4149bf8950f09191e42cd, type: 3}
   Behaviour: {fileID: 11400000, guid: c8231f954594341a7be639251c913f45, type: 2}
   Configuration:
   - {fileID: 11400000, guid: 9428c52373c0647dc911d9fb7c6e6357, type: 2}

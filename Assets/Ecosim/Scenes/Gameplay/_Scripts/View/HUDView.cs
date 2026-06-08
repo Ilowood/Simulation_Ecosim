@@ -20,7 +20,7 @@ namespace Ecosim
 
         private Dictionary<EntityType, Action> _deathHandlers;
 
-        public void Init(WorldState state)
+        public void Init(GameplayState state)
         {
             _speed.onClick.AddListener(() => state.ToggleSpeed());
             _pause.onClick.AddListener(() => state.PauseState());

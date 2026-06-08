@@ -35,7 +35,7 @@ namespace Ecosim.Editor
                 if (spec.Type == EntityType.Resource)
                 {
                     var config = new ItemConfig();
-                    config.Setup(spec.SpecId);
+                    config.Setup(spec.Id);
 
                     itemRegistry.Add(config);
                 }

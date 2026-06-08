@@ -6,7 +6,7 @@ namespace Ecosim
 {
     public class World
     {
-        private readonly SpawnSystem _spawner;
+        private readonly SpawnService _spawner;
         
         private readonly Queue<IWorldCommand> _commands = new();
         private readonly WorldContext _context;
@@ -14,7 +14,7 @@ namespace Ecosim
         public EntityRegistry Registry { get; }
         public TaskFactory TaskFactory { get; }
 
-        public World(EntityRegistry registry, SpawnSystem spawner, TaskFactory taskFactory)
+        public World(EntityRegistry registry, SpawnService spawner, TaskFactory taskFactory)
         {
             Registry = registry;
             TaskFactory = taskFactory;
@@ -26,10 +26,9 @@ namespace Ecosim
         public event Action<EntityType> OnEntityAdded;
         public event Action<EntityType> OnEntityRemoved;
 
-        public async UniTask InitAsync(WorldSnapshot data)
+        public async UniTask InitAsync()
         {
             await _spawner.InitAsync(); 
-            Restore(data);
         }
 
         public void Deinit()
@@ -74,13 +73,16 @@ namespace Ecosim
         {
             if (worldSnapshot != null)
             {
+                _commands.Clear();
+
                 Registry.Clear();
                 Registry.Restore(worldSnapshot.IdGenerator);
 
                 var entities = new List<Entity>(worldSnapshot.Entities.Count);
                 foreach (var snapshot in worldSnapshot.Entities)
                 {
-                    var entity = _spawner.Spawn(snapshot.InstanceId, snapshot.SpecId);
+                    var entity = _spawner.Spawn(snapshot.SpecId);
+                    entity.Init(snapshot.InstanceId);
 
                     entities.Add(entity);
                     entity.Restore(snapshot);
@@ -114,13 +116,28 @@ namespace Ecosim
             OnEntityRemoved?.Invoke(entity.Type);
         }
 
-        public Entity AddEntity(long specId)
+        public Entity CreateEntity(long specId)
         {
-            var entity = _spawner.Spawn(Registry.GenerateNextId(), specId);
+            var entity = _spawner.Spawn(specId);
+            entity.Init(Registry.GenerateNextId());
+
             Registry.Register(entity);
             
             OnEntityAdded?.Invoke(entity.Type);
             return entity;
+        }
+
+        public bool AddEntity(Entity entity)
+        {
+            if (!Registry.IsRegistred(entity))
+            {
+                entity.Init(Registry.GenerateNextId());
+                Registry.Register(entity);
+
+                return true;
+            }
+
+            return false;
         }
 
         private void RemoveEntity(Entity entity)

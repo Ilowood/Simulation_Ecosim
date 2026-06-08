@@ -1,6 +1,5 @@
 using Zenject;
 using UnityEngine;
-using Unity.AI.Navigation;
 
 namespace Ecosim
 {
@@ -28,12 +27,15 @@ namespace Ecosim
 
         private void InstallFractory()
         {
+            Container.Bind<EntityFactory>().AsSingle();
+
             Container.BindInterfacesAndSelfTo<SequenceTaskrFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourceTransferFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<MoveToPointFactory>().AsSingle();
-
-            Container.Bind<EntityFactory>().AsSingle();
             Container.Bind<TaskFactory>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<BuildToolPipelineFactory>().AsSingle();
+            Container.Bind<ToolFactory>().AsSingle();
         }
 
         private void InstallView()
@@ -42,22 +44,23 @@ namespace Ecosim
             Container.Bind<HUDView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<PauseView>().FromComponentInHierarchy().AsSingle();
             Container.Bind<ReportView>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<NavMeshSurface>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<LevelEditorView>().FromComponentInHierarchy().AsSingle();
         }
 
         private void InstallSystem()
         {
-            Container.Bind<SpawnSystem>().AsSingle();
+            Container.Bind<SpawnService>().AsSingle();
             Container.Bind<StorageSystem>().AsSingle();
         }
 
         private void InstallFSM()
         {
             Container.BindInterfacesAndSelfTo<InitState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<WorldState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameplayState>().AsSingle();
             Container.BindInterfacesAndSelfTo<PauseState>().AsSingle();
             Container.BindInterfacesAndSelfTo<ReportState>().AsSingle();
             Container.BindInterfacesAndSelfTo<RestartState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelEditorState>().AsSingle();
 
             Container.Bind<FSMGameplay>().AsSingle();
         }

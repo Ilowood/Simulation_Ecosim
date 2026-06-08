@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
   m_Name: Warehouse
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _specId: 5026868158493881616
+  _id: 5733914359475857139
   <Name>k__BackingField: Warehouse
   <Type>k__BackingField: 3
+  <Icon>k__BackingField: {fileID: 21300000, guid: 9784f1cea81054ae3987e345de7ec2b1, type: 3}
   Behaviour: {fileID: 11400000, guid: 6236bc35cf8de48caa4cbd5eedd6285e, type: 2}
   Configuration:
   - {fileID: 11400000, guid: 633219080dd074cb2917823df608c9e6, type: 2}
