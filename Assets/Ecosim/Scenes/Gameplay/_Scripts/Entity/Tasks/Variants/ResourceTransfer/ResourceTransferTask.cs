@@ -6,7 +6,7 @@ namespace Ecosim
     {
         private readonly Entity _owner;
         private readonly Entity _target;
-        private readonly StorageSystem _storageSystem;
+        private readonly StorageServic _storageSystem;
         private readonly long _resourceSpecId;
         
         private StorageComponent _ownerStorage;
@@ -21,7 +21,7 @@ namespace Ecosim
 
         public TaskVariants Variants => TaskVariants.TransferResource;
 
-        public ResourceTransferTask(StorageSystem storageSystem, Entity owner, Entity targetStorageEntity, long resourceId, int amount, float startTime)
+        public ResourceTransferTask(StorageServic storageSystem, Entity owner, Entity targetStorageEntity, long resourceId, int amount, float startTime)
         {
             _storageSystem = storageSystem;
             _owner = owner;

@@ -12,6 +12,7 @@ namespace Ecosim
         private readonly IInputDeviceProvider _input;
         private readonly HUDView _view;
         private readonly World _world;
+        private readonly PauseSystem _pauseSystem;
 
         private readonly float[] _speedSteps = { 0.5f, 2.0f, 10.0f };
 
@@ -32,7 +33,7 @@ namespace Ecosim
             UIHelper.SaveArea(_view.SaveArea);
             _view.Init(this);
 
-            _input.OnPauseEvent += PauseState;
+            _pauseSystem = new PauseSystem(_input, PauseState);
         }
 
         public StateGameplay State => StateGameplay.GameplayState;
@@ -112,7 +113,11 @@ namespace Ecosim
         {
             while(!_puaseSource.IsCancellationRequested)
             {
+                _input.Sync();
+                _pauseSystem.Tick();
                 _world.Tick(Time.deltaTime, _currentTimeScale);
+                _input.Tick();
+
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
             }
         }

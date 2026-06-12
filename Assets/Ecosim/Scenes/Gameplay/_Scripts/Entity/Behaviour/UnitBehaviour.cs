@@ -10,14 +10,14 @@ namespace Ecosim
         private readonly long _specIdTree;
         private readonly long _specIdWood;
 
-        private readonly StorageSystem _storageSystem;
+        private readonly StorageServic _storageSystem;
 
         private readonly Entity _owner;
         private StorageComponent _storageOwner;
 
         private const float SearchRadius = 20f;
         
-        public UnitBehaviour(Entity owner, StorageSystem storageSystem, long specIdWarehouses, long specIdTree, long specIdWood)
+        public UnitBehaviour(Entity owner, StorageServic storageSystem, long specIdWarehouses, long specIdTree, long specIdWood)
         {
             _owner = owner;
             _storageSystem = storageSystem;

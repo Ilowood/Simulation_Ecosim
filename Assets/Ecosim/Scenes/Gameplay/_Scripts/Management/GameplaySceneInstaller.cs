@@ -50,7 +50,7 @@ namespace Ecosim
         private void InstallSystem()
         {
             Container.Bind<SpawnService>().AsSingle();
-            Container.Bind<StorageSystem>().AsSingle();
+            Container.Bind<StorageServic>().AsSingle();
         }
 
         private void InstallFSM()

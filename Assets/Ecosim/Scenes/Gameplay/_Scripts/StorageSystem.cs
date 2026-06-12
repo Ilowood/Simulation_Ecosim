@@ -2,11 +2,11 @@ using System;
 
 namespace Ecosim
 {
-    public class StorageSystem
+    public class StorageServic
     {
         private readonly ItemDatabase _registry;
 
-        public StorageSystem(ItemDatabase registry)
+        public StorageServic(ItemDatabase registry)
         {
             _registry = registry;
         }

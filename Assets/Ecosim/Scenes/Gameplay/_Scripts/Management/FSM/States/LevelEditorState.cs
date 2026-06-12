@@ -99,7 +99,10 @@ namespace Ecosim
         {
             while(!_puaseSource.IsCancellationRequested)
             {
+                _input.Sync();
                 _currentTool?.Tick();
+                _input.Tick();
+                
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
             }
         }

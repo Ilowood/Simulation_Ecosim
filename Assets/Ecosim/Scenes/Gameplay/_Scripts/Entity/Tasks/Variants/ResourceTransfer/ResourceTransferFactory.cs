@@ -5,10 +5,10 @@ namespace Ecosim
 {
     public class ResourceTransferFactory : ITaskFactory
     {
-        private StorageSystem _storageSystem;
+        private StorageServic _storageSystem;
 
         [Inject]
-        public void Init(StorageSystem storageSystem)
+        public void Init(StorageServic storageSystem)
         {
             _storageSystem = storageSystem;
         }

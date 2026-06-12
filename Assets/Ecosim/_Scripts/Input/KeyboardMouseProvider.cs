@@ -1,95 +1,160 @@
-using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Ecosim
 {
-    public class KeyboardMouseProvider : IInputDeviceProvider, IDisposable, EcosimInput.IGameplayActions, EcosimInput.IMenuActions, EcosimInput.IEditActions
+    public struct ActionKey
     {
-        private EcosimInput _input;
+        public bool IsPressed;
+        public bool WasPressed;
 
-        public Vector2 CursorPosition => Mouse.current.position.ReadValue();
+        public InputStartContext StartContext;
+    }
+
+    public enum InputStartContext : byte
+    {
+        None = 0,
+        World = 1,
+        Interface = 2
+    }
+
+    public class KeyboardMouseProvider : IInputDeviceProvider, EcosimInput.IGameplayActions, EcosimInput.IEditActions, EcosimInput.IMenuActions
+    {
+        private readonly EcosimInput _input = new();
+        private readonly ActionKey[] _stateActionKeys = new ActionKey[InputActionButtonId.TotalButtons];
+        private readonly float[] _axies = new float[InputAxisId.TotalAxes];
 
         public KeyboardMouseProvider()
         {
-            _input = new EcosimInput();
-
             _input.Edit.SetCallbacks(this);
             _input.Gameplay.SetCallbacks(this);
             _input.Menu.SetCallbacks(this);
         }
 
-        public event Action<PointerInputEvent> OnWorldLayerLeftMousePress;
-        public event Action<PointerInputEvent> OnWorldLayerLeftMouseRelease;
-        public event Action<PointerInputEvent> OnToolLayerLeftMousePress;
-        public event Action<PointerInputEvent> OnToolLayerLeftMouseRelease;
+        public bool IsActionKeyState(ushort actionKeyId, ActionKeyState state, InputStartContext mode) => state == GetActionKeyState(actionKeyId, mode);
+        public InputStartContext GetActionStartContext(ushort actionKeyId) => _stateActionKeys[actionKeyId].StartContext;
+        public float GetAxisValue(ushort actionAxisId) => _axies[actionAxisId];
 
-        public event Action<Vector2> OnMoveEvent;
-        public event Action OnPauseEvent;
-        public event Action OnResumeEvent;
-
-        public void OnMenuEnable()
-        {
-            _input.Menu.Enable();
-            _input.Edit.Disable();
-            _input.Gameplay.Disable();
+        public void OnMenuEnable() 
+        { 
+            _input.Edit.Disable(); 
+            _input.Gameplay.Disable(); 
+            
+            ResetInput(); 
+            _input.Menu.Enable(); 
         }
         
-        public void OnGameplayEnable()
-        {
-            _input.Gameplay.Enable();
-            _input.Edit.Disable();
-            _input.Menu.Disable();
+        public void OnGameplayEnable() 
+        { 
+            _input.Edit.Disable(); 
+            _input.Menu.Disable(); 
+            
+            ResetInput(); 
+            _input.Gameplay.Enable(); 
         }
 
-        public void OnEditorEnable()
-        {
-            _input.Edit.Enable();
-            _input.Gameplay.Disable();
-            _input.Menu.Disable();
-        }
-        
-        public void Dispose()
-        {
-            _input.Dispose();
+        public void OnEditorEnable() 
+        { 
+            _input.Gameplay.Disable(); 
+            _input.Menu.Disable(); 
+            
+            ResetInput(); 
+            _input.Edit.Enable(); 
         }
 
-        void EcosimInput.IGameplayActions.OnLeftClick(CallbackContext context)
+        public void Sync()
         {
-            var inputEvent = new PointerInputEvent(CursorPosition);
-
-            switch (context.phase)
+            for (var i = 0; i < _stateActionKeys.Length; i++)
             {
-                case InputActionPhase.Started: OnWorldLayerLeftMousePress?.Invoke(inputEvent); break;
-                case InputActionPhase.Canceled: OnWorldLayerLeftMouseRelease?.Invoke(inputEvent); break;
+                if (_stateActionKeys[i].IsPressed && _stateActionKeys[i].StartContext == InputStartContext.None)
+                {
+                    _stateActionKeys[i].StartContext = EventSystem.current.IsPointerOverGameObject() 
+                        ? InputStartContext.Interface 
+                        : InputStartContext.World;
+                }
             }
         }
 
-        void EcosimInput.IEditActions.OnLeftClick(CallbackContext context)
+        public void Tick()
         {
-            var inputEvent = new PointerInputEvent(CursorPosition);
+            for (int i = 0; i < _stateActionKeys.Length; i++)
+            {
+                _stateActionKeys[i].WasPressed = _stateActionKeys[i].IsPressed;
 
+                if (!_stateActionKeys[i].IsPressed)
+                    _stateActionKeys[i].StartContext = InputStartContext.None;
+            }
+
+            var mousePosition = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+            _axies[InputAxisId.MouseX] = mousePosition.x;
+            _axies[InputAxisId.MouseY] = mousePosition.y;
+        }
+
+        public ActionKeyState GetActionKeyState(ushort actionKeyId, InputStartContext mode)
+        {
+            var actionKey = _stateActionKeys[actionKeyId];
+            if (actionKey.StartContext != mode) return ActionKeyState.None;
+
+            return (actionKey.IsPressed, actionKey.WasPressed) switch
+            {
+                (true, false) => ActionKeyState.Pressed,
+                (true, _)     => ActionKeyState.Hold,
+                (false, true) => ActionKeyState.Released,
+                _             => ActionKeyState.None
+            };
+        }
+
+        public void ExtractActionKey(ushort actionKeyId)
+        {
+            _stateActionKeys[actionKeyId].IsPressed = false;
+            _stateActionKeys[actionKeyId].WasPressed = false;
+            _stateActionKeys[actionKeyId].StartContext = InputStartContext.None;
+        }
+
+        public void OnLeftClick(CallbackContext context)
+        {
             switch (context.phase)
             {
-                case InputActionPhase.Started: OnToolLayerLeftMousePress?.Invoke(inputEvent); break;
-                case InputActionPhase.Canceled: OnToolLayerLeftMouseRelease?.Invoke(inputEvent); break;
+                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.LEFT_CLICK].IsPressed = true;  break;
+                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.LEFT_CLICK].IsPressed = false; break;
             }
         }
 
-        void EcosimInput.IGameplayActions.OnMove(CallbackContext context)
-        {
-            OnMoveEvent?.Invoke(context.ReadValue<Vector2>());
+        public void OnMove(CallbackContext context) 
+        { 
+            var delta = context.ReadValue<Vector2>(); 
+            _axies[InputAxisId.MoveX] = delta.x; 
+            _axies[InputAxisId.MoveY] = delta.y; 
+        }
+        
+        public void OnPause(CallbackContext context) 
+        { 
+            switch (context.phase) 
+            { 
+                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = true; break; 
+                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = false; break; 
+            } 
+        }
+        
+        public void OnResume(CallbackContext context) 
+        { 
+            switch (context.phase) 
+            { 
+                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = true; break; 
+                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = false; break; 
+            } 
         }
 
-        void EcosimInput.IGameplayActions.OnPause(CallbackContext context)
+        private void ResetInput()
         {
-            if (context.canceled) OnPauseEvent?.Invoke();
-        }
-
-        void EcosimInput.IMenuActions.OnResume(CallbackContext context)
-        {
-            if (context.canceled) OnResumeEvent?.Invoke();
+            for (var i = 0; i < _stateActionKeys.Length; i++)
+            {
+                _stateActionKeys[i].IsPressed = false;
+                _stateActionKeys[i].WasPressed = false;
+                _stateActionKeys[i].StartContext = InputStartContext.None;
+            }
         }
     }
 }

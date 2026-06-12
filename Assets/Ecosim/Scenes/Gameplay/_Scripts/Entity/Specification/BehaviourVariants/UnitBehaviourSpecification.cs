@@ -12,7 +12,7 @@ namespace Ecosim
 
         public override IBehaviour Create(Entity owner, DiContainer container)
         {
-            var storageSystem = container.Instantiate<StorageSystem>();
+            var storageSystem = container.Instantiate<StorageServic>();
             return new UnitBehaviour(owner, storageSystem, _specIdWarehouses.Id, _specIdTree.Id, _specIdWood.Id);
         }
     }
