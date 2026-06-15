@@ -11,6 +11,10 @@ namespace Ecosim
         private readonly Dictionary<long, List<Entity>> _entitiesBySpecId = new();
         private readonly List<long> _cachedSpecIds = new(capacity: 64);
 
+        private readonly List<Entity> _selectableEntities = new(1024);
+
+        public IReadOnlyCollection<Entity> SelectableEntities => _selectableEntities;
+
         public IReadOnlyList<long> GetRegisteredSpecIds()
         {
             return _cachedSpecIds;
@@ -18,7 +22,8 @@ namespace Ecosim
 
         public IReadOnlyCollection<Entity> GetBySpecId(long specId) 
         {
-            return _entitiesBySpecId[specId];
+            if(_entitiesBySpecId.TryGetValue(specId, out List<Entity> entities)) return entities;
+            return new List<Entity>();
         }
 
         public Entity GetById(long instanceId)
@@ -54,6 +59,9 @@ namespace Ecosim
             }
 
             entities.Add(entity);
+
+            if (entity.Get<SelectableComponent>() != default)
+                _selectableEntities.Add(entity);
         }
 
         public void Unregister(Entity entity)
@@ -71,6 +79,8 @@ namespace Ecosim
                     _cachedSpecIds.Remove(entity.SpecId);
                 }
             }
+
+            _selectableEntities.Remove(entity);
         }
 
         public long GenerateNextId()
@@ -94,6 +104,7 @@ namespace Ecosim
             _entitiesBySpecId.Clear();
             _idGenerator.Clear();
             _cachedSpecIds.Clear();
+            _selectableEntities.Clear();
         }
     }
 }

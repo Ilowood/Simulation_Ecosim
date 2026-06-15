@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Ecosim
 {
-    public class PauseView : Screen
+    public class PauseView : Window
     {
         [Header("Buttons")]
         [SerializeField] private Button _restart;

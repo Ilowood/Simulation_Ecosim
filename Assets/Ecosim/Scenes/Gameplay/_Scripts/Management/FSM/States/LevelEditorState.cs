@@ -66,7 +66,11 @@ namespace Ecosim
         {
             _world.SetPause(true);
             _saveService.SaveWorld(_world.GetSnapshot(), "Ecosim");
-            _world.SetPause(false);
+        }
+
+        public void ResetWorld()
+        {
+            _world.Deinit();
         }
 
         public void BuildTool(long specId)

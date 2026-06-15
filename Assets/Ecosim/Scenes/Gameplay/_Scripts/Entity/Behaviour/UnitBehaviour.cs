@@ -30,55 +30,55 @@ namespace Ecosim
 
         public void Tick(WorldContext context, float deltaTime, float scale)
         {
-            if (_owner.Behavior.Task == null || _owner.Behavior.Task.IsComplete)
-            {
-                if (!_storageSystem.IsAllSlotsReserved(_storageOwner))
-                {
-                    var trees = context.Registry.GetBySpecId(_specIdTree);
-                    var closestTree = FindClosestEntity(trees);
+            // if (_owner.Behavior.Task == null || _owner.Behavior.Task.IsComplete)
+            // {
+            //     if (!_storageSystem.IsAllSlotsReserved(_storageOwner))
+            //     {
+            //         var trees = context.Registry.GetBySpecId(_specIdTree);
+            //         var closestTree = FindClosestEntity(trees);
 
-                    if (closestTree != null)
-                    {
-                        var targetPos = closestTree.transform.position;
-                        _owner.Behavior.SetAndStartTask(new MoveToPointTask(_owner, targetPos));
-                    }
-                    else
-                    {
-                        MoveToRandomPoint();
-                    }
-                }
-                else
-                {
-                    var warehouses = context.Registry.GetBySpecId(_specIdWarehouses);
-                    var closestWarehouse = FindClosestEntity(warehouses);
+            //         if (closestTree != null)
+            //         {
+            //             var targetPos = closestTree.transform.position;
+            //             _owner.Behavior.SetAndStartTask(new MoveToPointTask(_owner, targetPos));
+            //         }
+            //         else
+            //         {
+            //             MoveToRandomPoint();
+            //         }
+            //     }
+            //     else
+            //     {
+            //         var warehouses = context.Registry.GetBySpecId(_specIdWarehouses);
+            //         var closestWarehouse = FindClosestEntity(warehouses);
 
-                    if (closestWarehouse != null)
-                    {
-                        if (Vector3.Distance(closestWarehouse.transform.position, _owner.transform.position) > 1f)
-                        {
-                            _owner.Behavior.SetAndStartTask(new MoveToPointTask(_owner, closestWarehouse.transform.position));
-                            return;
-                        }
+            //         if (closestWarehouse != null)
+            //         {
+            //             if (Vector3.Distance(closestWarehouse.transform.position, _owner.transform.position) > 1f)
+            //             {
+            //                 _owner.Behavior.SetAndStartTask(new MoveToPointTask(_owner, closestWarehouse.transform.position));
+            //                 return;
+            //             }
                         
-                        if (_storageSystem.HasItem(_storageOwner, _specIdWood))
-                        {
-                            var count = _storageSystem.GetItemCount(_storageOwner, _specIdWood);
+            //             if (_storageSystem.HasItem(_storageOwner, _specIdWood))
+            //             {
+            //                 var count = _storageSystem.GetItemCount(_storageOwner, _specIdWood);
 
-                            _owner.Behavior.SetAndStartTask(new ResourceTransferTask(
-                                _storageSystem, 
-                                _owner, 
-                                closestWarehouse, 
-                                _specIdWood, 
-                                count, 
-                                0));
-                        }
-                    }
-                    else
-                    {
-                        MoveToRandomPoint();
-                    }
-                }
-            }
+            //                 _owner.Behavior.SetAndStartTask(new ResourceTransferTask(
+            //                     _storageSystem, 
+            //                     _owner, 
+            //                     closestWarehouse, 
+            //                     _specIdWood, 
+            //                     count, 
+            //                     0));
+            //             }
+            //         }
+            //         else
+            //         {
+            //             MoveToRandomPoint();
+            //         }
+            //     }
+            // }
         }
 
         private void MoveToRandomPoint()

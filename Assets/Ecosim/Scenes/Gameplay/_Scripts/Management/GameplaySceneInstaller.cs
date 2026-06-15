@@ -9,19 +9,18 @@ namespace Ecosim
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<EntityRegistry>().AsSingle();
-            Container.Bind<World>().AsSingle();
-            
             InstallData();
             InstallFractory();
             InstallView();
             InstallSystem();
-            InstallFSM();
+            InstallService();
+            InstallWorld();
         }
 
         private void InstallData()
         {
             Container.Bind<SpawnerConfig>().FromInstance(_spawnerConfig).AsSingle();
+            Container.BindInterfacesAndSelfTo<EntityRegistry>().AsSingle();
             Container.Bind<ISaveService>().To<JsonSaveService>().AsSingle();
         }
 
@@ -49,19 +48,27 @@ namespace Ecosim
 
         private void InstallSystem()
         {
+            Container.Bind<SelectionBuffer>().AsSingle();
+            Container.Bind<SelectionSystem>().AsSingle();
+            Container.Bind<PlayerCommandSystem>().AsSingle();
+        }
+
+        private void InstallService()
+        {
             Container.Bind<SpawnService>().AsSingle();
             Container.Bind<StorageServic>().AsSingle();
         }
 
-        private void InstallFSM()
+        private void InstallWorld()
         {
+            Container.Bind<World>().AsSingle();
+
             Container.BindInterfacesAndSelfTo<InitState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayState>().AsSingle();
             Container.BindInterfacesAndSelfTo<PauseState>().AsSingle();
             Container.BindInterfacesAndSelfTo<ReportState>().AsSingle();
             Container.BindInterfacesAndSelfTo<RestartState>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelEditorState>().AsSingle();
-
             Container.Bind<FSMGameplay>().AsSingle();
         }
     }

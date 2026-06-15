@@ -15,6 +15,8 @@ namespace Ecosim
         public Entity Create(EntitySpecification specifications, Vector3 position, Transform parent)
         {
             var gameObject = new GameObject(specifications.Name);
+            gameObject.layer = LayerMask.NameToLayer("Entity");
+            
             var entity = _container.InstantiateComponent<Entity>(gameObject);
 
             specifications.Configuration.ForEach(spec => spec.Apply(entity));

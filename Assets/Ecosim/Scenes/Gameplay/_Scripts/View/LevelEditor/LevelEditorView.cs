@@ -3,10 +3,11 @@ using UnityEngine.UI;
 
 namespace Ecosim
 {
-    public class LevelEditorView : Screen
+    public class LevelEditorView : Window
     {
         [Header("Buttons")]
         [SerializeField] private Button _save;
+        [SerializeField] private Button _resetMap;
         [SerializeField] private Button _game;
         
         [Header("Build Palette")]
@@ -20,6 +21,7 @@ namespace Ecosim
         {
             _state = state;
             _save.onClick.AddListener(() => state.SaveWorld());
+            _resetMap.onClick.AddListener(() => state.ResetWorld());
             _game.onClick.AddListener(() => state.GameState());
             
             BuildPalette();

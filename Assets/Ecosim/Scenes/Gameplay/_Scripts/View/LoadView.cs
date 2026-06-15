@@ -1,6 +1,6 @@
 namespace Ecosim
 {
-    public class LoadView : Screen
+    public class LoadView : Window
     {
         
     }

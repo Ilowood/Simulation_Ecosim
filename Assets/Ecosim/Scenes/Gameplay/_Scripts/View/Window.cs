@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public abstract class Screen : MonoBehaviour, IView
+    public abstract class Window : MonoBehaviour, IView
     {
         [field: Header("View components")]
         [field: SerializeField] public RectTransform SaveArea { get; private set; }

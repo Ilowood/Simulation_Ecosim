@@ -14,13 +14,17 @@ namespace Ecosim
         private readonly World _world;
         private readonly PauseSystem _pauseSystem;
 
+        private readonly SelectionSystem _selectionSystem;
+        private readonly PlayerCommandSystem _playerCommandSystem;
+
         private readonly float[] _speedSteps = { 0.5f, 2.0f, 10.0f };
 
         private int _currentSpeedIndex = 1;
         private float _currentTimeScale;
         private CancellationTokenSource _puaseSource;
 
-        public GameplayState(FSMGameplay fsm, HUDView view, World world, ISaveService saveService, IInputDeviceProvider input)
+        public GameplayState(FSMGameplay fsm, HUDView view, World world, ISaveService saveService, IInputDeviceProvider input, 
+            SelectionSystem selectionSystem, PlayerCommandSystem playerCommandSystem)
         {
             _fsm = fsm;
             _saveService = saveService;
@@ -30,10 +34,12 @@ namespace Ecosim
             _world = world;
             _currentTimeScale = _speedSteps[_currentSpeedIndex];
             
+            _selectionSystem = selectionSystem;
+            _playerCommandSystem = playerCommandSystem;
+            _pauseSystem = new PauseSystem(_input, PauseState);
+
             UIHelper.SaveArea(_view.SaveArea);
             _view.Init(this);
-
-            _pauseSystem = new PauseSystem(_input, PauseState);
         }
 
         public StateGameplay State => StateGameplay.GameplayState;
@@ -41,7 +47,7 @@ namespace Ecosim
         public void Enter()
         {
             _input.OnGameplayEnable();
-            _view.Open(_world);
+            _view.Open();
 
             // var entity = _world.AddEntity(5072577398122940851);
             // _world.AddEntity();
@@ -55,9 +61,7 @@ namespace Ecosim
         public void Exit()
         {
             EndLoop();
-
-            _view.Close(_world);
-            _view.ResetView();
+            _view.Close();
         }
 
         public void Resume()
@@ -114,8 +118,12 @@ namespace Ecosim
             while(!_puaseSource.IsCancellationRequested)
             {
                 _input.Sync();
+
                 _pauseSystem.Tick();
                 _world.Tick(Time.deltaTime, _currentTimeScale);
+                _selectionSystem.Tick();
+                _playerCommandSystem.Tick();
+
                 _input.Tick();
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);
