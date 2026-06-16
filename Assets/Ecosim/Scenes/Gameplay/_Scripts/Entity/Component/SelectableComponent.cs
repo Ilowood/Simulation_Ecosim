@@ -28,6 +28,7 @@ namespace Ecosim
             if (snapshot is SelectableSnapshot data)
             {
                 IsSelected = data.IsSelected;
+                SelectableObject.SetActive(IsSelected);
             }
         }
     }

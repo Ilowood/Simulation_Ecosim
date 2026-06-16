@@ -104,6 +104,15 @@ namespace Ecosim
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0d038aa-9dc3-434e-befc-b0eb4c87dcdd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""1e10294b-a4f6-4435-a177-960d1f236b82"",
@@ -120,6 +129,15 @@ namespace Ecosim
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Accumulate"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b9de51d-e292-45ff-852c-053d8e8eb7ec"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -131,6 +149,17 @@ namespace Ecosim
                     ""processors"": """",
                     ""groups"": "";Keyboard & Mouse"",
                     ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4eb13c2-6fe8-41f4-9af9-e72b16f0943f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard & Mouse"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -254,6 +283,17 @@ namespace Ecosim
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""938c7d0d-3db7-47cd-9001-e82eb6dd6e58"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard & Mouse"",
+                    ""action"": ""Accumulate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -336,8 +376,10 @@ namespace Ecosim
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_LeftClick = m_Gameplay.FindAction("LeftClick", throwIfNotFound: true);
+            m_Gameplay_RightClick = m_Gameplay.FindAction("RightClick", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            m_Gameplay_Accumulate = m_Gameplay.FindAction("Accumulate", throwIfNotFound: true);
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Resume = m_Menu.FindAction("Resume", throwIfNotFound: true);
@@ -427,8 +469,10 @@ namespace Ecosim
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_LeftClick;
+        private readonly InputAction m_Gameplay_RightClick;
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Pause;
+        private readonly InputAction m_Gameplay_Accumulate;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -445,6 +489,10 @@ namespace Ecosim
             /// </summary>
             public InputAction @LeftClick => m_Wrapper.m_Gameplay_LeftClick;
             /// <summary>
+            /// Provides access to the underlying input action "Gameplay/RightClick".
+            /// </summary>
+            public InputAction @RightClick => m_Wrapper.m_Gameplay_RightClick;
+            /// <summary>
             /// Provides access to the underlying input action "Gameplay/Move".
             /// </summary>
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
@@ -452,6 +500,10 @@ namespace Ecosim
             /// Provides access to the underlying input action "Gameplay/Pause".
             /// </summary>
             public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Accumulate".
+            /// </summary>
+            public InputAction @Accumulate => m_Wrapper.m_Gameplay_Accumulate;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -481,12 +533,18 @@ namespace Ecosim
                 @LeftClick.started += instance.OnLeftClick;
                 @LeftClick.performed += instance.OnLeftClick;
                 @LeftClick.canceled += instance.OnLeftClick;
+                @RightClick.started += instance.OnRightClick;
+                @RightClick.performed += instance.OnRightClick;
+                @RightClick.canceled += instance.OnRightClick;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Accumulate.started += instance.OnAccumulate;
+                @Accumulate.performed += instance.OnAccumulate;
+                @Accumulate.canceled += instance.OnAccumulate;
             }
 
             /// <summary>
@@ -501,12 +559,18 @@ namespace Ecosim
                 @LeftClick.started -= instance.OnLeftClick;
                 @LeftClick.performed -= instance.OnLeftClick;
                 @LeftClick.canceled -= instance.OnLeftClick;
+                @RightClick.started -= instance.OnRightClick;
+                @RightClick.performed -= instance.OnRightClick;
+                @RightClick.canceled -= instance.OnRightClick;
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
                 @Pause.started -= instance.OnPause;
                 @Pause.performed -= instance.OnPause;
                 @Pause.canceled -= instance.OnPause;
+                @Accumulate.started -= instance.OnAccumulate;
+                @Accumulate.performed -= instance.OnAccumulate;
+                @Accumulate.canceled -= instance.OnAccumulate;
             }
 
             /// <summary>
@@ -760,6 +824,13 @@ namespace Ecosim
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnLeftClick(InputAction.CallbackContext context);
             /// <summary>
+            /// Method invoked when associated input action "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnRightClick(InputAction.CallbackContext context);
+            /// <summary>
             /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -773,6 +844,13 @@ namespace Ecosim
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnPause(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Accumulate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnAccumulate(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

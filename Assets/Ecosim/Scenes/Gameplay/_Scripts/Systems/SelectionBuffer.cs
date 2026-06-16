@@ -8,8 +8,6 @@ namespace Ecosim
         private readonly HashSet<Entity> _selectedEntities = new(256);
         public IReadOnlyCollection<Entity> SelectedEntities => _selectedEntities;
         
-        public bool CanSelecting => _selectedEntities.Count == 0;
-
         public Vector2 FrameStartPoint;
         public Vector2 FrameEndPoint;
         public bool IsFrameVisible;
@@ -17,6 +15,11 @@ namespace Ecosim
         public void Select(Entity entity) 
         { 
             _selectedEntities.Add(entity);
+        }
+
+        public void Deselect(Entity entity)
+        {
+            _selectedEntities.Remove(entity);
         }
 
         public void ClearSelected()
@@ -28,6 +31,15 @@ namespace Ecosim
         {
             _selectedEntities.Clear();
             IsFrameVisible = false;
+        }
+
+        public void Restore(IReadOnlyCollection<Entity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                if (entity.Get<SelectableComponent>().IsSelected) 
+                    Select(entity);
+            }
         }
     }
 }

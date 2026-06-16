@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace Ecosim
@@ -29,50 +30,47 @@ namespace Ecosim
 
         public void Tick()
         {
-            if (_buffer.CanSelecting)
+            var mousePosision = new Vector2(_input.GetAxisValue(InputAxisId.MouseX), _input.GetAxisValue(InputAxisId.MouseY));
+
+            if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Pressed))
             {
-                var currentMousePos = new Vector2(_input.GetAxisValue(InputAxisId.MouseX), _input.GetAxisValue(InputAxisId.MouseY));
+                _startMousePosition = mousePosision; 
+                _isDragging = false;
+            }
 
-                if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Pressed))
+            if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Hold))
+            {
+                if (!_isDragging && Vector2.Distance(_startMousePosition, mousePosision) > DRAG_THRESHOLD)
                 {
-                    _startMousePosition = currentMousePos; 
-                    _isDragging = false;
+                    _isDragging = true;
                 }
 
-                if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Hold))
+                if (_isDragging) 
                 {
-                    if (!_isDragging && Vector2.Distance(_startMousePosition, currentMousePos) > DRAG_THRESHOLD)
-                    {
-                        _isDragging = true;
-                    }
-
-                    if (_isDragging) 
-                    {
-                        _buffer.FrameStartPoint = _startMousePosition;
-                        _buffer.FrameEndPoint = currentMousePos;
-                        _buffer.IsFrameVisible = true;
-                    }
+                    _buffer.FrameStartPoint = _startMousePosition;
+                    _buffer.FrameEndPoint = mousePosision;
+                    _buffer.IsFrameVisible = true;
                 }
+            }
 
-                if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Released))
-                {
-                    _input.ExtractActionKey(InputActionButtonId.LEFT_CLICK);
-                    _buffer.IsFrameVisible = false;
+            if (IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Released))
+            {
+                _input.ExtractActionKey(InputActionButtonId.LEFT_CLICK);
+                _buffer.IsFrameVisible = false;
 
-                    if (_isDragging) SelectGroupInFrame(_startMousePosition, currentMousePos);
-                    else SelectSingleEntity(currentMousePos);
+                if (_isDragging) SelectGroupInFrame(_startMousePosition, mousePosision);
+                else SelectSingleEntity(mousePosision);
 
-                    _isDragging = false;
-                    _buffer.IsFrameVisible = false;
-                }
+                _isDragging = false;
+                _buffer.IsFrameVisible = false;
             }
         }
 
         private void SelectSingleEntity(Vector2 screenPosition)
         {
-            _buffer.Reset();
             var ray = _camera.ScreenPointToRay(screenPosition);
-            
+            var isAccumulateHold = IsActionKeyState(InputActionButtonId.ACCUMULATE, ActionKeyState.Hold);
+
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _entityLayerMask))
             {
                 var entity = hit.collider.GetComponentInParent<Entity>();
@@ -80,20 +78,48 @@ namespace Ecosim
                 if (entity)
                 {
                     var component = entity.Get<SelectableComponent>();
-
                     if (component != default)
                     {
-                        _buffer.Select(entity);
-                        component.IsSelected = true;
-                        component.SelectableObject.SetActive(true);
+                        if (isAccumulateHold)
+                        {
+                            if (_buffer.SelectedEntities.Contains(entity))
+                            {
+                                component.IsSelected = false;
+                                component.SelectableObject.SetActive(false);
+                                _buffer.Deselect(entity);
+                            }
+                            else
+                            {
+                                _buffer.Select(entity);
+                                component.IsSelected = true;
+                                if (component.SelectableObject != null) component.SelectableObject.SetActive(true);
+                            }
+                        }
+                        else
+                        {
+                            ResetCurrentSelectionToDeselected();
+
+                            _buffer.Select(entity);
+                            component.IsSelected = true;
+                            if (component.SelectableObject != null) component.SelectableObject.SetActive(true);
+                        }
                     }
                 }
+            }
+            else
+            {
+                ResetCurrentSelectionToDeselected();
             }
         }
 
         private void SelectGroupInFrame(Vector2 start, Vector2 end)
         {
-            _buffer.Reset();
+            var isAccumulateHold = IsActionKeyState(InputActionButtonId.ACCUMULATE, ActionKeyState.Hold);
+
+            if (!isAccumulateHold)
+            {
+                ResetCurrentSelectionToDeselected();
+            }
 
             var screenBounds = CreateScreenBounds(start, end);
             foreach (var entity in _registry.SelectableEntities)
@@ -115,6 +141,21 @@ namespace Ecosim
                     }
                 }
             }
+        }
+
+        private void ResetCurrentSelectionToDeselected()
+        {
+            foreach (var entity in _buffer.SelectedEntities)
+            {
+                if (entity != null)
+                {
+                    var component = entity.Get<SelectableComponent>();
+                    component.IsSelected = false;
+                    component.SelectableObject.SetActive(false);
+                }
+            }
+
+            _buffer.Reset();
         }
 
         private Bounds CreateScreenBounds(Vector2 p1, Vector2 p2)

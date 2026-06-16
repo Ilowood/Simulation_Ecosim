@@ -23,8 +23,8 @@ namespace Ecosim
     public class KeyboardMouseProvider : IInputDeviceProvider, EcosimInput.IGameplayActions, EcosimInput.IEditActions, EcosimInput.IMenuActions
     {
         private readonly EcosimInput _input = new();
-        private readonly ActionKey[] _stateActionKeys = new ActionKey[InputActionButtonId.TotalButtons];
-        private readonly float[] _axies = new float[InputAxisId.TotalAxes];
+        private readonly ActionKey[] _stateActionKeys = new ActionKey[InputActionButtonId.TOTAL_BYTTONS];
+        private readonly float[] _axies = new float[InputAxisId.TOTAL_AXES];
 
         public KeyboardMouseProvider()
         {
@@ -113,13 +113,33 @@ namespace Ecosim
             _stateActionKeys[actionKeyId].StartContext = InputStartContext.None;
         }
 
+        private void ButtonPhase(InputActionPhase phase, ushort actionButtonId)
+        {
+            switch (phase)
+            {
+                case InputActionPhase.Started:  _stateActionKeys[actionButtonId].IsPressed = true;  break;
+                case InputActionPhase.Canceled: _stateActionKeys[actionButtonId].IsPressed = false; break;
+            }
+        }
+
+        private void ResetInput()
+        {
+            for (var i = 0; i < _stateActionKeys.Length; i++)
+            {
+                _stateActionKeys[i].IsPressed = false;
+                _stateActionKeys[i].WasPressed = false;
+                _stateActionKeys[i].StartContext = InputStartContext.None;
+            }
+        }
+
         public void OnLeftClick(CallbackContext context)
         {
-            switch (context.phase)
-            {
-                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.LEFT_CLICK].IsPressed = true;  break;
-                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.LEFT_CLICK].IsPressed = false; break;
-            }
+            ButtonPhase(context.phase, InputActionButtonId.LEFT_CLICK);
+        }
+
+        public void OnRightClick(CallbackContext context)
+        {
+            ButtonPhase(context.phase, InputActionButtonId.RIGHT_CLICK);
         }
 
         public void OnMove(CallbackContext context) 
@@ -131,30 +151,17 @@ namespace Ecosim
         
         public void OnPause(CallbackContext context) 
         { 
-            switch (context.phase) 
-            { 
-                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = true; break; 
-                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = false; break; 
-            } 
+            ButtonPhase(context.phase, InputActionButtonId.CANCEL);
         }
         
         public void OnResume(CallbackContext context) 
-        { 
-            switch (context.phase) 
-            { 
-                case InputActionPhase.Started:  _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = true; break; 
-                case InputActionPhase.Canceled: _stateActionKeys[InputActionButtonId.CANCEL].IsPressed = false; break; 
-            } 
+        {
+            ButtonPhase(context.phase, InputActionButtonId.CANCEL);
         }
 
-        private void ResetInput()
+        public void OnAccumulate(CallbackContext context)
         {
-            for (var i = 0; i < _stateActionKeys.Length; i++)
-            {
-                _stateActionKeys[i].IsPressed = false;
-                _stateActionKeys[i].WasPressed = false;
-                _stateActionKeys[i].StartContext = InputStartContext.None;
-            }
+            ButtonPhase(context.phase, InputActionButtonId.ACCUMULATE);
         }
     }
 }

@@ -16,6 +16,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "a0d038aa-9dc3-434e-befc-b0eb4c87dcdd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "1e10294b-a4f6-4435-a177-960d1f236b82",
@@ -32,6 +41,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Accumulate",
+                    "type": "Button",
+                    "id": "6b9de51d-e292-45ff-852c-053d8e8eb7ec",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -43,6 +61,17 @@
                     "processors": "",
                     "groups": ";Keyboard & Mouse",
                     "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4eb13c2-6fe8-41f4-9af9-e72b16f0943f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -164,6 +193,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "938c7d0d-3db7-47cd-9001-e82eb6dd6e58",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "Accumulate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
