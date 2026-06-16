@@ -50,6 +50,8 @@ namespace Ecosim
         {
             Container.Bind<SelectionBuffer>().AsSingle();
             Container.Bind<SelectionSystem>().AsSingle();
+
+            Container.Bind<ICommandProvider>().To<MoveCommandProvider>().AsSingle();
             Container.Bind<PlayerCommandSystem>().AsSingle();
         }
 
