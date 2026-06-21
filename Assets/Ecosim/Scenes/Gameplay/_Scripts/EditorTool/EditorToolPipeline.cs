@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ecosim
 {
-    public abstract class EditorToolPipeline
+    public abstract class EditorToolPipeline : ITicable
     {
         protected Queue<IEditorTool> _steps;
 
@@ -35,9 +35,9 @@ namespace Ecosim
             _currentStep.Enter();
         }
 
-        public void Tick()
+        public void Tick(float deltaTime, float scale)
         {
-            _currentStep?.Tick();
+            _currentStep?.Tick(deltaTime, scale);
         }
 
         public virtual void Cancel()

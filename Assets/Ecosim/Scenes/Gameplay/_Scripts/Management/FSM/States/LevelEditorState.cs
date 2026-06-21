@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Untils;
 
 namespace Ecosim
@@ -104,7 +105,7 @@ namespace Ecosim
             while(!_puaseSource.IsCancellationRequested)
             {
                 _input.Sync();
-                _currentTool?.Tick();
+                _currentTool?.Tick(Time.deltaTime, 1);
                 _input.Tick();
                 
                 await UniTask.Yield(PlayerLoopTiming.Update, _puaseSource.Token);

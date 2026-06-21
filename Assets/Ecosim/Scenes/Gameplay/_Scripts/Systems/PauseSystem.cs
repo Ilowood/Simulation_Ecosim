@@ -2,7 +2,7 @@ using System;
 
 namespace Ecosim
 {
-    public class PauseSystem
+    public class PauseSystem : ITicable
     {
         private readonly IInputDeviceProvider _input;
         private readonly Action _onPauseRequested;
@@ -13,7 +13,7 @@ namespace Ecosim
             _onPauseRequested = onPauseRequested;
         }
 
-        public void Tick()
+        public void Tick(float deltaTime, float scale)
         {
             if (_input.IsActionKeyState(InputActionButtonId.CANCEL, ActionKeyState.Pressed, InputStartContext.Interface))
             {

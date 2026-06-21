@@ -2,12 +2,11 @@ using System;
 
 namespace Ecosim
 {
-    public interface IEditorTool
+    public interface IEditorTool : ITicable
     {
         event Action OnCompleted;
         
         void Enter();
-        void Tick();
         void Exit();
     }
 }

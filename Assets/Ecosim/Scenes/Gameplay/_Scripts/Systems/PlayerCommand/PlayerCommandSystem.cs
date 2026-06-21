@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Ecosim
 {
-    public class PlayerCommandSystem
+    public class PlayerCommandSystem : ITicable
     {
         private IInputDeviceProvider _input;
         private SelectionBuffer _buffer;
@@ -22,7 +22,7 @@ namespace Ecosim
         private bool IsActionKeyState(ushort actionKeyId, ActionKeyState state) 
             => _input.IsActionKeyState(actionKeyId, state, InputStartContext.World);
 
-        public void Tick()
+        public void Tick(float deltaTime, float scale)
         {
             if (_buffer.SelectedEntities.Count > 0)
             {

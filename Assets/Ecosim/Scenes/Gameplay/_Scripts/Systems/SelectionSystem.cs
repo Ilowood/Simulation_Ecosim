@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public class SelectionSystem
+    public class SelectionSystem : ITicable
     {
         private const float DRAG_THRESHOLD = 10f; 
         
@@ -28,7 +28,7 @@ namespace Ecosim
         private bool IsActionKeyState(ushort actionKeyId, ActionKeyState state) 
             => _input.IsActionKeyState(actionKeyId, state, InputStartContext.World);
 
-        public void Tick()
+        public void Tick(float deltaTime, float scale)
         {
             var mousePosision = new Vector2(_input.GetAxisValue(InputAxisId.MouseX), _input.GetAxisValue(InputAxisId.MouseY));
 

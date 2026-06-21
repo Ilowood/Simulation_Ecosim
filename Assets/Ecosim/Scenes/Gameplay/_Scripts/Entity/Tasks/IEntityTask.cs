@@ -1,18 +1,16 @@
 namespace Ecosim
 {
-    public interface IEntityTask
+    public interface IEntityTask : ITicable
     {
         bool IsComplete { get; }
         TaskVariants Variants { get; }
 
         void Start();
-        void Tick(float deltaTime, float scale);
         void End();
 
         void Puase();
         void Resume();
 
         ITaskSnapshot GetSnapshot();
-        // void Restore(Entity root, ITaskSnapshot snapshot);
     }
 }

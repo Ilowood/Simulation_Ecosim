@@ -26,7 +26,7 @@ namespace Ecosim
             OnCompleted?.Invoke();
         }
 
-        public void Tick() { }
+        public void Tick(float deltaTime, float scale) { }
         public void Exit() { }
 
         private void ConfigureAsReady(Entity entity)

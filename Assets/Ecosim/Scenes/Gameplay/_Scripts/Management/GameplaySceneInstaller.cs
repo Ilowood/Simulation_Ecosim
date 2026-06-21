@@ -53,6 +53,9 @@ namespace Ecosim
 
             Container.Bind<ICommandProvider>().To<MoveCommandProvider>().AsSingle();
             Container.Bind<PlayerCommandSystem>().AsSingle();
+
+            Container.Bind<HoverTooltipBuffer>().AsSingle();
+            Container.Bind<HoverTooltipSystem>().AsSingle();
         }
 
         private void InstallService()

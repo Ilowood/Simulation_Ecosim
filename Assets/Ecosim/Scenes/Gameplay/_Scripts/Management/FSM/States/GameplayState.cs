@@ -16,6 +16,7 @@ namespace Ecosim
 
         private readonly SelectionSystem _selectionSystem;
         private readonly PlayerCommandSystem _playerCommandSystem;
+        private readonly HoverTooltipSystem _hoverTooltipSystem;
 
         private readonly float[] _speedSteps = { 0.5f, 2.0f, 10.0f };
 
@@ -24,7 +25,7 @@ namespace Ecosim
         private CancellationTokenSource _puaseSource;
 
         public GameplayState(FSMGameplay fsm, HUDView view, World world, ISaveService saveService, IInputDeviceProvider input, 
-            SelectionSystem selectionSystem, PlayerCommandSystem playerCommandSystem)
+            SelectionSystem selectionSystem, PlayerCommandSystem playerCommandSystem, HoverTooltipSystem hoverTooltipSystem)
         {
             _fsm = fsm;
             _saveService = saveService;
@@ -37,6 +38,7 @@ namespace Ecosim
             _selectionSystem = selectionSystem;
             _playerCommandSystem = playerCommandSystem;
             _pauseSystem = new PauseSystem(_input, PauseState);
+            _hoverTooltipSystem = hoverTooltipSystem;
 
             UIHelper.SaveArea(_view.SaveArea);
             _view.Init(this);
@@ -119,10 +121,13 @@ namespace Ecosim
             {
                 _input.Sync();
 
-                _pauseSystem.Tick();
-                _world.Tick(Time.deltaTime, _currentTimeScale);
-                _selectionSystem.Tick();
-                _playerCommandSystem.Tick();
+                var deltaTime = Time.deltaTime;
+                _pauseSystem.Tick(deltaTime, _currentTimeScale);
+                _world.Tick(deltaTime, _currentTimeScale);
+                _selectionSystem.Tick(deltaTime, _currentTimeScale);
+                _playerCommandSystem.Tick(deltaTime, _currentTimeScale);
+                _hoverTooltipSystem.Tick(deltaTime, _currentTimeScale);
+                _view.Tick(deltaTime, _currentTimeScale);
 
                 _input.Tick();
 

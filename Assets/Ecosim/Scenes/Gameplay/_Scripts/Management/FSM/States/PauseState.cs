@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Untils;
 
@@ -83,9 +84,8 @@ namespace Ecosim
             while(!_cts.IsCancellationRequested)
             {
                 _input.Sync();
+                _resumeSystem.Tick(Time.deltaTime, 1);
                 _input.Tick();
-                _resumeSystem.Tick();
-
                 await UniTask.Yield(PlayerLoopTiming.Update, _cts.Token);
             }
         }

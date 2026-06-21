@@ -40,7 +40,7 @@ namespace Ecosim
             
         }
 
-        public void Tick()
+        public void Tick(float deltaTime, float scale)
         {
             var worldPosition = GetCursorWorldPosition;
 
