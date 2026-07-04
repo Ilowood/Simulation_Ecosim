@@ -55,6 +55,32 @@ namespace Ecosim.Editor
                 AssetDatabase.SaveAssets();
             }
         }
+
+        public static void RenameAssetFile(ScriptableObject asset, string name)
+        {
+            if (asset == null || string.IsNullOrEmpty(name)) return;
+
+            var assetPath = AssetDatabase.GetAssetPath(asset);
+            if (string.IsNullOrEmpty(assetPath)) return;
+
+            if (name.EndsWith(".asset"))
+                name = Path.GetFileNameWithoutExtension(name);
+
+            var error = AssetDatabase.RenameAsset(assetPath, name);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                EditorUtility.SetDirty(asset);
+                AssetDatabase.SaveAssetIfDirty(asset);
+                AssetDatabase.SaveAssets();
+
+                Debug.Log($"<b>[EcosimEditor]</b> Asset renamed successfully to <color=green>{name}</color>");
+            }
+            else
+            {
+                Debug.LogError($"<b>[EcosimEditor]</b> Failed to rename asset: {error}");
+            }
+        }
     }
 }
 

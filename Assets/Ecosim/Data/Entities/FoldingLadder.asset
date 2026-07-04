@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
-  m_Name: NewEntitySpecification 15
+  m_Name: FoldingLadder
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _id: 4895842521545894685
-  <Name>k__BackingField: Pole_01
+  _id: 5203093326888000279
+  <Name>k__BackingField: FoldingLadder
   <Type>k__BackingField: 5
   <Icon>k__BackingField: {fileID: 0}
   Behaviour: {fileID: 0}
   Configuration:
-  - {fileID: 11400000, guid: 09636511da2404383b50dc834cfc43a0, type: 2}
+  - {fileID: 11400000, guid: ee8444500b8af4474982217778299276, type: 2}

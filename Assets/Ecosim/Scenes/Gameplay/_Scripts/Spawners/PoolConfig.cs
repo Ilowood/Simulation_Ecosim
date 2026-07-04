@@ -11,5 +11,11 @@ namespace Ecosim
         [field: SerializeField] public int Size { get; private set; }
 
         public long SpecId => _spec.Id;
+
+        public PoolConfig(EntitySpecification spec, int size)
+        {
+            _spec = spec;
+            Size = size;
+        }
     }
 }

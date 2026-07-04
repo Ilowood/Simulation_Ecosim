@@ -14,6 +14,7 @@ namespace Ecosim.Editor
 
         private const string REGISTRY_SEARCH_FILTER = "t:EntityDatabase";
         private const string SPEC_SEARCH_FILTER = "t:EntitySpecification";
+        private const string SPAWNER_CONFIG_SEARCH_FILTER = "t:SpawnerConfig";
 
         private VisualTreeAsset _specTemplate;
         private VisualTreeAsset _window;
@@ -22,6 +23,7 @@ namespace Ecosim.Editor
         private VisualElement _detailsContainer;
         private ScrollView _listSpecifications;
         private EntityDatabase _registry;
+        private SpawnerConfig _config;
 
         private EntitySpecification _currentSelectedSpec;
         
@@ -63,6 +65,11 @@ namespace Ecosim.Editor
                 ? asset 
                 : EcosimEditorUtils.CreateAsset<EntityDatabase>(EntityDatabase.PATH);
 
+            var config = EcosimEditorUtils.FindRegistry<SpawnerConfig>(SPAWNER_CONFIG_SEARCH_FILTER);
+            _config = config != null 
+                ? config 
+                : EcosimEditorUtils.CreateAsset<SpawnerConfig>(SpawnerConfig.PATH);
+
             dbField.value = _registry;
 
             rootVisualElement.Q<Button>("SyncButton").clicked += RefreshEditorWindow;
@@ -94,6 +101,7 @@ namespace Ecosim.Editor
             if (_registry == null) return;
             
             SyncRegistryWithProject();
+            SyncSpawnerConfig();
             RebuildListView();
         }
 
@@ -108,6 +116,11 @@ namespace Ecosim.Editor
                 var spec = AssetDatabase.LoadAssetAtPath<EntitySpecification>(path);
                 if (spec != null) _registry.Add(spec);
             }
+        }
+
+        private void SyncSpawnerConfig()
+        {
+            _config.SyncWithDatabase(_registry.Specifications);
         }
 
         private void RebuildListView()
@@ -137,13 +150,15 @@ namespace Ecosim.Editor
         {
             _detailsContainer.style.display = DisplayStyle.Flex;
 
+            var copyBtn = _detailsContainer.Q<Button>("CopyIdButton");
+            var deleteBtn = _detailsContainer.Q<Button>("DeleteButton");
+            var renameBtn = _detailsContainer.Q<Button>("RenameButton");
+
             if (_currentSelectedSpec)
             {
-                var oldCopyBtn = _detailsContainer.Q<Button>("CopyIdButton");
-                oldCopyBtn.clickable = null;
-
-                var oldDeleteBtn = _detailsContainer.Q<Button>("DeleteButton");
-                oldDeleteBtn.clickable = null;
+                copyBtn.clickable = null;
+                deleteBtn.clickable = null;
+                renameBtn.clickable = null;
             }
 
             _currentSelectedSpec = spec;
@@ -154,16 +169,14 @@ namespace Ecosim.Editor
             var id = _detailsContainer.Q<LongField>("Id");
             id.value = spec.Id;
 
-            var copyBtn = _detailsContainer.Q<Button>("CopyIdButton");
             copyBtn.clicked += () => GUIUtility.systemCopyBuffer = _currentSelectedSpec.Id.ToString();
-
-            var deleteBtn = _detailsContainer.Q<Button>("DeleteButton");
             deleteBtn.clicked += () => {
                 _registry.Remove(_currentSelectedSpec.Id);
                 EcosimEditorUtils.DeleteAssetFile(_currentSelectedSpec);
                 _detailsContainer.style.display = DisplayStyle.None;
                 RefreshEditorWindow();
             };
+            renameBtn.clicked += () => EcosimEditorUtils.RenameAssetFile(spec, spec.Name);
 
             _detailsContainer.Bind(new SerializedObject(_currentSelectedSpec));
         }

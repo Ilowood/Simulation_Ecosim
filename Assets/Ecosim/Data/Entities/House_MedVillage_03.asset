@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
-  m_Name: NewEntitySpecification 2
+  m_Name: House_MedVillage_03
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _id: 5605006419165684358
-  <Name>k__BackingField: ClayMug
-  <Type>k__BackingField: 5
+  _id: 5136016731502098358
+  <Name>k__BackingField: House_MedVillage_03
+  <Type>k__BackingField: 4
   <Icon>k__BackingField: {fileID: 0}
   Behaviour: {fileID: 0}
   Configuration:
-  - {fileID: 11400000, guid: 586526af5b1024c38962e296f6147904, type: 2}
+  - {fileID: 11400000, guid: a7890f8d6d445408cb4c0aa9536b9514, type: 2}

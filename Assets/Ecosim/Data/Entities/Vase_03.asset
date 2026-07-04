@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
-  m_Name: NewEntitySpecification 24
+  m_Name: Vase_03
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _id: 5630923460053707882
-  <Name>k__BackingField: Vase_04
+  _id: 4743794180110949809
+  <Name>k__BackingField: Vase_03
   <Type>k__BackingField: 5
   <Icon>k__BackingField: {fileID: 0}
   Behaviour: {fileID: 0}
   Configuration:
-  - {fileID: 11400000, guid: 72d31a1a7ee3442eda09964e9df008b5, type: 2}
+  - {fileID: 11400000, guid: 70ab161bbda2c4c06930f48be9b2a5e6, type: 2}

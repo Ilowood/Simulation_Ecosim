@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
-  m_Name: NewEntitySpecification
+  m_Name: Wooden
   m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
-  _id: 4725431672051581464
-  <Name>k__BackingField: Barrel
+  _id: 5477799200929428530
+  <Name>k__BackingField: Wooden
   <Type>k__BackingField: 5
   <Icon>k__BackingField: {fileID: 0}
   Behaviour: {fileID: 0}
   Configuration:
-  - {fileID: 11400000, guid: eb5d6b162ee7b45e79b72c3fbb2cc191, type: 2}
+  - {fileID: 11400000, guid: 6e00b0e85f58f4bd4a277e8d5cd540dd, type: 2}

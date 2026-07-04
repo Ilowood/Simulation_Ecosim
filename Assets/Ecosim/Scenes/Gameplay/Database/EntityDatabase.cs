@@ -5,8 +5,7 @@ namespace Ecosim
 {
     public class EntityDatabase : ScriptableObject
     {
-        [SerializeField] private List<EntitySpecification> _specifications = new();
-
+        [HideInInspector, SerializeField] private List<EntitySpecification> _specifications = new();
         private Dictionary<long, int> _locations = new();
 
         public IReadOnlyList<EntitySpecification> Specifications => _specifications;

@@ -1,4 +1,4 @@
-<UIEngine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:UIEngine="UnityEngine.UIElements" xmlns:UIEditor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" UIEditor-extension-mode="False">
+<UIEngine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:UIEngine="UnityEngine.UIElements" xmlns:UIEditor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" UIEditor-extension-mode="False" editor-extension-mode="False">
     <UIEngine:VisualElement style="padding: 5px;">
         <UIEditor:ObjectField name="DataBaseField" label="DataBase Asset"/>
     </UIEngine:VisualElement>
@@ -20,7 +20,10 @@
                 <UIEditor:ObjectField label="Icon" binding-path="&lt;Icon&gt;k__BackingField" type="UnityEngine.Sprite, UnityEngine"/>
                 <UIEditor:PropertyField label="Behaviour" binding-path="Behaviour"/>
                 <UIEditor:PropertyField binding-path="Configuration"/>
-                <UIEngine:Button name="DeleteButton" text="Delete" style="background-color: rgb(132, 44, 44); color: white; margin-top: 20px; height: 28px; border-radius: 4px; -unity-font-style: bold;"/>
+                <UIEngine:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 2px; width: 100%;">
+                    <UIEngine:Button name="DeleteButton" text="Delete" style="background-color: rgb(132, 44, 44); color: white; margin-top: 20px; height: 28px; border-radius: 4px; -unity-font-style: bold; flex-grow: 1; width: 0; margin-right: 4px;"/>
+                    <UIEngine:Button name="RenameButton" text="Rename" style="background-color: rgb(56, 68, 77); color: white; margin-top: 20px; height: 28px; border-radius: 4px; -unity-font-style: bold; flex-grow: 1; width: 0; margin-left: 4px;"/>
+                </UIEngine:VisualElement>
             </UIEngine:ScrollView>
         </UIEngine:VisualElement>
     </UIEngine:VisualElement>
