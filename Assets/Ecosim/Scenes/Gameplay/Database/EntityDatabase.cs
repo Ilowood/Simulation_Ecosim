@@ -5,7 +5,7 @@ namespace Ecosim
 {
     public class EntityDatabase : ScriptableObject
     {
-        [HideInInspector, SerializeField] private List<EntitySpecification> _specifications = new();
+        [SerializeField] private List<EntitySpecification> _specifications = new();
 
         private Dictionary<long, int> _locations = new();
 
@@ -42,9 +42,9 @@ namespace Ecosim
             if (!_locations.TryGetValue(id, out int index)) return;
 
             _specifications.RemoveAt(index);
-            UpdateCache();
 
-            UnityEditor.EditorUtility.SetDirty(this);
+            UpdateCache();
+            Save(this);
         }
 
         public void Add(EntitySpecification specification)
@@ -64,20 +64,27 @@ namespace Ecosim
             if (isIdTaken)
             {
                 specification.GenerateUniqueId(); 
+                Save(specification);
             }
 
             _specifications.Add(specification);
-            UpdateCache();
 
-            UnityEditor.EditorUtility.SetDirty(this);
+            UpdateCache();
+            Save(this);
         }
 
         public void CleanupNullReferences()
         {
             _specifications.RemoveAll(spec => spec == null);
-            UpdateCache();
 
-            UnityEditor.EditorUtility.SetDirty(this);
+            UpdateCache();
+            Save(this);
+        }
+
+        private void Save(Object @object)
+        {
+            UnityEditor.EditorUtility.SetDirty(@object);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(@object);
         }
 #endif
     }
