@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68663a40ca4064d078f18869ac9f5917, type: 3}
+  m_Name: NewEntitySpecification 5
+  m_EditorClassIdentifier: Assembly-CSharp::Ecosim.EntitySpecification
+  _id: 5203093326888000279
+  <Name>k__BackingField: FoldingLadder
+  <Type>k__BackingField: 5
+  <Icon>k__BackingField: {fileID: 0}
+  Behaviour: {fileID: 0}
+  Configuration:
+  - {fileID: 11400000, guid: ee8444500b8af4474982217778299276, type: 2}
