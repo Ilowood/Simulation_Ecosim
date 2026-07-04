@@ -24,7 +24,7 @@ namespace Ecosim
         {
             if (!_buffer.IsHover)
             {
-                if (gameObject.activeInHierarchy) Hide();
+                if (gameObject != null && gameObject.activeInHierarchy) Hide();
             }
             else
             {
