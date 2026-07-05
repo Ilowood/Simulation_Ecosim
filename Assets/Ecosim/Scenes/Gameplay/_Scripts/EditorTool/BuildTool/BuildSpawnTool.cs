@@ -2,12 +2,12 @@ using System;
 
 namespace Ecosim
 {
-    public class SpawnTool : IEditorTool
+    public class BuildSpawnTool : IEditorTool
     {        
         private readonly BuildContext _context;
         private readonly SpawnService _spawner;
 
-        public SpawnTool(BuildContext context, SpawnService spawner)
+        public BuildSpawnTool(BuildContext context, SpawnService spawner)
         {
             _context = context;
             _spawner = spawner;

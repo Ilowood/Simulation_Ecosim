@@ -2,14 +2,14 @@ using System;
 
 namespace Ecosim
 {
-    public class PlaceTool : IEditorTool
+    public class BuildPlacementTool : IEditorTool
     {
         public event Action OnCompleted;
 
         private readonly BuildContext _context;
         private readonly World _world;
 
-        public PlaceTool(BuildContext context, World world)
+        public BuildPlacementTool(BuildContext context, World world)
         {
             _context = context;
             _world = world;
@@ -17,8 +17,6 @@ namespace Ecosim
 
         public void Enter()
         {
-            ConfigureAsReady(_context.PreviewEntity);
-
             _world.AddEntity(_context.PreviewEntity);
             _context.IsConfirmed = true;
             _context.PreviewEntity = null;
@@ -27,11 +25,7 @@ namespace Ecosim
         }
 
         public void Tick(float deltaTime, float scale) { }
-        public void Exit() { }
 
-        private void ConfigureAsReady(Entity entity)
-        {
-            
-        }
+        public void Exit() { }
     }
 }

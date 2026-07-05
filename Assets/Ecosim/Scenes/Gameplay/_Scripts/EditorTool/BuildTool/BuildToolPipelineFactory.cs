@@ -36,9 +36,10 @@ namespace Ecosim
             };
 
             var steps = new Queue<IEditorTool>(3);
-            steps.Enqueue(new SpawnTool(context, _spawnService));
-            steps.Enqueue(new FollowMouseTool(context, _input));
-            steps.Enqueue(new PlaceTool(context, _world));
+            steps.Enqueue(new BuildSpawnTool(context, _spawnService));
+            steps.Enqueue(new BuildFollowMouseTool(context, _input));
+            steps.Enqueue(new BuildRotateTool(context, _input));
+            steps.Enqueue(new BuildPlacementTool(context, _world));
 
             return new BuildToolPipeline(steps);
         }

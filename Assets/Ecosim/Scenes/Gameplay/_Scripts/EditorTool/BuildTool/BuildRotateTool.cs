@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Ecosim
 {
-    public class FollowMouseTool : IEditorTool
+    public class BuildRotateTool : IEditorTool
     {
         public const string TERRAIN_LAYER_NAME = "Environment";
 
@@ -12,20 +12,24 @@ namespace Ecosim
         private readonly Camera _camera;
         private readonly int _layer;
 
+        private Vector3 _startClickWorldPosition;
+        private bool _isInitialized;
+
+        public event Action OnCompleted;
+
         private Vector3 GetCursorWorldPosition
         {
             get
             {
                 var mouseX = _input.GetAxisValue(InputAxisId.MouseX);
                 var mouseY = _input.GetAxisValue(InputAxisId.MouseY);
-
                 var ray = _camera.ScreenPointToRay(new Vector2(mouseX, mouseY));
                 
                 return Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layer) ? hit.point : Vector3.zero;
             }
         }
 
-        public FollowMouseTool(BuildContext context, IInputDeviceProvider input)
+        public BuildRotateTool(BuildContext context, IInputDeviceProvider input)
         {
             _context = context;
             _input = input;
@@ -33,45 +37,45 @@ namespace Ecosim
             _layer = LayerMask.GetMask(TERRAIN_LAYER_NAME);
         }
 
-        public event Action OnCompleted;
-
         public void Enter()
         {
-            
+            if (_context.PreviewEntity == null)
+            {
+                Exit();
+                return;
+            }
+
+            _startClickWorldPosition = _context.PreviewEntity.transform.position;
+            _isInitialized = true;
         }
 
         public void Tick(float deltaTime, float scale)
         {
-            var worldPosition = GetCursorWorldPosition;
+            if (!_isInitialized || _context.PreviewEntity == null) return;
 
-            if (_context.PreviewEntity != null)
+            if (_input.IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Hold, InputStartContext.World))
             {
-                _context.PreviewEntity.transform.position = worldPosition;
+                var currentMouseWorldPos = GetCursorWorldPosition;
+                var direction = currentMouseWorldPos - _startClickWorldPosition;
+
+                if (direction.sqrMagnitude > 0.05f)
+                {
+                    var targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                    _context.PreviewEntity.transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+                }
             }
 
-            var canBuild = ValidatePosition(worldPosition);
-            UpdatePreviewVisuals(canBuild);
-            
             if (_input.IsActionKeyState(InputActionButtonId.LEFT_CLICK, ActionKeyState.Released, InputStartContext.World))
             {
-                if (canBuild)
-                {
-                    _input.ExtractActionKey(InputActionButtonId.LEFT_CLICK);
-                    Exit(); 
-                }
+                _input.ExtractActionKey(InputActionButtonId.LEFT_CLICK);
+                Exit();
             }
         }
 
         public void Exit()
         {
+            _isInitialized = false;
             OnCompleted?.Invoke();
-        }
-
-        private bool ValidatePosition(Vector3 position) => true;
-        
-        private void UpdatePreviewVisuals(bool canBuild)
-        {
-            
         }
     }
 }
