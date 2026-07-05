@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5477799200929428530
   <Name>k__BackingField: Wooden
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: -2046454202, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 6e00b0e85f58f4bd4a277e8d5cd540dd, type: 2}

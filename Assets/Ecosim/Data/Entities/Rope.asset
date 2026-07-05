@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5493903395615817673
   <Name>k__BackingField: Rope
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 1718014330, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 9d028ba7f59c44a9fb4eb5d6fae739bd, type: 2}

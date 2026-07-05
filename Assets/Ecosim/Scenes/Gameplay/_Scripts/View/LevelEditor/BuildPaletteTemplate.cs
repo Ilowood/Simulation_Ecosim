@@ -7,7 +7,7 @@ namespace Ecosim
     public class BuildPaletteTemplate : MonoBehaviour
     {
         [Header("UI Elements")]
-        [SerializeField] private Image _icon;
+        // [SerializeField] private Image _icon;
         [SerializeField] private Image _background;
         [SerializeField] private Button _button;
         
@@ -22,7 +22,7 @@ namespace Ecosim
         {
             SpecId = specId;
 
-            _icon.sprite = icon;
+            _background.sprite = icon;
             _button.onClick.AddListener(() => click(this));
         }
         
@@ -36,7 +36,7 @@ namespace Ecosim
             if (_background.color != _selectedColor)
             {
                 _background.color = _hoverColor;
-                _icon.color = _hoverColor;
+                // _icon.color = _hoverColor;
             }
         }
         
@@ -45,7 +45,7 @@ namespace Ecosim
             if (_background.color != _selectedColor)
             {
                 _background.color = _normalColor;
-                _icon.color = _normalColor;
+                // _icon.color = _normalColor;
             }
         }
     }

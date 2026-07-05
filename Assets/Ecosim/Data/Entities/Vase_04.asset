@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5630923460053707882
   <Name>k__BackingField: Vase_04
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 2103237091, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 72d31a1a7ee3442eda09964e9df008b5, type: 2}

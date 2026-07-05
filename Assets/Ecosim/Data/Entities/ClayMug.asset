@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5605006419165684358
   <Name>k__BackingField: ClayMug
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 675493526, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 586526af5b1024c38962e296f6147904, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5686253653645042452
   <Name>k__BackingField: ClayPot
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: -823568376, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 801880aaf687a469781a2e95daada555, type: 2}

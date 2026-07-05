@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5190911930645636891
   <Name>k__BackingField: Pole_02
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: -1179276874, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: a670dce1b4822496dbed5e57486b8378, type: 2}

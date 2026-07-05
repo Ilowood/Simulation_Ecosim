@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5203093326888000279
   <Name>k__BackingField: FoldingLadder
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: -458668127, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: ee8444500b8af4474982217778299276, type: 2}

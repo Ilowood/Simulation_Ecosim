@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5591684086111062522
   <Name>k__BackingField: House_MedVillaeV1_01
   <Type>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: -1664614044, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: 3c1f758e3b98c405fbcca1266c5ad432, type: 2}

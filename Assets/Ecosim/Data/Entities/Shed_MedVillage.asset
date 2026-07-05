@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 4913383620582413978
   <Name>k__BackingField: Shed_MedVillage
   <Type>k__BackingField: 3
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 799621643, guid: 1c11fbc404e044c7d804b21a89b5cc9f, type: 3}
   Behaviour: {fileID: 0}
   Configuration:
   - {fileID: 11400000, guid: a31e8d270f9ad4ae0b71f839e819e91a, type: 2}
